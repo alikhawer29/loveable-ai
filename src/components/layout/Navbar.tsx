@@ -111,16 +111,22 @@ export function Navbar() {
 
   return (
     <>
+      {/*
+        Client requested to hide this promotional strip for now.
+        Keeping it commented instead of deleting so it can be restored quickly.
+      */}
+      {/*
       {!isAuthenticated && (
-      <div className="bg-secondary text-secondary-foreground text-center py-2 text-xs tracking-wide">
-        <span>
-          Get 15% off your first purchase{" "}
-          <Link to="/register" className="font-semibold border border-foreground px-2 py-0.5 ml-1 hover:bg-foreground/10 transition-colors">
-            Sign Up
-          </Link>
-        </span>
-      </div>
+        <div className="bg-secondary text-secondary-foreground text-center py-2 text-xs tracking-wide">
+          <span>
+            Get 15% off your first purchase{" "}
+            <Link to="/register" className="font-semibold border border-foreground px-2 py-0.5 ml-1 hover:bg-foreground/10 transition-colors">
+              Sign Up
+            </Link>
+          </span>
+        </div>
       )}
+      */}
 
       {/* Main navbar */}
       <header className="section-dark sticky top-0 z-50 border-b border-[hsl(0_0%_100%_/_0.1)]">

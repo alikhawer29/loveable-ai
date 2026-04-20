@@ -61,8 +61,8 @@ const Contact = () => {
             </p>
             <h2 className="font-display text-lg font-semibold text-foreground mb-4">Prefer To Contact Us Directly?</h2>
             <ul className="space-y-1.5 text-sm text-foreground">
-              <li><span className="font-semibold">Email:</span> support@gardencart.com</li>
-              <li><span className="font-semibold">Phone:</span> +1 (000) 000-0000</li>
+              <li><span className="font-semibold">Email:</span> hanshueh@inifinityflroal.com</li>
+              <li><span className="font-semibold">Phone:</span> 854.692.7227</li>
               <li><span className="font-semibold">Business Hours:</span> Monday – Friday | 9:00 AM – 6:00 PM</li>
             </ul>
           </div>

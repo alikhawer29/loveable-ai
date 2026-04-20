@@ -134,7 +134,7 @@ const Index = () => {
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div className="max-w-2xl animate-fade-in">
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[hsl(0_0%_100%)] leading-tight mb-4">
-              Premium Orchids Grown for Wholesale Excellence
+              Quiet Luxury Orchids
             </h1>
             <p className="text-sm md:text-base text-[hsl(0_0%_100%_/_0.8)] max-w-lg mx-auto mb-6">
               We meticulously cultivate premium-quality orchids for growers, retailers, and event designers.

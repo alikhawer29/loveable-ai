@@ -109,8 +109,8 @@ export function Footer() {
             <div>
               <h4 className="font-display text-sm font-semibold text-[hsl(0_0%_100%)] mb-4">Contact Details</h4>
               <ul className="space-y-2 text-[hsl(0_0%_100%_/_0.6)]">
-                <li>(+1) 234 567 890</li>
-                <li>info@email.com</li>
+                <li>854.692.7227</li>
+                <li>hanshueh@inifinityflroal.com</li>
                 <li>913 Willow St S Nelson, BC V1L 7C5Canada</li>
               </ul>
             </div>
