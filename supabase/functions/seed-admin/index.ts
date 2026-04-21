@@ -2,19 +2,27 @@ import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
 import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 const corsHeaders = {
-  'Access-Control-Allow-Origin': '*',
-  'Access-Control-Allow-Headers': 'authorization, x-client-info, apikey, content-type',
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Headers":
+    "authorization, x-client-info, apikey, content-type",
 };
 
 serve(async (req) => {
-  if (req.method === 'OPTIONS') {
+  if (req.method === "OPTIONS") {
     return new Response(null, { headers: corsHeaders });
   }
 
   try {
+    // Get the service role key from the request headers or use a fallback
+    const authHeader = req.headers.get("authorization");
+    const serviceRoleKey =
+      Deno.env.get("SUPABASE_SERVICE_ROLE_KEY") ||
+      authHeader?.replace("Bearer ", "") ||
+      "sb_service_role_key_placeholder";
+
     const supabaseAdmin = createClient(
-      Deno.env.get('SUPABASE_URL')!,
-      Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+      Deno.env.get("SUPABASE_URL")!,
+      serviceRoleKey,
     );
 
     const adminEmail = "admin@testadmin.com";
@@ -22,7 +30,9 @@ serve(async (req) => {
 
     // Check if admin already exists
     const { data: existingUsers } = await supabaseAdmin.auth.admin.listUsers();
-    const existingAdmin = existingUsers?.users?.find(u => u.email === adminEmail);
+    const existingAdmin = existingUsers?.users?.find(
+      (u) => u.email === adminEmail,
+    );
 
     let adminUserId: string;
 
@@ -30,12 +40,13 @@ serve(async (req) => {
       adminUserId = existingAdmin.id;
     } else {
       // Create admin user
-      const { data: newUser, error: createError } = await supabaseAdmin.auth.admin.createUser({
-        email: adminEmail,
-        password: adminPassword,
-        email_confirm: true,
-        user_metadata: { full_name: "Tom Albert" },
-      });
+      const { data: newUser, error: createError } =
+        await supabaseAdmin.auth.admin.createUser({
+          email: adminEmail,
+          password: adminPassword,
+          email_confirm: true,
+          user_metadata: { full_name: "Tom Albert" },
+        });
       if (createError) throw createError;
       adminUserId = newUser.user.id;
     }
@@ -43,7 +54,10 @@ serve(async (req) => {
     // Ensure admin role exists
     const { error: roleError } = await supabaseAdmin
       .from("user_roles")
-      .upsert({ user_id: adminUserId, role: "admin" }, { onConflict: "user_id,role" });
+      .upsert(
+        { user_id: adminUserId, role: "admin" },
+        { onConflict: "user_id,role" },
+      );
 
     if (roleError) throw roleError;
 
