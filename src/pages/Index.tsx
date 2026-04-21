@@ -45,7 +45,7 @@ interface HomeProduct {
 interface HomeArticle {
   id: string;
   title: string;
-  image: string;
+  video_url?: string | null;
   excerpt: string;
 }
 
@@ -97,7 +97,7 @@ const Index = () => {
       try {
         const { data } = await supabase
           .from("guidelines_articles")
-          .select("id, title, image_url, content")
+          .select("id, title, video_url, content")
           .eq("status", "published")
           .order("created_at", { ascending: false })
           .limit(3);
@@ -106,7 +106,7 @@ const Index = () => {
           (data || []).map((a) => ({
             id: a.id,
             title: a.title,
-            image: a.image_url || PLACEHOLDER,
+            video_url: a.video_url,
             excerpt: a.content?.slice(0, 100) || "Discover helpful tips and advice...",
           }))
         );
@@ -322,7 +322,7 @@ const Index = () => {
         <div className="container">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Your Guide to Plant Care</h2>
-            <Link to={authLink("/guidelines")} className="hidden md:inline-flex btn-plum rounded-sm text-xs">
+            <Link to="/guidelines" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
               View All →
             </Link>
           </div>
@@ -341,14 +341,20 @@ const Index = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {careArticles.map((article) => (
-                <Link key={article.id} to={authLink(`/blog/${article.id}`)} className="group">
+                <Link key={article.id} to={`/blog/${article.id}`} className="group">
                   <div className="aspect-[4/3] overflow-hidden rounded-lg mb-4">
-                    <img
-                      src={article.image}
-                      alt={article.title}
-                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
-                    />
+                    {article.video_url ? (
+                      <video
+                        src={article.video_url}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        muted
+                        loop
+                        onMouseEnter={(e) => e.currentTarget.play()}
+                        onMouseLeave={(e) => e.currentTarget.pause()}
+                      />
+                    ) : (
+                      <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">No video</div>
+                    )}
                   </div>
                   <h3 className="font-display text-base md:text-lg font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
                     {article.title}

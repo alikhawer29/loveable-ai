@@ -16,6 +16,8 @@ const AdminAddGuideline = () => {
   const [status, setStatus] = useState("published");
   const [file, setFile] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string>("");
+  const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [videoPreview, setVideoPreview] = useState<string>("");
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -34,6 +36,14 @@ const AdminAddGuideline = () => {
     if (selected) {
       setFile(selected);
       setFilePreview(URL.createObjectURL(selected));
+    }
+  };
+
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (selected && selected.type.startsWith('video/')) {
+      setVideoFile(selected);
+      setVideoPreview(URL.createObjectURL(selected));
     }
   };
 
@@ -73,6 +83,23 @@ const AdminAddGuideline = () => {
             .getPublicUrl(filePath);
           await supabase.from("guidelines_articles")
             .update({ image_url: urlData.publicUrl })
+            .eq("id", article.id);
+        }
+      }
+
+      // Upload video if selected
+      if (videoFile && article) {
+        const ext = videoFile.name.split(".").pop();
+        const videoFilePath = `${article.id}-video.${ext}`;
+        const { error: videoUploadErr } = await supabase.storage
+          .from("guideline-media")
+          .upload(videoFilePath, videoFile, { upsert: true });
+        if (!videoUploadErr) {
+          const { data: videoUrlData } = supabase.storage
+            .from("guideline-media")
+            .getPublicUrl(videoFilePath);
+          await supabase.from("guidelines_articles")
+            .update({ video_url: videoUrlData.publicUrl })
             .eq("id", article.id);
         }
       }
@@ -120,6 +147,35 @@ const AdminAddGuideline = () => {
               <Upload className="h-8 w-8 text-primary/50 mb-2" />
               <span className="text-sm text-muted-foreground">Upload File</span>
               <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+            </label>
+          )}
+        </div>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-foreground mb-1.5">Upload Video (Optional)</label>
+          {videoPreview ? (
+            <div className="relative rounded-lg overflow-hidden mb-3">
+              <video
+                src={videoPreview}
+                controls
+                className="w-full aspect-video object-cover"
+              />
+              <button
+                onClick={() => { setVideoFile(null); setVideoPreview(""); }}
+                className="absolute top-2 right-2 p-1.5 bg-background/80 rounded hover:bg-background"
+              >
+                <X className="h-4 w-4 text-destructive" />
+              </button>
+            </div>
+          ) : (
+            <label className="flex flex-col items-center justify-center border-2 border-dashed border-primary/40 rounded-lg p-10 cursor-pointer hover:bg-muted/50 transition-colors">
+              <Upload className="h-8 w-8 text-primary/50 mb-2" />
+              <span className="text-sm text-muted-foreground">Upload Video</span>
+              <input
+                type="file"
+                className="hidden"
+                accept="video/*"
+                onChange={handleVideoChange}
+              />
             </label>
           )}
         </div>

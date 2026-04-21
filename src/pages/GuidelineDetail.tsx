@@ -9,9 +9,9 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface GuidelineArticle {
   id: string;
   title: string;
-  image_url: string | null;
   content: string | null;
   created_at: string;
+  video_url?: string | null;
 }
 
 const GuidelineDetail = () => {
@@ -29,7 +29,7 @@ const GuidelineDetail = () => {
         // Try fetching by ID first, then by slug-like title match
         let { data, error } = await supabase
           .from("guidelines_articles")
-          .select("id, title, image_url, content, created_at")
+          .select("id, title, video_url, content, created_at")
           .eq("id", slug)
           .maybeSingle();
 
@@ -38,7 +38,7 @@ const GuidelineDetail = () => {
           const titleSearch = slug.replace(/-/g, " ");
           const { data: byTitle } = await supabase
             .from("guidelines_articles")
-            .select("id, title, image_url, content, created_at")
+            .select("id, title, video_url, content, created_at")
             .ilike("title", `%${titleSearch}%`)
             .eq("status", "published")
             .limit(1)
@@ -51,7 +51,7 @@ const GuidelineDetail = () => {
         // Fetch related articles
         const { data: related } = await supabase
           .from("guidelines_articles")
-          .select("id, title, image_url, content, created_at")
+          .select("id, title, video_url, content, created_at")
           .eq("status", "published")
           .neq("id", data?.id || "")
           .order("created_at", { ascending: false })
@@ -120,10 +120,20 @@ const GuidelineDetail = () => {
         <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2 text-center">{article.title}</h1>
         <p className="text-center text-xs text-primary mb-6">{formatDate(article.created_at)}</p>
 
-        {/* Hero image */}
-        {article.image_url && (
+        {/* Video */}
+        {article.video_url ? (
           <div className="aspect-video overflow-hidden rounded-lg mb-8 relative bg-muted">
-            <img src={article.image_url} alt={article.title} className="h-full w-full object-cover" />
+            <video
+              src={article.video_url}
+              controls
+              className="h-full w-full object-cover"
+            >
+              Your browser does not support the video tag.
+            </video>
+          </div>
+        ) : (
+          <div className="aspect-video overflow-hidden rounded-lg mb-8 relative bg-muted flex items-center justify-center">
+            <p className="text-muted-foreground">No video available</p>
           </div>
         )}
 
@@ -145,10 +155,17 @@ const GuidelineDetail = () => {
               {relatedArticles.map((g) => (
                 <Link to={`/blog/${g.id}`} key={g.id} className="group">
                   <div className="aspect-[4/3] overflow-hidden rounded-lg mb-3 bg-muted">
-                    {g.image_url ? (
-                      <img src={g.image_url} alt={g.title} className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105" loading="lazy" />
+                    {g.video_url ? (
+                      <video
+                        src={g.video_url}
+                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                        muted
+                        loop
+                        onMouseEnter={(e) => e.currentTarget.play()}
+                        onMouseLeave={(e) => e.currentTarget.pause()}
+                      />
                     ) : (
-                      <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
+                      <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">No video</div>
                     )}
                   </div>
                   <p className="text-xs text-muted-foreground mb-1">{formatDate(g.created_at)}</p>

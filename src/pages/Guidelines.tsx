@@ -8,9 +8,9 @@ import aboutHero from "@/assets/about-hero.jpg";
 interface GuidelineArticle {
   id: string;
   title: string;
-  image_url: string | null;
   content: string | null;
   created_at: string;
+  video_url?: string | null;
 }
 
 const ITEMS_PER_PAGE = 9;
@@ -37,7 +37,7 @@ const Guidelines = () => {
         const to = from + ITEMS_PER_PAGE - 1;
         const { data, error } = await supabase
           .from("guidelines_articles")
-          .select("id, title, image_url, content, created_at")
+          .select("id, title, video_url, content, created_at")
           .eq("status", "published")
           .order("created_at", { ascending: false })
           .range(from, to);
@@ -84,15 +84,17 @@ const Guidelines = () => {
             {articles.map((article) => (
               <Link to={`/blog/${article.id}`} key={article.id} className="group">
                 <div className="aspect-[4/3] overflow-hidden rounded-lg mb-3 relative bg-muted">
-                  {article.image_url ? (
-                    <img
-                      src={article.image_url}
-                      alt={article.title}
+                  {article.video_url ? (
+                    <video
+                      src={article.video_url}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                      loading="lazy"
+                      muted
+                      loop
+                      onMouseEnter={(e) => e.currentTarget.play()}
+                      onMouseLeave={(e) => e.currentTarget.pause()}
                     />
                   ) : (
-                    <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">No image</div>
+                    <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">No video</div>
                   )}
                 </div>
                 <p className="text-xs text-muted-foreground mb-1">{formatDate(article.created_at)}</p>
@@ -121,9 +123,8 @@ const Guidelines = () => {
               <button
                 key={page}
                 onClick={() => setCurrentPage(page)}
-                className={`h-8 w-8 rounded-full text-sm font-medium ${
-                  currentPage === page ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
-                }`}
+                className={`h-8 w-8 rounded-full text-sm font-medium ${currentPage === page ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
+                  }`}
               >
                 {page}
               </button>
@@ -132,9 +133,8 @@ const Guidelines = () => {
             {totalPages > 5 && (
               <button
                 onClick={() => setCurrentPage(totalPages)}
-                className={`h-8 w-8 rounded-full text-sm font-medium ${
-                  currentPage === totalPages ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
-                }`}
+                className={`h-8 w-8 rounded-full text-sm font-medium ${currentPage === totalPages ? "bg-primary text-primary-foreground" : "text-foreground hover:bg-muted"
+                  }`}
               >
                 {totalPages}
               </button>

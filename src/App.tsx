@@ -111,10 +111,10 @@ const App = () => (
             <Route path="/pots" element={<ProtectedRoute><Pots /></ProtectedRoute>} />
             <Route path="/pots/clay-pots" element={<ProtectedRoute><ClayPots /></ProtectedRoute>} />
             <Route path="/pots/:slug" element={<ProtectedRoute><PotDetail /></ProtectedRoute>} />
-            <Route path="/guideline" element={<ProtectedRoute><Guidelines /></ProtectedRoute>} />
-            <Route path="/guidelines" element={<ProtectedRoute><Guidelines /></ProtectedRoute>} />
+            <Route path="/guideline" element={<Guidelines />} />
+            <Route path="/guidelines" element={<Guidelines />} />
             <Route path="/guideline/:slug" element={<ProtectedRoute><GuidelineDetail /></ProtectedRoute>} />
-            <Route path="/blog/:slug" element={<ProtectedRoute><GuidelineDetail /></ProtectedRoute>} />
+            <Route path="/blog/:slug" element={<GuidelineDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<Policy />} />
             <Route path="/terms" element={<Terms />} />
