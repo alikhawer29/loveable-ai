@@ -40,14 +40,23 @@ const AdminViewGuideline = () => {
           <p className="text-sm text-primary leading-relaxed">{article.content}</p>
         </div>
         <div>
-          <p className="text-sm text-muted-foreground mb-2">Article Image/Video</p>
+          <p className="text-sm text-muted-foreground mb-2">Article Media</p>
           <div className="relative aspect-video max-w-2xl rounded-lg overflow-hidden bg-muted">
-            <img src={article.image_url || guideRepot} alt="Article media" className="h-full w-full object-cover" />
-            <div className="absolute inset-0 flex items-center justify-center">
-              <div className="h-14 w-14 rounded-full bg-[hsl(0_0%_100%_/_0.7)] flex items-center justify-center">
-                <Play className="h-6 w-6 text-foreground ml-0.5" fill="currentColor" />
+            {article.video_url ? (
+              <video
+                src={article.video_url}
+                controls
+                className="h-full w-full object-cover"
+              >
+                Your browser does not support the video tag.
+              </video>
+            ) : article.image_url ? (
+              <img src={article.image_url} alt="Article media" className="h-full w-full object-cover" />
+            ) : (
+              <div className="h-full w-full flex items-center justify-center text-muted-foreground">
+                No media available
               </div>
-            </div>
+            )}
           </div>
         </div>
       </div>

@@ -16,8 +16,11 @@ const AdminEditGuideline = () => {
   const [detail, setDetail] = useState("");
   const [status, setStatus] = useState("published");
   const [existingImage, setExistingImage] = useState("");
+  const [existingVideo, setExistingVideo] = useState("");
   const [newFile, setNewFile] = useState<File | null>(null);
   const [newFilePreview, setNewFilePreview] = useState("");
+  const [newVideoFile, setNewVideoFile] = useState<File | null>(null);
+  const [newVideoPreview, setNewVideoPreview] = useState("");
   const [successOpen, setSuccessOpen] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState(false);
@@ -30,6 +33,7 @@ const AdminEditGuideline = () => {
         setDetail(data.content || "");
         setStatus(data.status);
         if (data.image_url) setExistingImage(data.image_url);
+        if (data.video_url) setExistingVideo(data.video_url);
       }
     };
     if (id) fetch();
@@ -43,6 +47,14 @@ const AdminEditGuideline = () => {
     }
   };
 
+  const handleVideoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const selected = e.target.files?.[0];
+    if (selected && selected.type.startsWith('video/')) {
+      setNewVideoFile(selected);
+      setNewVideoPreview(URL.createObjectURL(selected));
+    }
+  };
+
   const handleUpdate = async () => {
     const e: Record<string, string> = {};
     if (!title.trim()) e.title = "Required";
@@ -53,6 +65,7 @@ const AdminEditGuideline = () => {
     setSaving(true);
     try {
       let imageUrl = existingImage;
+      let videoUrl = existingVideo;
 
       // Upload new image if selected
       if (newFile && id) {
@@ -69,8 +82,29 @@ const AdminEditGuideline = () => {
         }
       }
 
+      // Upload new video if selected
+      if (newVideoFile && id) {
+        const ext = newVideoFile.name.split(".").pop();
+        const videoFilePath = `${id}-video.${ext}`;
+        const { error: videoUploadErr } = await supabase.storage
+          .from("guideline-media")
+          .upload(videoFilePath, newVideoFile, { upsert: true });
+        if (!videoUploadErr) {
+          const { data: videoUrlData } = supabase.storage
+            .from("guideline-media")
+            .getPublicUrl(videoFilePath);
+          videoUrl = videoUrlData.publicUrl;
+        }
+      }
+
       const { error } = await supabase.from("guidelines_articles")
-        .update({ title: title.trim(), content: detail.trim(), status, image_url: imageUrl || null })
+        .update({
+          title: title.trim(),
+          content: detail.trim(),
+          status,
+          image_url: imageUrl || null,
+          video_url: videoUrl || null
+        })
         .eq("id", id);
       if (error) throw error;
       setSuccessOpen(true);
@@ -82,6 +116,7 @@ const AdminEditGuideline = () => {
   };
 
   const displayImage = newFilePreview || existingImage;
+  const displayVideo = newVideoPreview || existingVideo;
 
   return (
     <AdminLayout>
@@ -105,7 +140,7 @@ const AdminEditGuideline = () => {
           </select>
         </div>
         <div className="mb-6">
-          <label className="block text-sm font-medium text-foreground mb-1.5">Upload Image*</label>
+          <label className="block text-sm font-medium text-foreground mb-1.5">Upload Image (Optional)</label>
           {displayImage && (
             <div className="relative rounded-lg overflow-hidden mb-3">
               <img src={displayImage} alt="Current media" className="w-full aspect-video object-cover" />
@@ -115,8 +150,23 @@ const AdminEditGuideline = () => {
             </div>
           )}
           <label className="inline-flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
-            <Upload className="h-5 w-5 text-primary/50" /> {displayImage ? "Replace Image" : "Upload File"}
+            <Upload className="h-5 w-5 text-primary/50" /> {displayImage ? "Replace Image" : "Upload Image"}
             <input type="file" className="hidden" accept="image/*" onChange={handleFileChange} />
+          </label>
+        </div>
+        <div className="mb-6">
+          <label className="block text-sm font-medium text-foreground mb-1.5">Upload Video (Optional)</label>
+          {displayVideo && (
+            <div className="relative rounded-lg overflow-hidden mb-3">
+              <video src={displayVideo} controls className="w-full aspect-video object-cover" />
+              <button onClick={() => { setExistingVideo(""); setNewVideoFile(null); setNewVideoPreview(""); }} className="absolute top-2 right-2 p-1.5 bg-background/80 rounded hover:bg-background">
+                <Trash2 className="h-4 w-4 text-destructive" />
+              </button>
+            </div>
+          )}
+          <label className="inline-flex items-center gap-2 text-sm text-muted-foreground cursor-pointer hover:text-foreground transition-colors">
+            <Upload className="h-5 w-5 text-primary/50" /> {displayVideo ? "Replace Video" : "Upload Video"}
+            <input type="file" className="hidden" accept="video/*" onChange={handleVideoChange} />
           </label>
         </div>
         <Button className="btn-plum border-0 px-10" onClick={handleUpdate} disabled={saving}>{saving ? "Updating..." : "Update"}</Button>

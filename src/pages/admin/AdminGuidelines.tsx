@@ -88,6 +88,7 @@ const AdminGuidelines = () => {
               <tr className="bg-primary/10">
                 <th className="text-left px-4 py-3 font-semibold text-foreground">S. No</th>
                 <th className="text-left px-4 py-3 font-semibold text-foreground">Title</th>
+                <th className="text-left px-4 py-3 font-semibold text-foreground">Media</th>
                 <th className="text-left px-4 py-3 font-semibold text-foreground">Added On</th>
                 <th className="text-left px-4 py-3 font-semibold text-foreground">Status</th>
                 <th className="text-left px-4 py-3 font-semibold text-foreground">Action</th>
@@ -95,13 +96,32 @@ const AdminGuidelines = () => {
             </thead>
             <tbody>
               {loading ? (
-                <tr><td colSpan={5} className="text-center py-8 text-muted-foreground">Loading...</td></tr>
+                <tr><td colSpan={6} className="text-center py-8 text-muted-foreground">Loading...</td></tr>
               ) : paginated.length === 0 ? (
-                <tr><td colSpan={5} className="text-center py-8 text-muted-foreground">No articles found.</td></tr>
+                <tr><td colSpan={6} className="text-center py-8 text-muted-foreground">No articles found.</td></tr>
               ) : paginated.map((guide, i) => (
                 <tr key={guide.id} className="border-b border-border last:border-0">
                   <td className="px-4 py-3 text-muted-foreground">{String((currentPage - 1) * ITEMS_PER_PAGE + i + 1).padStart(2, "0")}</td>
                   <td className="px-4 py-3 text-foreground">{guide.title}</td>
+                  <td className="px-4 py-3">
+                    {guide.video_url ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-blue-100 rounded flex items-center justify-center">
+                          <span className="text-blue-600 text-xs">V</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">Video</span>
+                      </div>
+                    ) : guide.image_url ? (
+                      <div className="flex items-center gap-2">
+                        <div className="w-8 h-8 bg-green-100 rounded flex items-center justify-center">
+                          <span className="text-green-600 text-xs">I</span>
+                        </div>
+                        <span className="text-xs text-muted-foreground">Image</span>
+                      </div>
+                    ) : (
+                      <span className="text-xs text-muted-foreground">No media</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 text-muted-foreground">{new Date(guide.created_at).toLocaleDateString()}</td>
                   <td className="px-4 py-3">
                     <span className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium capitalize ${statusColor(guide.status)}`}>
