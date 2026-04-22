@@ -28,7 +28,11 @@ export function AdminSidebar() {
       {/* Logo */}
       <div className="p-5 border-b border-border bg-primary">
         <Link to="/admin/dashboard" className="flex items-center gap-2">
-          <img src={logoImg} alt="Infinity Floral" className="h-14 my-2 object-contain" />
+          <img
+            src={logoImg}
+            alt="Infinity Floral"
+            className="h-14 w-auto my-2 object-contain brightness-0 invert"
+          />
         </Link>
       </div>
 
