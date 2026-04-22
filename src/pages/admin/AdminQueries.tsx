@@ -49,7 +49,7 @@ const AdminQueries = () => {
 
   return (
     <AdminLayout>
-      <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-6">Queries</h1>
+      <h1 className="font-display text-[46px] font-semibold text-foreground mb-6">Queries</h1>
 
       <div className="bg-card rounded-xl border border-border p-6">
         <div className="flex items-center justify-between mb-6">

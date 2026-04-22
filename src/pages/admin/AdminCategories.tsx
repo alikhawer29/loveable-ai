@@ -56,7 +56,7 @@ export default function AdminCategories() {
   return (
     <AdminLayout>
       <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-6">
-        <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground">Category Management</h1>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">Category Management</h1>
         <div className="flex items-center gap-3">
           <Button variant="outline" className="border-primary text-primary hover:bg-primary hover:text-primary-foreground" onClick={() => navigate("/admin/categories/add-subcategory")}>Add Sub Category</Button>
           <Button className="btn-plum border-0" onClick={() => navigate("/admin/categories/add")}>Add Category</Button>

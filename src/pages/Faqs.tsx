@@ -23,7 +23,7 @@ const Faqs = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       <main className="flex-1 container py-10 md:py-14 max-w-4xl">
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-10">Frequently Asked Questions (FAQ)</h1>
+        <h1 className="font-display text-[46px] text-foreground mb-10">Frequently Asked Questions (FAQ)</h1>
         <Accordion type="single" collapsible className="w-full">
           {faqs.map((faq, i) => (
             <AccordionItem key={i} value={`item-${i}`} className="border-b border-border">

@@ -52,7 +52,7 @@ const Contact = () => {
       <main className="flex-1 container py-10 md:py-14">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
           <div>
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-6">Contact Us</h1>
+            <h1 className="font-display text-[46px] text-foreground mb-6">Contact Us</h1>
             <p className="text-sm text-muted-foreground leading-relaxed mb-2">
               Have questions about our flowers, pots, bulk availability, or gardening guidance? Our team is happy to assist you.
             </p>

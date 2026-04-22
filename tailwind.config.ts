@@ -14,8 +14,10 @@ export default {
     },
     extend: {
       fontFamily: {
-        display: ["Playfair Display", "serif"],
+        /** All heading-style titles (Figma: Forum) */
+        display: ["Forum", "Georgia", "serif"],
         body: ["DM Sans", "sans-serif"],
+        forum: ["Forum", "Georgia", "serif"],
       },
       colors: {
         border: "hsl(var(--border))",
@@ -61,6 +63,9 @@ export default {
         },
         cream: {
           DEFAULT: "hsl(var(--cream))",
+        },
+        action: {
+          surface: "hsl(var(--action-surface))",
         },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",

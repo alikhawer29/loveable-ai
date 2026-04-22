@@ -223,7 +223,7 @@ export function ProductGrid({
     <section className="container py-10 md:py-14">
       <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-4 mb-8">
         <div>
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
+          <h2 className="font-display text-[46px] text-foreground mb-2 leading-tight">
             {title}
           </h2>
           <p className="text-sm text-muted-foreground max-w-md">{description}</p>

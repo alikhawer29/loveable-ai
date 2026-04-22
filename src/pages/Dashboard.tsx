@@ -94,7 +94,7 @@ const Dashboard = () => {
       <div className="max-w-5xl mx-auto py-10 px-4">
         {/* Welcome */}
         <div className="mb-10">
-          <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground">
+          <h1 className="font-display text-[46px] text-foreground">
             Welcome back, {user?.name || "there"}!
           </h1>
           <p className="mt-2 text-muted-foreground font-body">

@@ -42,7 +42,7 @@ const AdminLogin = () => {
   return (
     <AdminAuthLayout>
       <div className="text-center space-y-1">
-        <h1 className="font-display text-3xl font-semibold text-foreground">Admin Login</h1>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">Admin Login</h1>
         <p className="text-sm text-muted-foreground">Login to Your Account!</p>
       </div>
 

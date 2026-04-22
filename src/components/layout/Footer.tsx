@@ -1,41 +1,36 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import { Facebook, Youtube, Twitter, Linkedin } from "lucide-react";
-import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
 import logoImage from "@/assets/logo.png";
+import newsletterBg from "@/assets/hero-greenhouse.jpg";
+
+const quickLinksLeft = [
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Wholesale", path: "/about" },
+  { label: "Guidelines", path: "/guidelines" },
+];
+
+const quickLinksRight = [
+  { label: "Flowers", path: "/flowers" },
+  { label: "Pots", path: "/pots" },
+];
 
 export function Footer() {
-  const { isAuthenticated } = useAuth();
-
-  const quickLinks = isAuthenticated
-    ? [
-        { label: "Home", path: "/" },
-        { label: "About", path: "/about" },
-        { label: "Flowers", path: "/flowers" },
-        { label: "Pots", path: "/pots" },
-        { label: "Guidelines", path: "/guidelines" },
-        { label: "Contact Us", path: "/contact" },
-      ]
-    : [
-        { label: "Home", path: "/" },
-        { label: "About", path: "/about" },
-        { label: "Contact Us", path: "/contact" },
-      ];
-
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [agreed, setAgreed] = useState(false);
   const [submitting, setSubmitting] = useState(false);
 
   const handleNewsletter = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!newsletterEmail || !agreed) {
+    if (!newsletterEmail?.trim() || !agreed) {
       toast.error("Please enter your email and agree to subscribe.");
       return;
     }
     setSubmitting(true);
-    const { error } = await supabase.from("newsletter_subscribers" as any).insert({ email: newsletterEmail } as any);
+    const { error } = await supabase.from("newsletter_subscribers" as any).insert({ email: newsletterEmail.trim() } as any);
     setSubmitting(false);
     if (error) {
       if (error.code === "23505") {
@@ -45,95 +40,122 @@ export function Footer() {
       }
       return;
     }
-    toast.success("Successfully subscribed! 🎉");
+    toast.success("Successfully subscribed!");
     setNewsletterEmail("");
     setAgreed(false);
   };
 
   return (
-    <footer>
-      {/* Newsletter - Hidden for now*/}
-      {/*}<section className="section-dark py-16">
-        <div className="container text-center max-w-2xl">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-[hsl(0_0%_100%)] mb-3">
-            Everything You Need to Know About Plants and More. No Spam, We Promise.
+    <footer className="bg-background">
+      {/* Newsletter — above main footer (Figma) */}
+      <section className="relative overflow-hidden">
+        <img
+          src={newsletterBg}
+          alt=""
+          className="absolute inset-0 h-full w-full object-cover"
+        />
+        <div className="absolute inset-0 bg-[hsl(25_15%_8%_/_0.88)]" aria-hidden="true" />
+        <div className="relative mx-auto max-w-6xl px-4 py-16 text-center md:px-6 md:py-20">
+          {/* Wider than form so 46px heading fits on one line + second line = 2 lines total (not 3) */}
+          <h2 className="font-forum text-2xl font-normal leading-tight text-balance text-white md:text-3xl lg:text-[46px]">
+            <span className="block">Everything You Need to Know About Plants and More.</span>
+            <span className="mt-2 block md:mt-2.5">No Spam, We Promise.</span>
           </h2>
-          <p className="text-sm text-[hsl(0_0%_100%_/_0.6)] mb-6">
-            Subscribe now and get 15% off your first purchase
-          </p>
-          <form className="max-w-md mx-auto space-y-3" onSubmit={handleNewsletter}>
-            <div>
-              <label className="text-xs text-[hsl(0_0%_100%_/_0.6)] block text-left mb-1">Enter your email here *</label>
-              <input
-                type="email"
-                value={newsletterEmail}
-                onChange={(e) => setNewsletterEmail(e.target.value)}
-                className="w-full bg-transparent border border-[hsl(0_0%_100%_/_0.3)] rounded-sm px-3 py-2 text-sm text-[hsl(0_0%_100%)] placeholder:text-[hsl(0_0%_100%_/_0.4)]"
-                placeholder="e.g. plantlover@email.com"
-                required
-              />
-            </div>
-            <div className="flex items-center justify-between">
-              <label className="flex items-center gap-2 text-xs text-[hsl(0_0%_100%_/_0.6)]">
-                <input type="checkbox" className="accent-primary" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} />
-                Yes, subscribe me to your newsletter. *
+          <p className="mt-3 text-sm text-white/70 md:mt-4">Subscribe now and get 15% off your first purchase</p>
+          <form onSubmit={handleNewsletter} className="mx-auto mt-8 max-w-2xl text-left">
+            <label htmlFor="footer-newsletter-email" className="mb-1.5 block text-left text-xs text-white/80">
+              Enter your email here *
+            </label>
+            <input
+              id="footer-newsletter-email"
+              type="email"
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              className="w-full rounded border border-white/40 bg-black/20 px-3 py-2.5 text-sm text-white placeholder:text-white/35 focus:border-white/60 focus:outline-none focus:ring-1 focus:ring-white/40"
+              placeholder="e.g. plantlover@email.com"
+              required
+            />
+            <div className="mt-4 flex flex-col items-stretch gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <label className="flex cursor-pointer items-start gap-2.5 text-left text-xs text-white/80 sm:max-w-[55%]">
+                <input
+                  type="checkbox"
+                  className="mt-0.5 h-3.5 w-3.5 rounded border border-white/80 bg-transparent text-[#b19a55] focus:ring-white/40"
+                  checked={agreed}
+                  onChange={(e) => setAgreed(e.target.checked)}
+                />
+                <span>Yes, subscribe me to your newsletter. *</span>
               </label>
-              <button type="submit" disabled={submitting} className="btn-plum rounded-sm text-xs px-6 py-2 disabled:opacity-50">
-                {submitting ? "..." : "Subscribe"}
+              <button
+                type="submit"
+                disabled={submitting}
+                className="w-full shrink-0 rounded-sm px-8 py-2.5 text-sm font-medium text-white transition-opacity hover:opacity-90 disabled:opacity-50 sm:ml-4 sm:w-auto"
+                style={{ backgroundColor: "#b19a55" }}
+              >
+                {submitting ? "…" : "Subscribe"}
               </button>
             </div>
           </form>
         </div>
-      </section>*/}
+      </section>
 
-      {/* Main footer */}
-      <div className="section-dark border-t border-[hsl(0_0%_100%_/_0.1)]">
-        <div className="container py-12">
-          {/* Logo */}
-          <div className="flex justify-center mb-10">
-            <Link to="/" className="flex items-center gap-2.5">
-              <img src={logoImage} alt="Infinity Floral" className="h-16 object-contain" />
-              {/*<div className="flex flex-col leading-none">
-                <span className="font-display text-base font-semibold tracking-wider uppercase text-[hsl(0_0%_100%)]">
-                  Infinity
-                </span>
-                <span className="font-display text-[10px] tracking-[0.3em] uppercase text-[hsl(0_0%_100%_/_0.6)]">
-                  Floral
-                </span>
-              </div>*/}
+      <div className="border-t border-border bg-white">
+        <div className="container py-12 md:pt-10 md:pb-6">
+          {/* Logo — height 100px, width auto */}
+          <div className="mb-10 flex justify-center">
+            <Link to="/" className="inline-block" aria-label="Infinity Floral home">
+              <img
+                src={logoImage}
+                alt="Infinity Floral"
+                className="h-[100px] w-auto max-w-full object-contain"
+              />
             </Link>
           </div>
 
-          <div className="border-t border-[hsl(0_0%_100%_/_0.1)] pt-10 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-sm">
+          <div className="border-t border-border" />
+
+          <div className="grid grid-cols-1 gap-10 pt-10 sm:grid-cols-2 lg:grid-cols-4 lg:gap-12 text-sm">
             {/* Contact Details */}
             <div>
-              <h4 className="font-display text-sm font-semibold text-[hsl(0_0%_100%)] mb-4">Contact Details</h4>
-              <ul className="space-y-2 text-[hsl(0_0%_100%_/_0.6)]">
+              <h4 className="font-display mb-4 text-sm font-semibold text-primary">Contact Details</h4>
+              <ul className="space-y-2 text-foreground/80">
                 <li>854.692.7227</li>
-                <li>hanshueh@inifinityflroal.com</li>
-                <li>913 Willow St S Nelson, BC V1L 7C5Canada</li>
+                <li>
+                  <a href="mailto:hanshueh@inifinityflroal.com" className="hover:text-primary transition-colors">
+                    hanshueh@inifinityflroal.com
+                  </a>
+                </li>
+                <li className="leading-relaxed">2809 W Kelly Park Road Apopka, FL 32713</li>
               </ul>
             </div>
 
-            {/* Quick Links */}
+            {/* Quick Links — two sub-columns */}
             <div>
-              <h4 className="font-display text-sm font-semibold text-[hsl(0_0%_100%)] mb-4">Quick Links</h4>
+              <h4 className="font-display mb-4 text-sm font-semibold text-primary">Quick Links</h4>
               <div className="grid grid-cols-2 gap-x-6 gap-y-2">
-                {quickLinks.map((link) => (
-                  <Link
-                    key={link.label}
-                    to={link.path}
-                    className="text-[hsl(0_0%_100%_/_0.6)] hover:text-[hsl(0_0%_100%)] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                ))}
+                <ul className="space-y-2">
+                  {quickLinksLeft.map((link) => (
+                    <li key={link.path + link.label}>
+                      <Link to={link.path} className="text-foreground/80 transition-colors hover:text-primary">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+                <ul className="space-y-2">
+                  {quickLinksRight.map((link) => (
+                    <li key={link.path}>
+                      <Link to={link.path} className="text-foreground/80 transition-colors hover:text-primary">
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
               </div>
             </div>
 
             {/* Support */}
             <div>
-              <h4 className="font-display text-sm font-semibold text-[hsl(0_0%_100%)] mb-4">Support</h4>
+              <h4 className="font-display mb-4 text-sm font-semibold text-primary">Support</h4>
               <ul className="space-y-2">
                 {[
                   { label: "FAQ's", path: "/faqs" },
@@ -144,7 +166,7 @@ export function Footer() {
                   <li key={link.label}>
                     <Link
                       to={link.path}
-                      className="text-[hsl(0_0%_100%_/_0.6)] hover:text-[hsl(0_0%_100%)] transition-colors"
+                      className="text-foreground/80 transition-colors hover:text-primary"
                     >
                       {link.label}
                     </Link>
@@ -153,30 +175,43 @@ export function Footer() {
               </ul>
             </div>
 
-            {/* Follow Us */}
+            {/* Follow Us — brand-colored circles */}
             <div>
-              <h4 className="font-display text-sm font-semibold text-[hsl(0_0%_100%)] mb-4">Follow Us</h4>
-              <div className="flex gap-3">
-                {[
-                  { Icon: Facebook, label: "Facebook" },
-                  { Icon: Twitter, label: "X" },
-                  { Icon: Youtube, label: "YouTube" },
-                  { Icon: Linkedin, label: "LinkedIn" },
-                ].map(({ Icon, label }) => (
-                  <a
-                    key={label}
-                    href="#"
-                    className="h-9 w-9 rounded-full bg-[hsl(0_0%_100%_/_0.1)] flex items-center justify-center text-[hsl(0_0%_100%_/_0.7)] hover:bg-primary hover:text-primary-foreground transition-colors"
-                    aria-label={`Follow us on ${label}`}
-                  >
-                    <Icon className="h-4 w-4" />
-                  </a>
-                ))}
+              <h4 className="font-display mb-4 text-sm font-semibold text-primary">Follow Us</h4>
+              <div className="flex flex-wrap gap-3">
+                <a
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1877F2] text-white transition-opacity hover:opacity-90"
+                  aria-label="Follow us on Facebook"
+                >
+                  <Facebook className="h-4 w-4" />
+                </a>
+                <a
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-[#1D9BF0] text-white transition-opacity hover:opacity-90"
+                  aria-label="Follow us on X"
+                >
+                  <Twitter className="h-4 w-4" />
+                </a>
+                <a
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-[#FF0000] text-white transition-opacity hover:opacity-90"
+                  aria-label="Follow us on YouTube"
+                >
+                  <Youtube className="h-4 w-4" />
+                </a>
+                <a
+                  href="#"
+                  className="flex h-9 w-9 items-center justify-center rounded-full bg-[#0A66C2] text-white transition-opacity hover:opacity-90"
+                  aria-label="Follow us on LinkedIn"
+                >
+                  <Linkedin className="h-4 w-4" />
+                </a>
               </div>
             </div>
           </div>
 
-          <div className="mt-10 pt-6 border-t border-[hsl(0_0%_100%_/_0.1)] text-center text-xs text-[hsl(0_0%_100%_/_0.4)]">
+          <div className="mt-10 border-t border-border pt-6 text-center text-xs text-foreground/60">
             © Copyright 2026 - Infinity Floral Grower. All rights reserved.
           </div>
         </div>

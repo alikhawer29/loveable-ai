@@ -73,7 +73,7 @@ const AdminForgotPassword = () => {
   return (
     <AdminAuthLayout>
       <div className="text-center space-y-2">
-        <h1 className="font-display text-3xl font-semibold text-foreground">Forgot Password</h1>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">Forgot Password</h1>
         <p className="text-sm text-muted-foreground whitespace-pre-line">{subtitle[step]}</p>
       </div>
 

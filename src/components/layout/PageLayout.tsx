@@ -18,7 +18,7 @@ export function HeroBanner({ title, subtitle, image }: HeroBannerProps) {
       </div>
       <div className="absolute inset-0 flex items-center justify-center text-center px-4">
         <div>
-          <h1 className="font-display text-3xl md:text-4xl lg:text-5xl font-bold text-[hsl(0_0%_100%)] mb-2">{title}</h1>
+          <h1 className="font-display text-[46px] font-bold text-[hsl(0_0%_100%)] mb-2 leading-tight">{title}</h1>
           {subtitle && <p className="text-sm text-[hsl(0_0%_100%_/_0.7)] max-w-lg mx-auto">{subtitle}</p>}
         </div>
       </div>

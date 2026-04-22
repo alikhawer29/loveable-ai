@@ -25,19 +25,16 @@ import {
   PopoverTrigger } from
 "@/components/ui/popover";
 
-const publicLinks = [
-{ label: "Home", path: "/" },
-{ label: "About", path: "/about" },
-{ label: "Contact Us", path: "/contact" }];
+/** All header links (matches client header design). */
+const headerNavLinks = [
+  { label: "Home", path: "/" },
+  { label: "About", path: "/about" },
+  { label: "Flowers", path: "/flowers" },
+  { label: "Pots", path: "/pots" },
+  { label: "Guideline", path: "/guidelines" },
+  { label: "Contact Us", path: "/contact" },
+];
 
-
-const authLinks = [
-{ label: "Home", path: "/" },
-{ label: "About", path: "/about" },
-{ label: "Flowers", path: "/flowers" },
-{ label: "Pots", path: "/pots" },
-{ label: "Guidelines", path: "/guidelines" },
-{ label: "Contact Us", path: "/contact" }];
 
 
 interface NavNotification {
@@ -98,8 +95,18 @@ export function Navbar() {
     subscribe();
     return () => {supabase.removeChannel(channel);};
   }, [isAuthenticated]);
-  const isActive = (path: string) => path === "/" ? location.pathname === "/" : location.pathname.startsWith(path);
-  const navLinks = isAuthenticated ? authLinks : publicLinks;
+  const isActive = (path: string) => {
+    if (path === "/") return location.pathname === "/";
+    if (path === "/guidelines") {
+      return (
+        location.pathname.startsWith("/guidelines") ||
+        location.pathname.startsWith("/guideline/") ||
+        location.pathname.startsWith("/blog/")
+      );
+    }
+    return location.pathname === path || location.pathname.startsWith(`${path}/`);
+  };
+  const navLinks = headerNavLinks;
 
   const handleLogout = async () => {
     setLogoutOpen(false);
@@ -128,47 +135,40 @@ export function Navbar() {
       )}
       */}
 
-      {/* Main navbar */}
-      <header className="section-dark sticky top-0 z-50 border-b border-[hsl(0_0%_100%_/_0.1)]">
-        <nav className="container flex h-16 items-center justify-between bg-[#713271]">
+      {/* Main navbar — light header: white bar, gold active nav, gray action buttons */}
+      <header className="sticky top-0 z-50 border-b border-border/80 bg-white shadow-sm">
+        <nav className="container flex h-[4.5rem] items-center gap-4">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2.5" aria-label="Infinity Floral home">
-            <img src={logoImage} alt="Infinity Floral" className="h-14 my-3 object-contain" />
-            {/*<div className="flex flex-col leading-none">
-               <span className="font-display text-sm font-semibold tracking-wider uppercase text-[hsl(0_0%_100%)]">
-                 Infinity
-               </span>
-               <span className="font-display text-[10px] tracking-[0.3em] uppercase text-[hsl(0_0%_100%_/_0.7)]">
-                 Floral
-               </span>
-              </div>*/}
+          <Link to="/" className="flex shrink-0 items-center" aria-label="Quiet Luxury Orchids home">
+            <img src={logoImage} alt="Quiet Luxury Orchids" className="h-11 w-auto object-contain sm:h-12" />
           </Link>
 
-          {/* Desktop links */}
-          <ul className="hidden lg:flex items-center gap-7">
-            {navLinks.map((link) =>
-            <li key={link.path}>
+          {/* Centered desktop nav */}
+          <ul className="hidden min-w-0 flex-1 items-center justify-center gap-1 md:gap-2 lg:flex xl:gap-3">
+            {navLinks.map((link) => (
+              <li key={link.path}>
                 <Link
-                to={link.path}
-                className={`text-sm font-medium transition-colors ${
-                isActive(link.path) ?
-                "text-[hsl(0_0%_100%)]" :
-                "text-[hsl(0_0%_100%_/_0.7)] hover:text-[hsl(0_0%_100%)]"}`
-                }>
-                
+                  to={link.path}
+                  className={`whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors md:px-3 ${
+                    isActive(link.path)
+                      ? "bg-primary text-primary-foreground shadow-sm"
+                      : "text-foreground/90 hover:bg-muted hover:text-primary"
+                  }`}
+                >
                   {link.label}
                 </Link>
               </li>
-            )}
+            ))}
           </ul>
 
-          {/* Desktop icons */}
-          <div className="hidden lg:flex items-center gap-3">
+          {/* Desktop actions */}
+          <div className="ml-auto hidden shrink-0 items-center gap-2.5 lg:flex">
             <button
+              type="button"
               aria-label="Search"
               onClick={() => setSearchOpen(true)}
-              className="h-9 w-9 rounded-md border border-[hsl(0_0%_100%_/_0.3)] flex items-center justify-center text-[hsl(0_0%_100%_/_0.7)] hover:text-[hsl(0_0%_100%)] hover:border-[hsl(0_0%_100%_/_0.5)] transition-colors">
-              
+              className="flex h-9 w-9 items-center justify-center rounded-md bg-action-surface text-white transition-opacity hover:opacity-90"
+            >
               <Search className="h-4 w-4" />
             </button>
 
@@ -179,11 +179,11 @@ export function Navbar() {
                   <PopoverTrigger asChild>
                     <button
                     aria-label="Notifications"
-                    className="h-9 w-9 rounded-md flex items-center justify-center text-[hsl(0_0%_100%_/_0.7)] hover:text-[hsl(0_0%_100%)] transition-colors relative">
+                    className="relative flex h-9 w-9 items-center justify-center rounded-md bg-action-surface text-white transition-opacity hover:opacity-90">
                     
                       <Bell className="h-5 w-5" />
                       {unreadCount > 0 &&
-                    <span className="absolute -top-0.5 -right-0.5 h-4 w-4 rounded-full bg-destructive text-destructive-foreground text-[10px] flex items-center justify-center font-semibold">
+                    <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-destructive-foreground">
                           {unreadCount}
                         </span>
                     }
@@ -226,10 +226,12 @@ export function Navbar() {
                   <DropdownMenuTrigger asChild>
                     <button
                     aria-label="User menu"
-                    className="flex items-center gap-2 h-9 px-3 rounded-full bg-[hsl(0_0%_100%_/_0.15)] text-[hsl(0_0%_100%)] hover:bg-[hsl(0_0%_100%_/_0.25)] transition-colors">
-                    
-                      <User className="h-4 w-4" />
-                      <span className="text-sm font-medium">{user?.name?.split(" ")[0] || "User"} {user?.name?.split(" ")[1]?.charAt(0) ? `${user.name.split(" ")[1].charAt(0)}.` : ""}</span>
+                    className="flex h-9 items-center gap-2 rounded-md bg-action-surface px-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90">
+                      <User className="h-4 w-4 shrink-0" />
+                      <span>
+                        {user?.name?.split(" ")[0] || "User"}{" "}
+                        {user?.name?.split(" ")[1]?.charAt(0) ? `${user.name.split(" ")[1].charAt(0)}.` : ""}
+                      </span>
                     </button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-48">
@@ -255,8 +257,8 @@ export function Navbar() {
 
             <Link
               to="/login"
-              className="flex items-center gap-2 h-9 px-4 rounded-md border border-[hsl(0_0%_100%_/_0.3)] text-sm font-medium text-[hsl(0_0%_100%_/_0.9)] hover:bg-[hsl(0_0%_100%_/_0.1)] transition-colors">
-              
+              className="flex h-9 items-center gap-2 rounded-md bg-action-surface px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
+            >
                 <User className="h-4 w-4" />
                 Log In
               </Link>
@@ -265,47 +267,44 @@ export function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="lg:hidden p-2 text-[hsl(0_0%_100%)]"
+            className="ml-auto rounded-md p-2 text-foreground hover:bg-muted lg:ml-0 lg:hidden"
             onClick={() => setMobileOpen(!mobileOpen)}
-            aria-label="Toggle menu">
-            
+            aria-label="Toggle menu"
+          >
             {mobileOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </nav>
 
         {/* Mobile menu */}
-        {mobileOpen &&
-        <div className="lg:hidden border-t border-[hsl(0_0%_100%_/_0.1)] animate-fade-in">
-            <div className="container py-4 space-y-1">
-              {navLinks.map((link) =>
+        {mobileOpen && (
+        <div className="border-t border-border/80 bg-white animate-fade-in lg:hidden">
+            <div className="container space-y-1 py-4">
+              {navLinks.map((link) => (
             <Link
               key={link.path}
               to={link.path}
               onClick={() => setMobileOpen(false)}
-              className={`block py-2.5 text-sm font-medium ${
+              className={`block rounded-md py-2.5 pl-2 text-sm font-medium ${
               isActive(link.path) ?
-              "text-[hsl(0_0%_100%)]" :
-              "text-[hsl(0_0%_100%_/_0.7)]"}`
+              "bg-primary text-primary-foreground" :
+              "text-foreground hover:bg-muted"}`
               }>
-              
                   {link.label}
                 </Link>
-            )}
-              <div className="pt-3 border-t border-[hsl(0_0%_100%_/_0.1)] flex flex-col gap-2">
+            ))}
+              <div className="flex flex-col gap-2 border-t border-border pt-3">
                 {isAuthenticated ?
               <>
                     <Link
                   to="/dashboard"
                   onClick={() => setMobileOpen(false)}
-                  className="text-sm text-[hsl(0_0%_100%_/_0.7)]">
-                  
+                  className="text-sm text-muted-foreground hover:text-foreground">
                       Dashboard
                     </Link>
                     <Link
                   to="/profile"
                   onClick={() => setMobileOpen(false)}
-                  className="text-sm text-[hsl(0_0%_100%_/_0.7)]">
-                  
+                  className="text-sm text-muted-foreground hover:text-foreground">
                       My Profile
                     </Link>
                     <button
@@ -313,8 +312,7 @@ export function Navbar() {
                     setMobileOpen(false);
                     setLogoutOpen(true);
                   }}
-                  className="text-sm text-[hsl(0_0%_100%_/_0.7)] text-left">
-                  
+                  className="text-left text-sm text-muted-foreground hover:text-foreground">
                       Logout
                     </button>
                   </> :
@@ -322,15 +320,22 @@ export function Navbar() {
               <Link
                 to="/login"
                 onClick={() => setMobileOpen(false)}
-                className="text-sm text-[hsl(0_0%_100%_/_0.7)]">
-                
-                    Sign In
+                className="inline-flex w-fit items-center gap-2 rounded-md bg-action-surface px-4 py-2 text-sm font-medium text-white">
+                    Log In
                   </Link>
               }
+              <button
+                type="button"
+                onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
+                className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground"
+              >
+                <Search className="h-4 w-4" />
+                Search
+              </button>
               </div>
             </div>
           </div>
-        }
+        )}
       </header>
 
       {/* Logout confirmation dialog */}

@@ -16,7 +16,7 @@ const Terms = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       <main className="flex-1 container py-10 md:py-14 max-w-4xl">
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-10">Terms & Conditions</h1>
+        <h1 className="font-display text-[46px] text-foreground mb-10">Terms & Conditions</h1>
         <div className="space-y-8">
           {sections.map((s) => (
             <section key={s.title}>

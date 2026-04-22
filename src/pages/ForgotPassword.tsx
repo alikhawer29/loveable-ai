@@ -86,7 +86,7 @@ const ForgotPassword = () => {
 
       <main className="flex-1 flex items-center justify-center py-16 px-4">
         <div className="w-full max-w-md space-y-8">
-          <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground text-center">
+          <h1 className="font-display text-[46px] text-foreground text-center">
             Forgot Password
           </h1>
 

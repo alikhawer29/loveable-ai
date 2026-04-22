@@ -132,8 +132,8 @@ const AdminDashboard = () => {
       label: "Total Queries",
       value: loading ? "—" : String(stats.totalQueries),
       icon: HelpCircle,
-      color: "hsl(280 20% 35%)",
-      bgColor: "hsl(280 20% 35% / 0.12)",
+      color: "hsl(45 38% 48%)",
+      bgColor: "hsl(45 38% 48% / 0.12)",
       chartData: [150, 280, 220, 350, 300, 280, 320],
     },
   ];

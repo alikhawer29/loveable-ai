@@ -96,7 +96,7 @@ const GuidelineDetail = () => {
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />
         <main className="flex-1 container py-16 text-center">
-          <h1 className="font-display text-2xl font-bold text-foreground mb-4">Article Not Found</h1>
+          <h1 className="font-display text-[46px] text-foreground mb-4">Article Not Found</h1>
           <p className="text-muted-foreground mb-6">The guideline you're looking for doesn't exist.</p>
           <button onClick={() => navigate("/guideline")} className="btn-plum rounded-sm text-sm">
             Back to Guidelines
@@ -117,7 +117,7 @@ const GuidelineDetail = () => {
         </button>
 
         {/* Title */}
-        <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2 text-center">{article.title}</h1>
+        <h1 className="font-display text-[46px] text-foreground mb-2 text-center leading-tight">{article.title}</h1>
         <p className="text-center text-xs text-primary mb-6">{formatDate(article.created_at)}</p>
 
         {/* Video */}
@@ -148,7 +148,7 @@ const GuidelineDetail = () => {
         {relatedArticles.length > 0 && (
           <section className="mt-16 mb-10">
             <div className="flex items-end justify-between mb-8">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">More Guide to Plant Care</h2>
+              <h2 className="font-display text-[46px] text-foreground leading-tight">More Guide to Plant Care</h2>
               <Link to="/guideline" className="btn-plum rounded-sm text-xs uppercase tracking-wider px-6">Read More</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">

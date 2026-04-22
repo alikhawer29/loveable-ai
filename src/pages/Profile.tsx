@@ -158,7 +158,7 @@ const Profile = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       <main className="flex-1 container py-10 md:py-14">
-        <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground mb-8">My Profile</h1>
+        <h1 className="font-display text-[46px] text-foreground mb-8">My Profile</h1>
 
         <div className="bg-[hsl(var(--plum-light))] rounded-lg p-6 md:p-10 max-w-4xl">
           <div className="flex flex-col md:flex-row gap-8 items-start">

@@ -76,7 +76,7 @@ export function ProductDetailLayout({
 
           {/* Info */}
           <div className="space-y-5">
-            <h1 className="font-display text-3xl md:text-4xl font-bold text-foreground">{name}</h1>
+            <h1 className="font-display text-[46px] text-foreground leading-tight">{name}</h1>
             <p className="text-sm text-muted-foreground leading-relaxed">{description}</p>
             {additionalDescription && (
               <p className="text-sm text-muted-foreground leading-relaxed">{additionalDescription}</p>

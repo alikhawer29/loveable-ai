@@ -58,7 +58,7 @@ const Settings = () => {
     <div className="min-h-screen flex flex-col bg-background">
       <Navbar />
       <main className="flex-1 container py-10 md:py-14">
-        <h1 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-8">Settings</h1>
+        <h1 className="font-display text-[46px] text-foreground mb-8">Settings</h1>
         <div className="max-w-2xl space-y-8">
           {/* Profile */}
           <form onSubmit={handleSave} className="elevated-card p-6 space-y-5">

@@ -116,7 +116,7 @@ const PotDetail = () => {
       <div className="min-h-screen flex flex-col bg-background">
         <Navbar />
         <main className="flex-1 container py-16 text-center">
-          <h1 className="font-display text-2xl font-bold text-foreground mb-4">Product Not Found</h1>
+          <h1 className="font-display text-[46px] text-foreground mb-4">Product Not Found</h1>
           <p className="text-muted-foreground mb-6">The pot you're looking for doesn't exist.</p>
           <button onClick={() => navigate("/pots")} className="btn-plum rounded-sm text-sm">
             Back to Pots

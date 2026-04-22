@@ -63,7 +63,7 @@ const AdminGuidelines = () => {
   return (
     <AdminLayout>
       <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground">Guidelines</h1>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">Guidelines</h1>
         <Button className="btn-plum border-0" onClick={() => navigate("/admin/guidelines/add")}>Create New Gardening Article</Button>
       </div>
 

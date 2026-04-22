@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Forum&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -6,59 +6,65 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 0 0% 13%;
+    /* Figma: cream / off-white page, gold-olive accent, tan section blocks */
+    --background: 40 30% 98%;
+    --foreground: 0 0% 15%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 0 0% 13%;
+    --card: 40 25% 99%;
+    --card-foreground: 0 0% 15%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 0 0% 13%;
+    --popover: 40 25% 99%;
+    --popover-foreground: 0 0% 15%;
 
-    /* Muted plum / purple accent from design */
-    --primary: 280 20% 35%;
+    /* Muted gold / olive (#A8964D and similar) */
+    --primary: 45 38% 48%;
     --primary-foreground: 0 0% 100%;
 
-    --secondary: 0 0% 96%;
-    --secondary-foreground: 0 0% 13%;
+    --secondary: 38 24% 93%;
+    --secondary-foreground: 0 0% 18%;
 
-    --muted: 0 0% 96%;
-    --muted-foreground: 0 0% 45%;
+    --muted: 40 18% 92%;
+    --muted-foreground: 0 0% 40%;
 
-    --accent: 280 20% 35%;
+    --accent: 45 38% 48%;
     --accent-foreground: 0 0% 100%;
 
     --destructive: 0 72% 51%;
     --destructive-foreground: 0 0% 100%;
 
-    --border: 0 0% 90%;
-    --input: 0 0% 90%;
-    --ring: 280 20% 35%;
+    --border: 40 16% 88%;
+    --input: 40 16% 88%;
+    --ring: 45 38% 48%;
 
     --radius: 0.375rem;
 
-    /* Custom tokens */
-    --dark: 0 0% 13%;
-    --dark-surface: 0 0% 16%;
-    --plum: 280 20% 35%;
-    --plum-light: 280 15% 95%;
-    --cream: 40 33% 97%;
+    /* Custom tokens (kept for legacy class names) */
+    --dark: 30 8% 12%;
+    --dark-surface: 30 8% 16%;
+    /* btn-plum / plum-* → gold system */
+    --plum: 45 38% 48%;
+    --plum-light: 40 32% 94%;
+    --cream: 40 35% 97%;
+    /* Header / utility: neutral gray for icon buttons */
+    --action-surface: 220 6% 64%;
 
-    --font-display: 'Playfair Display', serif;
+    /* Headings / display titles (Figma: Forum) */
+    --font-forum: 'Forum', Georgia, serif;
+    --font-display: var(--font-forum);
     --font-body: 'DM Sans', sans-serif;
 
     --shadow-soft: 0 4px 20px -4px hsl(0 0% 0% / 0.08);
     --shadow-card: 0 2px 12px -2px hsl(0 0% 0% / 0.06);
     --shadow-elevated: 0 8px 30px -6px hsl(0 0% 0% / 0.12);
 
-    --sidebar-background: 0 0% 100%;
-    --sidebar-foreground: 0 0% 13%;
-    --sidebar-primary: 280 20% 35%;
+    --sidebar-background: 40 30% 98%;
+    --sidebar-foreground: 0 0% 15%;
+    --sidebar-primary: 45 38% 48%;
     --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 280 15% 95%;
-    --sidebar-accent-foreground: 0 0% 13%;
-    --sidebar-border: 0 0% 90%;
-    --sidebar-ring: 280 20% 35%;
+    --sidebar-accent: 40 24% 94%;
+    --sidebar-accent-foreground: 0 0% 18%;
+    --sidebar-border: 40 16% 88%;
+    --sidebar-ring: 45 38% 48%;
   }
 
   .dark {
@@ -68,27 +74,27 @@
     --card-foreground: 0 0% 92%;
     --popover: 0 0% 11%;
     --popover-foreground: 0 0% 92%;
-    --primary: 280 25% 60%;
-    --primary-foreground: 0 0% 8%;
+    --primary: 45 45% 58%;
+    --primary-foreground: 0 0% 10%;
     --secondary: 0 0% 16%;
     --secondary-foreground: 0 0% 92%;
     --muted: 0 0% 16%;
     --muted-foreground: 0 0% 60%;
-    --accent: 280 25% 60%;
-    --accent-foreground: 0 0% 92%;
+    --accent: 45 45% 58%;
+    --accent-foreground: 0 0% 10%;
     --destructive: 0 62.8% 30.6%;
     --destructive-foreground: 0 0% 100%;
     --border: 0 0% 18%;
     --input: 0 0% 18%;
-    --ring: 280 25% 60%;
+    --ring: 45 45% 58%;
     --sidebar-background: 0 0% 10%;
     --sidebar-foreground: 0 0% 92%;
-    --sidebar-primary: 280 25% 60%;
+    --sidebar-primary: 45 45% 58%;
     --sidebar-primary-foreground: 0 0% 10%;
     --sidebar-accent: 0 0% 16%;
     --sidebar-accent-foreground: 0 0% 92%;
     --sidebar-border: 0 0% 18%;
-    --sidebar-ring: 280 25% 60%;
+    --sidebar-ring: 45 45% 58%;
   }
 }
 
@@ -103,12 +109,38 @@
 
   h1, h2, h3, h4, h5, h6 {
     font-family: var(--font-display);
+    font-weight: 400;
   }
+}
+
+/* Headings: Figma / client — always 400, even if font-bold / font-semibold / font-medium is on the same tag */
+h1.font-bold,
+h1.font-semibold,
+h1.font-medium,
+h2.font-bold,
+h2.font-semibold,
+h2.font-medium,
+h3.font-bold,
+h3.font-semibold,
+h3.font-medium,
+h4.font-bold,
+h4.font-semibold,
+h4.font-medium,
+h5.font-bold,
+h5.font-semibold,
+h5.font-medium,
+h6.font-bold,
+h6.font-semibold,
+h6.font-medium {
+  font-weight: 400 !important;
 }
 
 @layer utilities {
   .font-display {
-    font-family: var(--font-display);
+    font-family: var(--font-forum), Georgia, serif;
+  }
+  .font-forum {
+    font-family: var(--font-forum), Georgia, serif;
   }
   .font-body {
     font-family: var(--font-body);
@@ -144,6 +176,6 @@
     color: hsl(0 0% 100%);
   }
   .btn-plum:hover {
-    background-color: hsl(280 20% 30%);
+    background-color: hsl(45 38% 40%);
   }
 }

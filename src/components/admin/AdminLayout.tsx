@@ -67,7 +67,7 @@ export function AdminLayout({ children, title }: AdminLayoutProps) {
         {/* Main content */}
         <main className="flex-1 p-6 lg:p-8">
           {title && (
-            <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-6">{title}</h1>
+            <h1 className="font-display text-[46px] font-semibold text-foreground mb-6 leading-tight">{title}</h1>
           )}
           {children}
         </main>

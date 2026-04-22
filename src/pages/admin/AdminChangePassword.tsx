@@ -70,7 +70,7 @@ export default function AdminChangePassword() {
         <button onClick={() => navigate("/admin/profile")} className="text-foreground hover:text-primary transition-colors">
           <ArrowLeft className="h-6 w-6" />
         </button>
-        <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground">Change Password</h1>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">Change Password</h1>
       </div>
 
       <div className="bg-card rounded-lg border border-border p-8 max-w-3xl">

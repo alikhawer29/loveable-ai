@@ -65,7 +65,7 @@ const AdminNewsletter = () => {
 
   return (
     <AdminLayout>
-      <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-6">
+      <h1 className="font-display text-[46px] font-semibold text-foreground mb-6">
         Newsletter Subscribers
       </h1>
 

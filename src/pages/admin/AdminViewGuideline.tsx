@@ -28,7 +28,7 @@ const AdminViewGuideline = () => {
     <AdminLayout>
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => navigate("/admin/guidelines")} className="text-foreground hover:text-primary"><ArrowLeft className="h-6 w-6" /></button>
-        <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground">View Guideline</h1>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">View Guideline</h1>
       </div>
       <div className="bg-card rounded-xl border border-border p-6 lg:p-8">
         <div className="flex flex-wrap gap-x-16 gap-y-2 mb-8">

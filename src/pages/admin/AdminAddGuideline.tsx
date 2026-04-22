@@ -114,7 +114,7 @@ const AdminAddGuideline = () => {
 
   return (
     <AdminLayout>
-      <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground mb-6">Create New Gardening Article</h1>
+      <h1 className="font-display text-[46px] font-semibold text-foreground mb-6">Create New Gardening Article</h1>
       <div className="bg-card rounded-xl border border-border p-6 lg:p-8 max-w-2xl">
         <div className="mb-5">
           <label className="block text-sm font-medium text-foreground mb-1.5">Article Title</label>

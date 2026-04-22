@@ -45,7 +45,7 @@ interface HomeProduct {
 interface HomeArticle {
   id: string;
   title: string;
-  video_url?: string | null;
+  image: string;
   excerpt: string;
 }
 
@@ -97,7 +97,7 @@ const Index = () => {
       try {
         const { data } = await supabase
           .from("guidelines_articles")
-          .select("id, title, video_url, content")
+          .select("id, title, image_url, content")
           .eq("status", "published")
           .order("created_at", { ascending: false })
           .limit(3);
@@ -106,7 +106,7 @@ const Index = () => {
           (data || []).map((a) => ({
             id: a.id,
             title: a.title,
-            video_url: a.video_url,
+            image: a.image_url || PLACEHOLDER,
             excerpt: a.content?.slice(0, 100) || "Discover helpful tips and advice...",
           }))
         );
@@ -182,21 +182,21 @@ const Index = () => {
       </section>
 
       {/* ========== CARE QUALITY CONSISTENCY ========== */}
-      <section className="section-dark py-14 opacity-100 bg-[#d8acd8]">
+      <section className="py-14 bg-[#AE9644]/25 text-secondary-foreground">
         <div className="container text-center">
-          <h2 className="font-display text-2xl md:text-3xl font-bold text-[hsl(0_0%_100%)] mb-2 text-secondary-foreground opacity-100">
+          <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground mb-2">
             Care, Quality, and Consistency
           </h2>
-          <p className="text-sm text-[hsl(0_0%_100%_/_0.6)] mb-10 max-w-xl mx-auto text-secondary-foreground">
+          <p className="text-sm text-muted-foreground mb-10 max-w-xl mx-auto">
             Infinity Floral Grower is a professional orchid grower based in the United States, specializing in premium-quality orchids for the wholesale market. We focus on consistency, care.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {values.map((v) => (
               <div key={v.title} className="flex flex-col items-center gap-3">
-                <div className="h-14 w-14 rounded-full border border-[hsl(0_0%_100%_/_0.2)] flex items-center justify-center bg-primary">
-                  <v.icon className="h-6 w-6 text-[hsl(0_0%_100%_/_0.8)]" />
+                <div className="h-14 w-14 rounded-full border border-[#AE9644]/25 flex items-center justify-center bg-[#AE9644]/25 text-foreground">
+                  <v.icon className="h-6 w-6" />
                 </div>
-                <p className="text-xs md:text-sm text-[hsl(0_0%_100%_/_0.8)] leading-snug max-w-[140px] text-secondary-foreground">{v.title}</p>
+                <p className="text-xs md:text-sm leading-snug text-foreground/90 max-w-[140px]">{v.title}</p>
               </div>
             ))}
           </div>
@@ -208,7 +208,7 @@ const Index = () => {
         <div className="container">
           <div className="flex items-end justify-between mb-8">
             <div>
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Most Popular Products</h2>
+              <h2 className="font-display text-[46px] text-foreground">Most Popular Products</h2>
               <p className="text-sm text-muted-foreground mt-1 max-w-lg">
                 Infinity Floral grows a wide selection of premium orchids to bring you the most incredible quality on
                 the wholesale market. We focus on quality and consistency.
@@ -269,11 +269,11 @@ const Index = () => {
       </section>
 
       {/* ========== DISCOVER SPROUT ========== */}
-      <section className="py-16 md:py-20 bg-secondary">
+      <section className="bg-[#AE9644]/25 py-16 md:py-20">
         <div className="container">
-          <div className="flex items-center gap-3 mb-8">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Discover Sprout</h2>
-            <div className="hidden md:block flex-1 h-px bg-border" />
+          <div className="mb-8 flex items-center gap-3">
+            <h2 className="font-display text-[46px] text-black">Discover Sprout</h2>
+            <div className="hidden h-px flex-1 bg-border md:block" />
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[220px]">
             <div className="col-span-2 row-span-2 overflow-hidden rounded-lg">
@@ -303,7 +303,7 @@ const Index = () => {
         </div>
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div className="max-w-xl">
-            <h2 className="font-display text-2xl md:text-3xl lg:text-4xl font-bold text-[hsl(0_0%_100%)] mb-3">
+            <h2 className="font-display text-[46px] font-bold text-[hsl(0_0%_100%)] mb-3">
               From Seed to Sprout
             </h2>
             <p className="text-sm text-[hsl(0_0%_100%_/_0.7)] mb-6 max-w-md mx-auto leading-relaxed">
@@ -321,7 +321,7 @@ const Index = () => {
       <section className="py-16 md:py-20">
         <div className="container">
           <div className="flex items-end justify-between mb-8">
-            <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Your Guide to Plant Care</h2>
+            <h2 className="font-display text-2xl text-primary md:text-3xl">Your Guide to Plant Care</h2>
             <Link to="/guidelines" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
               View All →
             </Link>
@@ -343,18 +343,12 @@ const Index = () => {
               {careArticles.map((article) => (
                 <Link key={article.id} to={`/blog/${article.id}`} className="group">
                   <div className="aspect-[4/3] overflow-hidden rounded-lg mb-4">
-                    {article.video_url ? (
-                      <video
-                        src={article.video_url}
-                        className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
-                        muted
-                        loop
-                        onMouseEnter={(e) => e.currentTarget.play()}
-                        onMouseLeave={(e) => e.currentTarget.pause()}
-                      />
-                    ) : (
-                      <div className="h-full w-full flex items-center justify-center text-muted-foreground text-sm">No video</div>
-                    )}
+                    <img
+                      src={article.image}
+                      alt={article.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
                   </div>
                   <h3 className="font-display text-base md:text-lg font-semibold text-foreground mb-1 group-hover:text-primary transition-colors">
                     {article.title}
@@ -368,9 +362,9 @@ const Index = () => {
       </section>
 
       {/* ========== INSTAGRAM GALLERY ========== */}
-      <section className="py-12 bg-secondary">
+      <section className="bg-white py-12">
         <div className="container">
-          <h2 className="font-display text-xl md:text-2xl font-bold text-foreground text-center mb-6">
+          <h2 className="mb-6 text-center font-forum text-2xl font-normal leading-tight text-primary sm:text-3xl md:text-4xl lg:whitespace-nowrap lg:text-[46px]">
             Sprout on the #InfinityFloralGrower
           </h2>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">

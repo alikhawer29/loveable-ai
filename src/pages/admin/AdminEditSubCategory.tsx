@@ -60,7 +60,7 @@ export default function AdminEditSubCategory() {
     <AdminLayout>
       <div className="flex items-center gap-3 mb-6">
         <button onClick={() => navigate(-1)} className="text-foreground hover:text-primary transition-colors"><ArrowLeft className="h-6 w-6" /></button>
-        <h1 className="font-display text-2xl md:text-3xl font-semibold text-foreground">Edit Sub Category</h1>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">Edit Sub Category</h1>
       </div>
 
       <div className="bg-card rounded-lg border border-border p-6 md:p-10">
