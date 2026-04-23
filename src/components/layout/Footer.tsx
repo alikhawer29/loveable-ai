@@ -11,6 +11,8 @@ const quickLinksLeft = [
   { label: "About", path: "/about" },
   { label: "Wholesale", path: "/about" },
   { label: "Guidelines", path: "/guidelines" },
+  { label: "Flowers", path: "/flowers" },
+  { label: "Pots", path: "/pots" },
 ];
 
 const quickLinksRight = [
@@ -141,7 +143,7 @@ export function Footer() {
                     </li>
                   ))}
                 </ul>
-                <ul className="space-y-2">
+                {/* <ul className="space-y-2">
                   {quickLinksRight.map((link) => (
                     <li key={link.path}>
                       <Link to={link.path} className="text-foreground/80 transition-colors hover:text-primary">
@@ -149,7 +151,7 @@ export function Footer() {
                       </Link>
                     </li>
                   ))}
-                </ul>
+                </ul> */}
               </div>
             </div>
 
@@ -176,7 +178,7 @@ export function Footer() {
             </div>
 
             {/* Follow Us — brand-colored circles */}
-            <div>
+            {/* <div>
               <h4 className="font-display mb-4 text-sm font-semibold text-primary">Follow Us</h4>
               <div className="flex flex-wrap gap-3">
                 <a
@@ -208,7 +210,7 @@ export function Footer() {
                   <Linkedin className="h-4 w-4" />
                 </a>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="mt-10 border-t border-border pt-6 text-center text-xs text-foreground/60">

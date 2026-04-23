@@ -1,14 +1,14 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const loremParagraph = "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+const loremParagraph = "At Infinity Floral, we respect your privacy. Our website showcases orchid flowers, clay, and ceramic pots, and allows users to contact us via phone.We may collect basic information such as your name and phone number only when you contact us. This information is used solely to respond to your inquiries and provide assistance. We do not offer online ordering or takeaway services, and we do not collect any payment information. We do not sell, trade, or share your personal information with third parties. We take reasonable measures to keep your information secure. By using our website, you agree to this privacy policy. For any questions, please contact us directly.";
 
 const sections = [
   { title: "1. Introduction", content: loremParagraph },
-  { title: "2. Information We Collect", content: loremParagraph },
-  { title: "3. How We Use Your Information", content: loremParagraph },
-  { title: "5. Data Security", content: loremParagraph },
-  { title: "7. Cookies & Tracking", content: loremParagraph },
+  // { title: "2. Information We Collect", content: loremParagraph },
+  // { title: "3. How We Use Your Information", content: loremParagraph },
+  // { title: "5. Data Security", content: loremParagraph },
+  // { title: "7. Cookies & Tracking", content: loremParagraph },
 ];
 
 const Policy = () => {
@@ -20,7 +20,7 @@ const Policy = () => {
         <div className="space-y-8">
           {sections.map((s) => (
             <section key={s.title}>
-              <h2 className="font-display text-lg font-semibold text-foreground mb-3">{s.title}</h2>
+              {/* <h2 className="font-display text-lg font-semibold text-foreground mb-3">{s.title}</h2> */}
               <p className="text-sm text-muted-foreground leading-relaxed">{s.content}</p>
             </section>
           ))}
