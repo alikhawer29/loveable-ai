@@ -6,7 +6,7 @@ import aboutHero from "@/assets/about-hero.jpg";
 import ourVisionIcon from "@/assets/our-vision.png";
 import ourMissionIcon from "@/assets/our-mission.png";
 import aboutWho from "@/assets/about-whoweare.jpg";
-import aboutWhat from "@/assets/about-whatwedo.jpg";
+import aboutWhat from "@/assets/about-whatwedo.png";
 import sproutLiving from "@/assets/sprout-living.jpg";
 import sproutShelf from "@/assets/sprout-shelf.jpg";
 import sproutRepotting from "@/assets/sprout-repotting.jpg";
