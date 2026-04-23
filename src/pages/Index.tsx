@@ -8,7 +8,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
 
 import heroImage from "@/assets/hero-greenhouse.jpg";
-import welcomeImage from "@/assets/welcome-florist.jpg";
+import welcomeImage from "@/assets/welcome-florist.png";
 import sproutLiving from "@/assets/sprout-living.jpg";
 import sproutShelf from "@/assets/sprout-shelf.jpg";
 import sproutRepotting from "@/assets/sprout-repotting.jpg";
@@ -19,6 +19,7 @@ import orchidPurple from "@/assets/orchid-purple.jpg";
 import orchidPink from "@/assets/orchid-pink.jpg";
 import orchidYellow from "@/assets/orchid-yellow.jpg";
 import orchidWhite from "@/assets/orchid-white.jpg";
+import bannerVideo from "@/assets/banner_video.mp4";
 
 const PLACEHOLDER = "/placeholder.svg";
 
@@ -128,8 +129,7 @@ const Index = () => {
       {/* ========== HERO ========== */}
       <section className="relative">
         <div className="aspect-[16/7] md:aspect-[16/6] w-full overflow-hidden">
-          <img src={heroImage} alt="Premium orchids in greenhouse" className="h-full w-full object-cover" />
-          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(0_0%_0%_/_0.65)] via-[hsl(0_0%_0%_/_0.3)] to-transparent" />
+          <video src={bannerVideo} className="w-full object-cover" autoPlay muted loop />          <div className="absolute inset-0 bg-gradient-to-t from-[hsl(0_0%_0%_/_0.65)] via-[hsl(0_0%_0%_/_0.3)] to-transparent" />
         </div>
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
           <div className="max-w-2xl animate-fade-in">
