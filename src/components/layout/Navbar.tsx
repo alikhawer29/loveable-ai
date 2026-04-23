@@ -11,19 +11,22 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger } from
-"@/components/ui/dropdown-menu";
+  DropdownMenuTrigger
+} from
+  "@/components/ui/dropdown-menu";
 import {
   Dialog,
-  DialogContent } from
-"@/components/ui/dialog";
+  DialogContent
+} from
+  "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import {
   Popover,
   PopoverContent,
-  PopoverTrigger } from
-"@/components/ui/popover";
+  PopoverTrigger
+} from
+  "@/components/ui/popover";
 
 /** All header links (matches client header design). */
 const headerNavLinks = [
@@ -31,7 +34,7 @@ const headerNavLinks = [
   { label: "About", path: "/about" },
   { label: "Flowers", path: "/flowers" },
   { label: "Pots", path: "/pots" },
-  { label: "Guideline", path: "/guidelines" },
+  { label: "Care", path: "/guidelines" },
   { label: "Contact Us", path: "/contact" },
 ];
 
@@ -81,19 +84,19 @@ export function Navbar() {
     if (!isAuthenticated) return;
     const fetchNotifs = async () => {
       const { data } = await supabase.
-      from("notifications").
-      select("id, title, message, is_read, created_at").
-      order("created_at", { ascending: false }).
-      limit(5);
+        from("notifications").
+        select("id, title, message, is_read, created_at").
+        order("created_at", { ascending: false }).
+        limit(5);
       setNavNotifications(data as any || []);
     };
     fetchNotifs();
 
     const channel = supabase.
-    channel("navbar-notifications").
-    on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, () => fetchNotifs()).
-    subscribe();
-    return () => {supabase.removeChannel(channel);};
+      channel("navbar-notifications").
+      on("postgres_changes", { event: "*", schema: "public", table: "notifications" }, () => fetchNotifs()).
+      subscribe();
+    return () => { supabase.removeChannel(channel); };
   }, [isAuthenticated]);
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
@@ -149,11 +152,10 @@ export function Navbar() {
               <li key={link.path}>
                 <Link
                   to={link.path}
-                  className={`whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors md:px-3 ${
-                    isActive(link.path)
+                  className={`whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors md:px-3 ${isActive(link.path)
                       ? "bg-primary text-primary-foreground shadow-sm"
                       : "text-foreground/90 hover:bg-muted hover:text-primary"
-                  }`}
+                    }`}
                 >
                   {link.label}
                 </Link>
@@ -173,20 +175,20 @@ export function Navbar() {
             </button>
 
             {isAuthenticated ?
-            <>
+              <>
                 {/* Notifications */}
                 <Popover>
                   <PopoverTrigger asChild>
                     <button
-                    aria-label="Notifications"
-                    className="relative flex h-9 w-9 items-center justify-center rounded-md bg-action-surface text-white transition-opacity hover:opacity-90">
-                    
+                      aria-label="Notifications"
+                      className="relative flex h-9 w-9 items-center justify-center rounded-md bg-action-surface text-white transition-opacity hover:opacity-90">
+
                       <Bell className="h-5 w-5" />
                       {unreadCount > 0 &&
-                    <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-destructive-foreground">
+                        <span className="absolute -right-0.5 -top-0.5 flex h-4 w-4 items-center justify-center rounded-full bg-destructive text-[10px] font-semibold text-destructive-foreground">
                           {unreadCount}
                         </span>
-                    }
+                      }
                     </button>
                   </PopoverTrigger>
                   <PopoverContent align="end" className="w-80 p-0">
@@ -195,28 +197,26 @@ export function Navbar() {
                     </div>
                     <div className="max-h-72 overflow-y-auto">
                       {navNotifications.length === 0 ?
-                    <div className="px-4 py-6 text-center text-sm text-muted-foreground">No notifications</div> :
-                    navNotifications.map((n) =>
-                    <div
-                      key={n.id}
-                      className={`px-4 py-3 border-b border-border last:border-0 flex items-start gap-3 ${
-                      !n.is_read ? "bg-primary/5" : ""}`
-                      }>
-                      
-                          <span
-                        className={`mt-1.5 h-2 w-2 rounded-full flex-shrink-0 ${
-                        !n.is_read ? "bg-primary" : "bg-transparent"}`
-                        } />
-                      
-                          <div className="flex-1 min-w-0">
-                            {n.title && <p className={`text-xs font-semibold ${!n.is_read ? "text-foreground" : "text-muted-foreground"}`}>{n.title}</p>}
-                            <p className={`text-sm leading-snug ${!n.is_read ? "font-medium text-foreground" : "text-muted-foreground"}`}>
-                              {n.message}
-                            </p>
-                            <p className="text-xs text-muted-foreground mt-1">{formatDistanceToNow(new Date(n.created_at), { addSuffix: true })}</p>
+                        <div className="px-4 py-6 text-center text-sm text-muted-foreground">No notifications</div> :
+                        navNotifications.map((n) =>
+                          <div
+                            key={n.id}
+                            className={`px-4 py-3 border-b border-border last:border-0 flex items-start gap-3 ${!n.is_read ? "bg-primary/5" : ""}`
+                            }>
+
+                            <span
+                              className={`mt-1.5 h-2 w-2 rounded-full flex-shrink-0 ${!n.is_read ? "bg-primary" : "bg-transparent"}`
+                              } />
+
+                            <div className="flex-1 min-w-0">
+                              {n.title && <p className={`text-xs font-semibold ${!n.is_read ? "text-foreground" : "text-muted-foreground"}`}>{n.title}</p>}
+                              <p className={`text-sm leading-snug ${!n.is_read ? "font-medium text-foreground" : "text-muted-foreground"}`}>
+                                {n.message}
+                              </p>
+                              <p className="text-xs text-muted-foreground mt-1">{formatDistanceToNow(new Date(n.created_at), { addSuffix: true })}</p>
+                            </div>
                           </div>
-                        </div>
-                    )}
+                        )}
                     </div>
                   </PopoverContent>
                 </Popover>
@@ -225,8 +225,8 @@ export function Navbar() {
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
                     <button
-                    aria-label="User menu"
-                    className="flex h-9 items-center gap-2 rounded-md bg-action-surface px-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90">
+                      aria-label="User menu"
+                      className="flex h-9 items-center gap-2 rounded-md bg-action-surface px-3.5 text-sm font-medium text-white transition-opacity hover:opacity-90">
                       <User className="h-4 w-4 shrink-0" />
                       <span>
                         {user?.name?.split(" ")[0] || "User"}{" "}
@@ -255,10 +255,10 @@ export function Navbar() {
                 </DropdownMenu>
               </> :
 
-            <Link
-              to="/login"
-              className="flex h-9 items-center gap-2 rounded-md bg-action-surface px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
-            >
+              <Link
+                to="/login"
+                className="flex h-9 items-center gap-2 rounded-md bg-action-surface px-4 text-sm font-medium text-white transition-opacity hover:opacity-90"
+              >
                 <User className="h-4 w-4" />
                 Log In
               </Link>
@@ -277,61 +277,60 @@ export function Navbar() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-        <div className="border-t border-border/80 bg-white animate-fade-in lg:hidden">
+          <div className="border-t border-border/80 bg-white animate-fade-in lg:hidden">
             <div className="container space-y-1 py-4">
               {navLinks.map((link) => (
-            <Link
-              key={link.path}
-              to={link.path}
-              onClick={() => setMobileOpen(false)}
-              className={`block rounded-md py-2.5 pl-2 text-sm font-medium ${
-              isActive(link.path) ?
-              "bg-primary text-primary-foreground" :
-              "text-foreground hover:bg-muted"}`
-              }>
+                <Link
+                  key={link.path}
+                  to={link.path}
+                  onClick={() => setMobileOpen(false)}
+                  className={`block rounded-md py-2.5 pl-2 text-sm font-medium ${isActive(link.path) ?
+                      "bg-primary text-primary-foreground" :
+                      "text-foreground hover:bg-muted"}`
+                  }>
                   {link.label}
                 </Link>
-            ))}
+              ))}
               <div className="flex flex-col gap-2 border-t border-border pt-3">
                 {isAuthenticated ?
-              <>
+                  <>
                     <Link
-                  to="/dashboard"
-                  onClick={() => setMobileOpen(false)}
-                  className="text-sm text-muted-foreground hover:text-foreground">
+                      to="/dashboard"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-sm text-muted-foreground hover:text-foreground">
                       Dashboard
                     </Link>
                     <Link
-                  to="/profile"
-                  onClick={() => setMobileOpen(false)}
-                  className="text-sm text-muted-foreground hover:text-foreground">
+                      to="/profile"
+                      onClick={() => setMobileOpen(false)}
+                      className="text-sm text-muted-foreground hover:text-foreground">
                       My Profile
                     </Link>
                     <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    setLogoutOpen(true);
-                  }}
-                  className="text-left text-sm text-muted-foreground hover:text-foreground">
+                      onClick={() => {
+                        setMobileOpen(false);
+                        setLogoutOpen(true);
+                      }}
+                      className="text-left text-sm text-muted-foreground hover:text-foreground">
                       Logout
                     </button>
                   </> :
 
-              <Link
-                to="/login"
-                onClick={() => setMobileOpen(false)}
-                className="inline-flex w-fit items-center gap-2 rounded-md bg-action-surface px-4 py-2 text-sm font-medium text-white">
+                  <Link
+                    to="/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="inline-flex w-fit items-center gap-2 rounded-md bg-action-surface px-4 py-2 text-sm font-medium text-white">
                     Log In
                   </Link>
-              }
-              <button
-                type="button"
-                onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
-                className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground"
-              >
-                <Search className="h-4 w-4" />
-                Search
-              </button>
+                }
+                <button
+                  type="button"
+                  onClick={() => { setMobileOpen(false); setSearchOpen(true); }}
+                  className="inline-flex w-fit items-center gap-2 text-sm text-muted-foreground"
+                >
+                  <Search className="h-4 w-4" />
+                  Search
+                </button>
               </div>
             </div>
           </div>

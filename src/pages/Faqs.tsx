@@ -9,7 +9,7 @@ import {
 
 const faqs = [
   { q: "What is Infinity Floral?", a: "Infinity Floral is a website that showcases beautiful orchid flowers along with clay and ceramic pots. It allows users to explore unique floral arrangements and decorative pot designs." },
-  { q: "How can I contact Infinity Floral?", a: "You can contact Infinity Floral through the provided contact details, including email at hanshueh@inifinityflroal.com or by phone at 854.692.7227. Our support team is available Monday to Friday from 9:00 AM to 6:00 PM and will be happy to assist you with any inquiries or information you need." },
+  { q: "How can I contact Infinity Floral?", a: "You can contact Infinity Floral through the provided contact details, including email at infinityfloralgrower@gmail.com or by phone at 854.692.7227. Our support team is available Monday to Friday from 9:00 AM to 6:00 PM and will be happy to assist you with any inquiries or information you need." },
   // { q: "Who can register on Infinity Floral?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
   // { q: "Can I see product availability and quantity details?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
   // { q: "What is the Gardening Guidelines section?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },

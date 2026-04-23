@@ -122,8 +122,8 @@ export function Footer() {
               <ul className="space-y-2 text-foreground/80">
                 <li>854.692.7227</li>
                 <li>
-                  <a href="mailto:hanshueh@inifinityflroal.com" className="hover:text-primary transition-colors">
-                    hanshueh@inifinityflroal.com
+                  <a href="mailto:infinityfloralgrower@gmail.com" className="hover:text-primary transition-colors">
+                    infinityfloralgrower@gmail.com
                   </a>
                 </li>
                 <li className="leading-relaxed">2809 W Kelly Park Road Apopka, FL 32713</li>
