@@ -24,14 +24,6 @@ const values = [
   { icon: Leaf, title: "Grade-A Greens For Long Shelf Life" },
 ];
 
-const whatWeDo = [
-  "Showcase a wide range of flowers and gardening pots in wholesale units",
-  "Organize products into clear categories and subcategories",
-  "Provide detailed product specifications and availability information",
-  "Offer customizable product catalogs for better purchasing decisions",
-  "Deliver educational gardening content through our Gardening Guidelines section",
-];
-
 const instagramImages = [orchidPurple, orchidPink, sproutLiving, orchidYellow, sproutRepotting, orchidWhite];
 
 const About = () => {
@@ -55,23 +47,35 @@ const About = () => {
         </div>
       </section>
 
-      {/* Who We Are */}
+      {/* Who We Are (client copy) */}
       <section className="py-16 md:py-20">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
+          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
             <div className="overflow-hidden rounded-lg">
-              <img src={aboutWho} alt="Who we are" className="w-full h-auto object-cover" loading="lazy" />
+              <img
+                src={aboutWho}
+                alt="Infinity Floral Grower team and growing operations"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
             </div>
-            <div className="space-y-4">
-              <h2 className="font-display text-2xl md:text-3xl font-bold text-foreground">Who We Are</h2>
+            <div className="max-w-prose space-y-4 md:space-y-5">
+              <h2 className="font-display text-[46px] leading-tight text-foreground">A FAMILY BUSINESS</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Infinity Floral Grower is a U.S.-based orchid grower delivering premium-quality orchids for the wholesale market, grown with care and consistency.
+                Infinity Floral Grower operates under its parent company, United Orchids, established in 1999, and does
+                business as United Florida Orchids.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Infinity Floral Grower is a wholesale orchid grower based in the United States, specializing in premium-quality orchids crafted for the wholesale market. We focus on consistency, care, and long-lasting blooms grown in a controlled environment.
+                Built on decades of experience in orchid cultivation, the business was founded with a clear vision—to
+                produce high-quality orchids through dedication, consistency, and hands-on expertise.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Our goal is to bridge the gap between suppliers and bulk purchasers through a streamlined, informative, and easy-to-navigate platform.
+                As a family-owned and operated company, our values are rooted in long-term relationships, integrity, and
+                pride in every plant we grow.
+              </p>
+              <p className="text-sm text-muted-foreground leading-relaxed">
+                Over the years, Infinity Floral Grower has expanded while maintaining the same commitment to excellence,
+                supplying premium orchids to florists, designers, and retailers.
               </p>
             </div>
           </div>
@@ -100,33 +104,46 @@ const About = () => {
         </div>
       </section>
 
-      {/* What We Do */}
+      {/* Premium quality (client copy — structured for scan & readability) */}
       <section className="py-16 md:py-20">
         <div className="container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center">
-            <div className="space-y-4">
-              <h2 className="font-display text-[46px] text-foreground">What We Do</h2>
-              <ul className="space-y-2">
-                {whatWeDo.map((item) => (
-                  <li key={item} className="flex items-start gap-2 text-sm text-muted-foreground">
-                    <span className="mt-1 h-1.5 w-1.5 rounded-full bg-foreground flex-shrink-0" />
-                    {item}
-                  </li>
-                ))}
-              </ul>
-              <p className="text-sm text-muted-foreground leading-relaxed">
-                At the current time, we don't handle offline. Our platform serves as a source of the necessary information to assist customers confident before contacting our team.
+          <div className="grid grid-cols-1 items-center gap-10 md:grid-cols-2 md:gap-16">
+            <div className="space-y-5 order-2 md:order-1">
+              <h2 className="font-display text-[46px] leading-tight text-foreground">PREMIUM QUALITY</h2>
+              <p className="text-sm font-medium uppercase tracking-wide text-primary">
+                Competitive pricing · Family owned &amp; operated · Greenhouse growers · A growing business
               </p>
+              <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
+                <p>
+                  Based in Florida, Infinity Floral Grower benefits from an ideal growing environment that supports
+                  strong, vibrant orchids year-round. Our greenhouse operations are designed for consistency and
+                  efficiency, allowing us to maintain high standards across all products.
+                </p>
+                <p>
+                  From our beginnings to today, we continue to grow our capacity and refine our practices, with a
+                  long-term focus on delivering reliable, high-quality orchids to the market.
+                </p>
+                <p>
+                  Infinity Floral Grower has earned the trust of our partners for over 20 years by consistently
+                  providing high-quality orchids and foliage products, and remains focused on the future with continued
+                  innovation and new product development.
+                </p>
+              </div>
             </div>
-            <div className="overflow-hidden rounded-lg">
-              <img src={aboutWhat} alt="What we do" className="w-full h-auto object-cover" loading="lazy" />
+            <div className="order-1 overflow-hidden rounded-lg md:order-2">
+              <img
+                src={aboutWhat}
+                alt="Greenhouse and growing operations"
+                className="h-full w-full object-cover"
+                loading="lazy"
+              />
             </div>
           </div>
         </div>
       </section>
 
       {/* Vision & Mission — Figma icon assets */}
-      <section className="py-12 md:py-16">
+      {/* <section className="py-12 md:py-16">
         <div className="container max-w-5xl">
           <div className="grid grid-cols-1 gap-6 md:grid-cols-2 md:gap-8">
             <div className="rounded-xl border border-[#AE9644]/25 bg-[#AE9644]/25 p-8 text-left shadow-sm">
@@ -165,16 +182,16 @@ const About = () => {
             </div>
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Let's Grow Together */}
       <section className="py-12 text-center">
         <div className="container max-w-xl">
           <h2 className="font-display text-[46px] text-foreground mb-3">
-            Let's Grow Together <Sprout className="inline h-8 w-8 align-middle text-primary" />
+            Thank you<Sprout className="inline h-8 w-8 align-middle text-primary" />
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-            We believe in building lasting partnerships rooted in trust, quality, and shared growth. Whether you're expanding your retail inventory or managing large-scale landscaping projects, Garden Cart is here to support your journey.
+            Thank you for choosing Infinity Floral Grower.
           </p>
           <Link to="/collections" className="btn-plum rounded-sm text-xs uppercase tracking-wider">
             View All Products
