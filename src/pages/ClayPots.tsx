@@ -11,7 +11,7 @@ const ClayPots = () => {
     >
       <ProductGrid
         title="Clay Pots"
-        description="At Infinity Floral, we're passionate about providing a wide selection of exquisite flowers. As a premier grower, we're dedicated to freshness, quality, and sustainable practices."
+        description="At Han Cloud Co. Ltd, we're passionate about providing a wide selection of exquisite flowers. As a premier grower, we're dedicated to freshness, quality, and sustainable practices."
         categoryFilter="Pots"
         subCategoryFilter="5b40a1f7-d68a-499c-9dba-94dbc6cd7206"
       />

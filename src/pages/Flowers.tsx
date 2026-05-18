@@ -11,7 +11,7 @@ const Flowers = () => {
     >
       <ProductGrid
         title="Orchids Flower"
-        description="At Infinity Floral, we're passionate about providing a wide selection of exquisite flowers. As a premier grower, we're dedicated to freshness, quality, and sustainable practices."
+        description="At Han Cloud Co. Ltd, we're passionate about providing a wide selection of exquisite flowers. As a premier grower, we're dedicated to freshness, quality, and sustainable practices."
         categoryFilter="Flowers"
       />
     </PageLayout>

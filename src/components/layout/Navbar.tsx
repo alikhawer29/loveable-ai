@@ -32,8 +32,7 @@ import {
 const headerNavLinks = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
-  { label: "Flowers", path: "/flowers" },
-  { label: "Pots", path: "/pots" },
+  { label: "Products", path: "/products" },
   { label: "Care", path: "/guidelines" },
   { label: "Contact Us", path: "/contact" },
 ];
@@ -48,8 +47,14 @@ interface NavNotification {
   created_at: string;
 }
 
-export function Navbar() {
+interface NavbarProps {
+  /** Overlay on hero video — transparent until scrolled */
+  overlay?: boolean;
+}
+
+export function Navbar({ overlay = false }: NavbarProps) {
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -81,6 +86,16 @@ export function Navbar() {
   }, [searchQuery, handleSearch]);
 
   useEffect(() => {
+    if (!overlay) return;
+    const onScroll = () => setScrolled(window.scrollY > 40);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, [overlay]);
+
+  const isOverlayActive = overlay && !scrolled;
+
+  useEffect(() => {
     if (!isAuthenticated) return;
     const fetchNotifs = async () => {
       const { data } = await supabase.
@@ -105,6 +120,14 @@ export function Navbar() {
         location.pathname.startsWith("/guidelines") ||
         location.pathname.startsWith("/guideline/") ||
         location.pathname.startsWith("/blog/")
+      );
+    }
+    if (path === "/products") {
+      return (
+        location.pathname === "/products" ||
+        location.pathname.startsWith("/products/") ||
+        location.pathname.startsWith("/flowers") ||
+        location.pathname.startsWith("/pots")
       );
     }
     return location.pathname === path || location.pathname.startsWith(`${path}/`);
@@ -139,11 +162,24 @@ export function Navbar() {
       */}
 
       {/* Main navbar — light header: white bar, gold active nav, gray action buttons */}
-      <header className="sticky top-0 z-50 border-b border-border/80 bg-white shadow-sm">
+      <header
+        className={`z-50 transition-colors duration-300 ${isOverlayActive
+            ? "fixed inset-x-0 top-0 border-b border-white/10 bg-transparent shadow-none"
+            : "sticky top-0 border-b border-border/80 bg-white shadow-sm"
+          }`}
+      >
         <nav className="container flex h-[4.5rem] items-center gap-4">
           {/* Logo */}
-          <Link to="/" className="flex shrink-0 items-center" aria-label="Quiet Luxury Orchids home">
-            <img src={logoImage} alt="Quiet Luxury Orchids" className="h-11 w-auto object-contain sm:h-12" />
+          <Link
+            to="/"
+            className="flex shrink-0 items-center overflow-visible"
+            aria-label="Han Cloud Co. Ltd home"
+          >
+            <img
+              src={logoImage}
+              alt="Han Cloud Co. Ltd"
+              className="h-[4.25rem] w-auto origin-left scale-[1.35] object-contain object-left sm:scale-[1.45]"
+            />
           </Link>
 
           {/* Centered desktop nav */}
@@ -153,8 +189,12 @@ export function Navbar() {
                 <Link
                   to={link.path}
                   className={`whitespace-nowrap rounded-md px-2.5 py-2 text-sm font-medium transition-colors md:px-3 ${isActive(link.path)
-                      ? "bg-primary text-primary-foreground shadow-sm"
-                      : "text-foreground/90 hover:bg-muted hover:text-primary"
+                      ? isOverlayActive
+                        ? "bg-white/20 text-white shadow-sm backdrop-blur-sm"
+                        : "bg-primary text-primary-foreground shadow-sm"
+                      : isOverlayActive
+                        ? "text-white/90 hover:bg-white/10 hover:text-white"
+                        : "text-foreground/90 hover:bg-muted hover:text-primary"
                     }`}
                 >
                   {link.label}
@@ -267,7 +307,8 @@ export function Navbar() {
 
           {/* Mobile toggle */}
           <button
-            className="ml-auto rounded-md p-2 text-foreground hover:bg-muted lg:ml-0 lg:hidden"
+            className={`ml-auto rounded-md p-2 lg:ml-0 lg:hidden ${isOverlayActive ? "text-white hover:bg-white/10" : "text-foreground hover:bg-muted"
+              }`}
             onClick={() => setMobileOpen(!mobileOpen)}
             aria-label="Toggle menu"
           >
@@ -277,17 +318,27 @@ export function Navbar() {
 
         {/* Mobile menu */}
         {mobileOpen && (
-          <div className="border-t border-border/80 bg-white animate-fade-in lg:hidden">
+          <div
+            className={`border-t animate-fade-in lg:hidden ${isOverlayActive
+                ? "border-white/20 bg-black/80 backdrop-blur-md"
+                : "border-border/80 bg-white"
+              }`}
+          >
             <div className="container space-y-1 py-4">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileOpen(false)}
-                  className={`block rounded-md py-2.5 pl-2 text-sm font-medium ${isActive(link.path) ?
-                      "bg-primary text-primary-foreground" :
-                      "text-foreground hover:bg-muted"}`
-                  }>
+                  className={`block rounded-md py-2.5 pl-2 text-sm font-medium ${isActive(link.path)
+                      ? isOverlayActive
+                        ? "bg-white/20 text-white"
+                        : "bg-primary text-primary-foreground"
+                      : isOverlayActive
+                        ? "text-white/90 hover:bg-white/10"
+                        : "text-foreground hover:bg-muted"
+                    }`}
+                >
                   {link.label}
                 </Link>
               ))}
@@ -382,7 +433,7 @@ export function Navbar() {
                   setSearchQuery("");
                   setSearchResults([]);
                   if (!isAuthenticated) { navigate("/login"); return; }
-                  navigate(r.type === "product" ? `/flowers/${r.name.toLowerCase().replace(/\s+/g, "-")}` : `/blog/${r.id}`);
+                  navigate(r.type === "product" ? `/products/${r.name.toLowerCase().replace(/\s+/g, "-")}` : `/blog/${r.id}`);
                 }}
               >
                 <span className="text-xs font-medium uppercase text-muted-foreground w-16">{r.type === "product" ? "Product" : "Guide"}</span>

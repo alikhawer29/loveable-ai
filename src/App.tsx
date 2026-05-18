@@ -1,5 +1,5 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate, useParams } from "react-router-dom";
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
@@ -17,11 +17,8 @@ import Policy from "./pages/Policy";
 import Terms from "./pages/Terms";
 import Faqs from "./pages/Faqs";
 import About from "./pages/About";
-import Flowers from "./pages/Flowers";
-import FlowerDetail from "./pages/FlowerDetail";
-import Pots from "./pages/Pots";
-import PotDetail from "./pages/PotDetail";
-import ClayPots from "./pages/ClayPots";
+import Products from "./pages/Products";
+import ProductDetail from "./pages/ProductDetail";
 import Guidelines from "./pages/Guidelines";
 import GuidelineDetail from "./pages/GuidelineDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
@@ -83,6 +80,11 @@ function AdminGuestRoute({ children }: { children: ReactNode }) {
   return <>{children}</>;
 }
 
+function RedirectProductSlug() {
+  const { slug } = useParams();
+  return <Navigate to={`/products/${slug}`} replace />;
+}
+
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <AuthProvider>
@@ -105,12 +107,14 @@ const App = () => (
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
             <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
             <Route path="/about" element={<About />} />
-            <Route path="/flowers" element={<ProtectedRoute><Flowers /></ProtectedRoute>} />
-            <Route path="/collections" element={<ProtectedRoute><Flowers /></ProtectedRoute>} />
-            <Route path="/flowers/:slug" element={<ProtectedRoute><FlowerDetail /></ProtectedRoute>} />
-            <Route path="/pots" element={<ProtectedRoute><Pots /></ProtectedRoute>} />
-            <Route path="/pots/clay-pots" element={<ProtectedRoute><ClayPots /></ProtectedRoute>} />
-            <Route path="/pots/:slug" element={<ProtectedRoute><PotDetail /></ProtectedRoute>} />
+            <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
+            <Route path="/products/:slug" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
+            <Route path="/flowers" element={<Navigate to="/products" replace />} />
+            <Route path="/collections" element={<Navigate to="/products" replace />} />
+            <Route path="/flowers/:slug" element={<RedirectProductSlug />} />
+            <Route path="/pots" element={<Navigate to="/products" replace />} />
+            <Route path="/pots/clay-pots" element={<Navigate to="/products" replace />} />
+            <Route path="/pots/:slug" element={<RedirectProductSlug />} />
             <Route path="/guideline" element={<Guidelines />} />
             <Route path="/guidelines" element={<Guidelines />} />
             <Route path="/guideline/:slug" element={<ProtectedRoute><GuidelineDetail /></ProtectedRoute>} />

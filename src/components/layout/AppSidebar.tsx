@@ -37,7 +37,7 @@ export function AppSidebar() {
           <Package className="h-6 w-6 text-primary shrink-0" />
           {!collapsed && (
             <Link to="/dashboard" className="font-display text-lg font-semibold text-foreground truncate">
-              Infinity Floral
+              Han Cloud Co. Ltd
             </Link>
           )}
         </div>

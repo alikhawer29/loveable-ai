@@ -30,7 +30,7 @@ export function AdminSidebar() {
         <Link to="/admin/dashboard" className="flex items-center gap-2">
           <img
             src={logoImg}
-            alt="Infinity Floral"
+            alt="Han Cloud Co. Ltd"
             className="h-14 w-auto my-2 object-contain brightness-0 invert"
           />
         </Link>
@@ -44,11 +44,10 @@ export function AdminSidebar() {
             <Link
               key={item.title}
               to={item.url}
-              className={`flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors ${
-                isActive
+              className={`flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors ${isActive
                   ? "bg-primary text-primary-foreground"
                   : "text-foreground hover:bg-muted"
-              }`}
+                }`}
             >
               <item.icon className="h-5 w-5 shrink-0" />
               <span>{item.title}</span>

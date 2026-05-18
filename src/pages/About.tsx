@@ -54,7 +54,7 @@ const About = () => {
             <div className="overflow-hidden rounded-lg">
               <img
                 src={aboutWho}
-                alt="Infinity Floral Grower team and growing operations"
+                alt="Han Cloud Co. Ltd team and growing operations"
                 className="h-full w-full object-cover"
                 loading="lazy"
               />
@@ -62,7 +62,7 @@ const About = () => {
             <div className="max-w-prose space-y-4 md:space-y-5">
               <h2 className="font-display text-[46px] leading-tight text-foreground">A FAMILY BUSINESS</h2>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Infinity Floral Grower operates under its parent company, United Orchids, established in 1999, and does
+                Han Cloud Co. Ltd operates under its parent company, United Orchids, established in 1999, and does
                 business as United Florida Orchids.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
@@ -74,7 +74,7 @@ const About = () => {
                 pride in every plant we grow.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed">
-                Over the years, Infinity Floral Grower has expanded while maintaining the same commitment to excellence,
+                Over the years, Han Cloud Co. Ltd has expanded while maintaining the same commitment to excellence,
                 supplying premium orchids to florists, designers, and retailers.
               </p>
             </div>
@@ -89,7 +89,7 @@ const About = () => {
             Care, Quality and Consistency
           </h2>
           <p className="text-sm text-muted-foreground mb-10 max-w-xl mx-auto leading-relaxed">
-            Infinity Floral Grower is a premium orchid grower based in the United States, specializing in premium-quality orchids crafted for the wholesale market. We focus on consistency, care.
+            Han Cloud Co. Ltd is a premium orchid grower based in the United States, specializing in premium-quality orchids crafted for the wholesale market. We focus on consistency, care.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 md:gap-6 lg:gap-8">
             {values.map((v) => (
@@ -115,7 +115,7 @@ const About = () => {
               </p>
               <div className="space-y-4 text-sm text-muted-foreground leading-relaxed">
                 <p>
-                  Based in Florida, Infinity Floral Grower benefits from an ideal growing environment that supports
+                  Based in Florida, Han Cloud Co. Ltd benefits from an ideal growing environment that supports
                   strong, vibrant orchids year-round. Our greenhouse operations are designed for consistency and
                   efficiency, allowing us to maintain high standards across all products.
                 </p>
@@ -124,7 +124,7 @@ const About = () => {
                   long-term focus on delivering reliable, high-quality orchids to the market.
                 </p>
                 <p>
-                  Infinity Floral Grower has earned the trust of our partners for over 20 years by consistently
+                  Han Cloud Co. Ltd has earned the trust of our partners for over 20 years by consistently
                   providing high-quality orchids and foliage products, and remains focused on the future with continued
                   innovation and new product development.
                 </p>
@@ -191,9 +191,9 @@ const About = () => {
             Thank you<Sprout className="inline h-8 w-8 align-middle text-primary" />
           </h2>
           <p className="text-sm text-muted-foreground leading-relaxed mb-6">
-            Thank you for choosing Infinity Floral Grower.
+            Thank you for choosing Han Cloud Co. Ltd.
           </p>
-          <Link to="/collections" className="btn-plum rounded-sm text-xs uppercase tracking-wider">
+          <Link to="/products" className="btn-plum rounded-sm text-xs uppercase tracking-wider">
             View All Products
           </Link>
         </div>
@@ -203,7 +203,7 @@ const About = () => {
       <section className="section-dark py-12">
         <div className="container">
           <h2 className="font-display text-xl md:text-2xl font-bold text-[hsl(0_0%_100%)] text-center mb-6">
-            Sprout on the #Infinity Floral Grower
+            Sprout on the #HanCloudCo
           </h2>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
             {instagramImages.map((img, i) => (

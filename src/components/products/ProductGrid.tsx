@@ -49,9 +49,11 @@ export function ProductGrid({
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState("popular");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("all");
+  const [selectedCategory, setSelectedCategory] = useState<string>("all");
   const [loading, setLoading] = useState(!staticItems);
   const [dbProducts, setDbProducts] = useState<ProductItem[]>([]);
   const [subCategories, setSubCategories] = useState<{ id: string; name: string }[]>([]);
+  const [categories, setCategories] = useState<{ id: string; name: string }[]>([]);
 
   // Fetch products from DB when no static items
   useEffect(() => {
@@ -80,30 +82,25 @@ export function ProductGrid({
           console.warn("ProductGrid: Client session check timeout — RLS queries may fail");
         }
 
-        // First get category id if filtering by name
+        // Resolve category filter(s)
         let categoryId: string | null = null;
-        if (categoryFilter) {
-          const { data: cats, error: catErr } = await supabase
-            .from("categories")
-            .select("id")
-            .eq("status", "active")
-            .ilike("category_name", `%${categoryFilter}%`)
-            .limit(1);
-          if (catErr) console.warn("ProductGrid categories error:", catErr.message);
-          categoryId = cats?.[0]?.id ?? null;
-        }
+        const { data: allCats } = await supabase
+          .from("categories")
+          .select("id, category_name")
+          .eq("status", "active")
+          .order("category_name");
 
-        // Fetch subcategories for filter dropdown
-        if (categoryId) {
-          const { data: subs } = await supabase
-            .from("subcategories")
-            .select("id, sub_category_name")
-            .eq("category_id", categoryId)
-            .eq("status", "active")
-            .order("sub_category_name");
-          setSubCategories(
-            (subs || []).map((s) => ({ id: s.id, name: s.sub_category_name }))
+        const activeCategories = (allCats || []).map((c) => ({
+          id: c.id,
+          name: c.category_name,
+        }));
+        setCategories(activeCategories);
+
+        if (categoryFilter) {
+          const match = activeCategories.find((c) =>
+            c.name.toLowerCase().includes(categoryFilter.toLowerCase())
           );
+          categoryId = match?.id ?? null;
         }
 
         // Build product query
@@ -151,16 +148,22 @@ export function ProductGrid({
           });
         }
 
+        const categoryMap: Record<string, string> = {};
+        activeCategories.forEach((c) => {
+          categoryMap[c.id] = c.name;
+        });
+
         const mapped: ProductItem[] = (products || []).map((p) => {
           const subName = p.sub_category_id ? subMap[p.sub_category_id] || "" : "";
           const slug = p.product_name.toLowerCase().replace(/\s+/g, "-");
-          const basePath = categoryFilter?.toLowerCase() === "pots" ? "/pots" : "/flowers";
+          const detailPath = `/products/${slug}`;
           return {
             id: p.id,
             name: p.product_name,
             image: imageMap[p.id] || PLACEHOLDER,
             isNew: isNewProduct(p.created_at),
-            detailPath: `${basePath}/${slug}`,
+            detailPath,
+            categoryName: p.category_id ? categoryMap[p.category_id] || "" : "",
             subCategoryName: subName,
             createdAt: p.created_at,
           };
@@ -183,16 +186,68 @@ export function ProductGrid({
     };
   }, [staticItems, categoryFilter, subCategoryFilter, authLoading, session]);
 
+  // Fetch subcategories when category selection changes
+  useEffect(() => {
+    if (staticItems || categoryFilter) return;
+
+    const parentId = selectedCategory !== "all" ? selectedCategory : null;
+    if (!parentId) {
+      setSubCategories([]);
+      return;
+    }
+
+    const fetchSubs = async () => {
+      const { data: subs } = await supabase
+        .from("subcategories")
+        .select("id, sub_category_name")
+        .eq("category_id", parentId)
+        .eq("status", "active")
+        .order("sub_category_name");
+      setSubCategories((subs || []).map((s) => ({ id: s.id, name: s.sub_category_name })));
+    };
+
+    fetchSubs();
+  }, [staticItems, categoryFilter, selectedCategory]);
+
+  // Fetch subcategories for single-category pages
+  useEffect(() => {
+    if (staticItems || !categoryFilter || categories.length === 0) return;
+
+    const match = categories.find((c) =>
+      c.name.toLowerCase().includes(categoryFilter.toLowerCase())
+    );
+    if (!match) return;
+
+    const fetchSubs = async () => {
+      const { data: subs } = await supabase
+        .from("subcategories")
+        .select("id, sub_category_name")
+        .eq("category_id", match.id)
+        .eq("status", "active")
+        .order("sub_category_name");
+      setSubCategories((subs || []).map((s) => ({ id: s.id, name: s.sub_category_name })));
+    };
+
+    fetchSubs();
+  }, [staticItems, categoryFilter, categories]);
+
   const items = staticItems || dbProducts;
+
+  // Apply category filter (combined products page)
+  const filteredByCategory = useMemo(() => {
+    if (categoryFilter || selectedCategory === "all" || staticItems) return items;
+    const catName = categories.find((c) => c.id === selectedCategory)?.name;
+    if (!catName) return items;
+    return items.filter((item) => item.categoryName === catName);
+  }, [items, selectedCategory, categories, categoryFilter, staticItems]);
 
   // Apply subcategory filter
   const filteredBySubCat = useMemo(() => {
-    if (selectedSubCategory === "all" || staticItems) return items;
-    // Match by subcategory name
+    if (selectedSubCategory === "all" || staticItems) return filteredByCategory;
     const subName = subCategories.find((s) => s.id === selectedSubCategory)?.name;
-    if (!subName) return items;
-    return items.filter((item) => item.subCategoryName === subName);
-  }, [items, selectedSubCategory, subCategories, staticItems]);
+    if (!subName) return filteredByCategory;
+    return filteredByCategory.filter((item) => item.subCategoryName === subName);
+  }, [filteredByCategory, selectedSubCategory, subCategories, staticItems]);
 
   // Apply sorting
   const sortedItems = useMemo(() => {
@@ -211,7 +266,11 @@ export function ProductGrid({
   // Reset page when filters change
   useEffect(() => {
     setCurrentPage(1);
-  }, [sort, selectedSubCategory]);
+  }, [sort, selectedSubCategory, selectedCategory]);
+
+  useEffect(() => {
+    setSelectedSubCategory("all");
+  }, [selectedCategory]);
 
   const totalPages = Math.ceil(sortedItems.length / itemsPerPage);
   const paginatedItems = sortedItems.slice(
@@ -228,11 +287,28 @@ export function ProductGrid({
           </h2>
           <p className="text-sm text-muted-foreground max-w-md">{description}</p>
         </div>
-        <div className="flex items-center gap-3 flex-shrink-0">
-          {/* Subcategory filter (only when fetching from DB and subcategories exist) */}
+        <div className="flex items-center gap-3 flex-shrink-0 flex-wrap justify-end">
+          {!staticItems && !categoryFilter && categories.length > 1 && (
+            <div>
+              <label className="text-xs text-muted-foreground block mb-1">Type:</label>
+              <Select value={selectedCategory} onValueChange={setSelectedCategory}>
+                <SelectTrigger className="w-[140px] h-9 text-sm">
+                  <SelectValue />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all">All</SelectItem>
+                  {categories.map((cat) => (
+                    <SelectItem key={cat.id} value={cat.id}>
+                      {cat.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
           {!staticItems && subCategories.length > 0 && (
             <div>
-              <label className="text-xs text-muted-foreground block mb-1">Category:</label>
+              <label className="text-xs text-muted-foreground block mb-1">Subcategory:</label>
               <Select value={selectedSubCategory} onValueChange={setSelectedSubCategory}>
                 <SelectTrigger className="w-[160px] h-9 text-sm">
                   <SelectValue />

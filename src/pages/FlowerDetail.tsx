@@ -40,7 +40,7 @@ const FlowerDetail = () => {
 
         setProduct({
           name: prod.product_name,
-          description: prod.description || "Premium quality product from Infinity Floral Grower.",
+          description: prod.description || "Premium quality product from Han Cloud Co. Ltd.",
           stock: prod.stock_status,
           images: imgUrls.length > 0 ? imgUrls : [PLACEHOLDER],
         });

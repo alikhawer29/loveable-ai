@@ -4,7 +4,7 @@ import { useAuth } from "@/contexts/AuthContext";
 import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { Flower2, Grip, BookOpen, Bell, CheckCircle, Circle } from "lucide-react";
+import { Flower2, BookOpen, Bell, CheckCircle, Circle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
@@ -19,18 +19,11 @@ interface Notification {
 
 const quickActions = [
   {
-    title: "Browse Flowers",
-    description: "Explore our curated collection of fresh flowers and orchids.",
+    title: "Browse Products",
+    description: "Explore our curated collection of orchids, flowers, and pots.",
     icon: Flower2,
-    to: "/flowers",
+    to: "/products",
     color: "bg-pink-50 text-pink-600",
-  },
-  {
-    title: "Browse Pots",
-    description: "Find the perfect pot for your plants and flowers.",
-    icon: Grip,
-    to: "/pots",
-    color: "bg-amber-50 text-amber-600",
   },
   {
     title: "View Guidelines",
