@@ -10,7 +10,7 @@ const quickLinksLeft = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Wholesale", path: "/about" },
-  { label: "Guidelines", path: "/guidelines" },
+  { label: "Blogs", path: "/blogs" },
   { label: "Products", path: "/products" },
 ];
 

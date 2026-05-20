@@ -5,6 +5,7 @@ import {
   FolderTree,
   Package,
   BookOpen,
+  Newspaper,
   MessageSquareText,
   Bell,
 } from "lucide-react";
@@ -16,6 +17,7 @@ const menuItems = [
   { title: "Category Management", url: "/admin/categories", icon: FolderTree },
   { title: "Product Management", url: "/admin/products", icon: Package },
   { title: "Guidelines", url: "/admin/guidelines", icon: BookOpen },
+  { title: "Blogs", url: "/admin/blogs", icon: Newspaper },
   { title: "Queries", url: "/admin/queries", icon: MessageSquareText },
   { title: "Notifications", url: "/admin/notifications", icon: Bell },
 ];
@@ -45,8 +47,8 @@ export function AdminSidebar() {
               key={item.title}
               to={item.url}
               className={`flex items-center gap-3 px-5 py-3 text-sm font-medium transition-colors ${isActive
-                  ? "bg-primary text-primary-foreground"
-                  : "text-foreground hover:bg-muted"
+                ? "bg-primary text-primary-foreground"
+                : "text-foreground hover:bg-muted"
                 }`}
             >
               <item.icon className="h-5 w-5 shrink-0" />

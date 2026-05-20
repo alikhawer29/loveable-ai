@@ -26,10 +26,10 @@ const quickActions = [
     color: "bg-pink-50 text-pink-600",
   },
   {
-    title: "View Guidelines",
+    title: "View Blogs",
     description: "Read care guides and tips to keep your plants thriving.",
     icon: BookOpen,
-    to: "/guideline",
+    to: "/blogs",
     color: "bg-emerald-50 text-emerald-600",
   },
 ];

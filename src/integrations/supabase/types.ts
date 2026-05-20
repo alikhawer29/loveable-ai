@@ -38,6 +38,42 @@ export type Database = {
         }
         Relationships: []
       }
+      blogs: {
+        Row: {
+          content: string | null
+          created_at: string
+          featured_image_url: string | null
+          id: string
+          is_featured: boolean
+          slug: string
+          status: string
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          featured_image_url?: string | null
+          id?: string
+          is_featured?: boolean
+          slug: string
+          status?: string
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          featured_image_url?: string | null
+          id?: string
+          is_featured?: boolean
+          slug?: string
+          status?: string
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       guidelines_articles: {
         Row: {
           content: string | null

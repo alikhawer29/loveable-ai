@@ -21,6 +21,8 @@ import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
 import Guidelines from "./pages/Guidelines";
 import GuidelineDetail from "./pages/GuidelineDetail";
+import Blogs from "./pages/Blogs";
+import BlogDetail from "./pages/BlogDetail";
 import AdminLogin from "./pages/admin/AdminLogin";
 import AdminForgotPassword from "./pages/admin/AdminForgotPassword";
 import AdminDashboard from "./pages/admin/AdminDashboard";
@@ -43,6 +45,10 @@ import AdminGuidelines from "./pages/admin/AdminGuidelines";
 import AdminViewGuideline from "./pages/admin/AdminViewGuideline";
 import AdminAddGuideline from "./pages/admin/AdminAddGuideline";
 import AdminEditGuideline from "./pages/admin/AdminEditGuideline";
+import AdminBlogs from "./pages/admin/AdminBlogs";
+import AdminAddBlog from "./pages/admin/AdminAddBlog";
+import AdminViewBlog from "./pages/admin/AdminViewBlog";
+import AdminEditBlog from "./pages/admin/AdminEditBlog";
 import AdminQueries from "./pages/admin/AdminQueries";
 import AdminQueryDetail from "./pages/admin/AdminQueryDetail";
 import AdminNewsletter from "./pages/admin/AdminNewsletter";
@@ -115,10 +121,11 @@ const App = () => (
             <Route path="/pots" element={<Navigate to="/products" replace />} />
             <Route path="/pots/clay-pots" element={<Navigate to="/products" replace />} />
             <Route path="/pots/:slug" element={<RedirectProductSlug />} />
-            <Route path="/guideline" element={<Guidelines />} />
-            <Route path="/guidelines" element={<Guidelines />} />
+            <Route path="/blogs" element={<Blogs />} />
+            <Route path="/blog/:slug" element={<BlogDetail />} />
+            <Route path="/guideline" element={<Navigate to="/blogs" replace />} />
+            <Route path="/guidelines" element={<Navigate to="/blogs" replace />} />
             <Route path="/guideline/:slug" element={<ProtectedRoute><GuidelineDetail /></ProtectedRoute>} />
-            <Route path="/blog/:slug" element={<GuidelineDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<Policy />} />
             <Route path="/terms" element={<Terms />} />
@@ -150,6 +157,10 @@ const App = () => (
                   <Route path="guidelines/add" element={<AdminProtectedRoute><AdminAddGuideline /></AdminProtectedRoute>} />
                   <Route path="guidelines/:id" element={<AdminProtectedRoute><AdminViewGuideline /></AdminProtectedRoute>} />
                   <Route path="guidelines/:id/edit" element={<AdminProtectedRoute><AdminEditGuideline /></AdminProtectedRoute>} />
+                  <Route path="blogs" element={<AdminProtectedRoute><AdminBlogs /></AdminProtectedRoute>} />
+                  <Route path="blogs/add" element={<AdminProtectedRoute><AdminAddBlog /></AdminProtectedRoute>} />
+                  <Route path="blogs/:id/edit" element={<AdminProtectedRoute><AdminEditBlog /></AdminProtectedRoute>} />
+                  <Route path="blogs/:id" element={<AdminProtectedRoute><AdminViewBlog /></AdminProtectedRoute>} />
                   <Route path="queries" element={<AdminProtectedRoute><AdminQueries /></AdminProtectedRoute>} />
                   <Route path="queries/:id" element={<AdminProtectedRoute><AdminQueryDetail /></AdminProtectedRoute>} />
                   <Route path="newsletter" element={<AdminProtectedRoute><AdminNewsletter /></AdminProtectedRoute>} />

@@ -6,6 +6,14 @@ import { Leaf, Award, Truck, HeartHandshake } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  type BlogPost,
+  formatBlogDateShort,
+  estimateReadTime,
+  getExcerpt,
+  getBlogImage,
+  getBlogUrl,
+} from "@/lib/blog-utils";
 
 import heroImage from "@/assets/hero-greenhouse.jpg";
 import welcomeImage from "@/assets/welcome-florist.png";
@@ -55,8 +63,10 @@ const Index = () => {
   const authLink = useAuthLink();
   const [products, setProducts] = useState<HomeProduct[]>([]);
   const [careArticles, setCareArticles] = useState<HomeArticle[]>([]);
+  const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
   const [loadingProducts, setLoadingProducts] = useState(true);
   const [loadingArticles, setLoadingArticles] = useState(true);
+  const [loadingBlogs, setLoadingBlogs] = useState(true);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -118,8 +128,26 @@ const Index = () => {
       }
     };
 
+    const fetchBlogs = async () => {
+      try {
+        const { data } = await supabase
+          .from("blogs")
+          .select("id, title, slug, content, featured_image_url, status, is_featured, created_at")
+          .eq("status", "published")
+          .order("created_at", { ascending: false })
+          .limit(2);
+
+        setBlogPosts((data as BlogPost[]) || []);
+      } catch (err) {
+        console.error("Failed to fetch blogs:", err);
+      } finally {
+        setLoadingBlogs(false);
+      }
+    };
+
     fetchProducts();
     fetchArticles();
+    fetchBlogs();
   }, []);
 
   return (
@@ -149,8 +177,8 @@ const Index = () => {
               <Link to={authLink("/products")} className="btn-outline-light rounded-sm">
                 View Our Products
               </Link>
-              <Link to={authLink("/guidelines")} className="btn-plum rounded-sm">
-                Guidelines
+              <Link to="/blogs" className="btn-plum rounded-sm">
+                Blogs
               </Link>
             </div>
           </div>
@@ -328,7 +356,7 @@ const Index = () => {
         <div className="container">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-display text-2xl text-primary md:text-3xl">Your Guide to Plant Care</h2>
-            <Link to="/guidelines" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
+            <Link to="/blogs" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
               View All →
             </Link>
           </div>
@@ -371,7 +399,7 @@ const Index = () => {
       <section className="bg-white py-12">
         <div className="container">
           <h2 className="mb-6 text-center font-forum text-2xl font-normal leading-tight text-primary sm:text-3xl md:text-4xl lg:whitespace-nowrap lg:text-[46px]">
-            Sprout on the #HanCloudCo
+            Sprout on the #Han Cloud Co. Ltd
           </h2>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
             {instagramImages.map((img, i) => (
@@ -384,6 +412,64 @@ const Index = () => {
                 />
               </div>
             ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ========== BLOGS ========== */}
+      <section className="bg-white py-12 md:py-16 border-t border-border/40">
+        <div className="container max-w-5xl">
+          <h2 className="mb-10 text-center font-display text-3xl md:text-[46px] text-foreground">
+            Blogs
+          </h2>
+
+          {loadingBlogs ? (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10">
+              {Array.from({ length: 2 }).map((_, i) => (
+                <div key={i}>
+                  <Skeleton className="aspect-[16/10] rounded-lg mb-5" />
+                  <Skeleton className="h-6 w-3/4 mb-3" />
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-4 w-full mb-2" />
+                  <Skeleton className="h-3 w-32" />
+                </div>
+              ))}
+            </div>
+          ) : blogPosts.length === 0 ? (
+            <p className="text-center text-muted-foreground py-8 mb-10">No blog posts published yet.</p>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10">
+              {blogPosts.map((post) => (
+                <Link key={post.id} to={getBlogUrl(post)} className="group block">
+                  <div className="aspect-[16/10] overflow-hidden rounded-lg mb-5 bg-muted">
+                    <img
+                      src={getBlogImage(post)}
+                      alt={post.title}
+                      className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+                      loading="lazy"
+                    />
+                  </div>
+                  <h3 className="font-display text-xl md:text-2xl text-foreground mb-3 leading-snug group-hover:text-primary transition-colors">
+                    {post.title}
+                  </h3>
+                  <p className="text-sm text-muted-foreground leading-relaxed line-clamp-4 mb-3">
+                    {getExcerpt(post, 200)}
+                  </p>
+                  <p className="text-xs text-primary">
+                    {formatBlogDateShort(post.created_at)} · {estimateReadTime(post.content)} min read
+                  </p>
+                </Link>
+              ))}
+            </div>
+          )}
+
+          <div className="flex justify-center">
+            <Link
+              to="/blogs"
+              className="btn-plum rounded-sm px-10 py-3 text-xs font-medium uppercase tracking-wider"
+            >
+              Read More
+            </Link>
           </div>
         </div>
       </section>

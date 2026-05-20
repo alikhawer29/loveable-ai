@@ -2,6 +2,7 @@
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from "react";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
+import { getAuthRedirectUrl } from "@/lib/site-url";
 import type { User as SupabaseUser, Session } from "@supabase/supabase-js";
 
 interface UserProfile {
@@ -105,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       password,
       options: {
         data: { full_name: name, phone: phone || "" },
-        emailRedirectTo: window.location.origin,
+        emailRedirectTo: getAuthRedirectUrl("/login"),
       },
     });
     if (error) throw new Error(error.message);

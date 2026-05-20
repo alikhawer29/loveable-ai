@@ -203,7 +203,7 @@ const About = () => {
       <section className="section-dark py-12">
         <div className="container">
           <h2 className="font-display text-xl md:text-2xl font-bold text-[hsl(0_0%_100%)] text-center mb-6">
-            Sprout on the #HanCloudCo
+            Sprout on the #Han Cloud Co. Ltd
           </h2>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
             {instagramImages.map((img, i) => (

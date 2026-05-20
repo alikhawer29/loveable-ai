@@ -33,7 +33,7 @@ const headerNavLinks = [
   { label: "Home", path: "/" },
   { label: "About", path: "/about" },
   { label: "Products", path: "/products" },
-  { label: "Care", path: "/guidelines" },
+  { label: "Blogs", path: "/blogs" },
   { label: "Contact Us", path: "/contact" },
 ];
 
@@ -69,13 +69,15 @@ export function Navbar({ overlay = false }: NavbarProps) {
     if (!query.trim()) { setSearchResults([]); return; }
     setSearchLoading(true);
     const q = query.trim();
-    const [prodRes, guideRes] = await Promise.all([
+    const [prodRes, guideRes, blogRes] = await Promise.all([
       supabase.from("products").select("id, product_name").ilike("product_name", `%${q}%`).limit(5),
       supabase.from("guidelines_articles").select("id, title").ilike("title", `%${q}%`).eq("status", "published").limit(5),
+      supabase.from("blogs").select("slug, title").ilike("title", `%${q}%`).eq("status", "published").limit(5),
     ]);
     const results: { type: string; id: string; name: string }[] = [];
     (prodRes.data || []).forEach((p) => results.push({ type: "product", id: p.id, name: p.product_name }));
     (guideRes.data || []).forEach((g) => results.push({ type: "guideline", id: g.id, name: g.title }));
+    (blogRes.data || []).forEach((b) => results.push({ type: "blog", id: b.slug, name: b.title }));
     setSearchResults(results);
     setSearchLoading(false);
   }, []);
@@ -115,10 +117,9 @@ export function Navbar({ overlay = false }: NavbarProps) {
   }, [isAuthenticated]);
   const isActive = (path: string) => {
     if (path === "/") return location.pathname === "/";
-    if (path === "/guidelines") {
+    if (path === "/blogs") {
       return (
-        location.pathname.startsWith("/guidelines") ||
-        location.pathname.startsWith("/guideline/") ||
+        location.pathname === "/blogs" ||
         location.pathname.startsWith("/blog/")
       );
     }
@@ -411,7 +412,7 @@ export function Navbar({ overlay = false }: NavbarProps) {
             <div className="relative">
               <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground" />
               <Input
-                placeholder="Search products, guidelines..."
+                placeholder="Search products, blogs, guidelines..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10"
@@ -433,10 +434,18 @@ export function Navbar({ overlay = false }: NavbarProps) {
                   setSearchQuery("");
                   setSearchResults([]);
                   if (!isAuthenticated) { navigate("/login"); return; }
-                  navigate(r.type === "product" ? `/products/${r.name.toLowerCase().replace(/\s+/g, "-")}` : `/blog/${r.id}`);
+                  if (r.type === "product") {
+                    navigate(`/products/${r.name.toLowerCase().replace(/\s+/g, "-")}`);
+                  } else if (r.type === "blog") {
+                    navigate(`/blog/${r.id}`);
+                  } else {
+                    navigate(`/blog/${r.id}`);
+                  }
                 }}
               >
-                <span className="text-xs font-medium uppercase text-muted-foreground w-16">{r.type === "product" ? "Product" : "Guide"}</span>
+                <span className="text-xs font-medium uppercase text-muted-foreground w-16">
+                  {r.type === "product" ? "Product" : r.type === "blog" ? "Blog" : "Guide"}
+                </span>
                 <span className="text-sm text-foreground">{r.name}</span>
               </button>
             ))}
