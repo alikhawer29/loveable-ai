@@ -112,7 +112,7 @@ const AdminViewBlog = () => {
         <div>
           <p className="text-sm text-muted-foreground mb-2">Content</p>
           <div
-            className="prose prose-sm max-w-none text-foreground"
+            className="blog-content"
             dangerouslySetInnerHTML={{ __html: blog.content || "" }}
           />
         </div>

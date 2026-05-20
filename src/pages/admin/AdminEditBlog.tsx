@@ -7,7 +7,7 @@ import { Input } from "@/components/ui/input";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
-import { CheckCircle2, Upload, Trash2 } from "lucide-react";
+import { CheckCircle2, Upload, Trash2, ArrowLeft } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { RichTextEditor } from "@/components/admin/RichTextEditor";
 import { slugify, ensureUniqueBlogSlug } from "@/lib/slug-utils";
@@ -101,7 +101,10 @@ const AdminEditBlog = () => {
 
   return (
     <AdminLayout>
-      <h1 className="font-display text-[46px] font-semibold text-foreground mb-6">Edit Blog</h1>
+      <div className="flex items-center gap-3 mb-6">
+        <button onClick={() => navigate(-1)} className="text-foreground hover:text-primary transition-colors"><ArrowLeft className="h-6 w-6" /></button>
+        <h1 className="font-display text-[46px] font-semibold text-foreground">Edit Blog</h1>
+      </div>
       <div className="bg-card rounded-xl border border-border p-6 lg:p-8 max-w-3xl space-y-5">
         <div>
           <label className="block text-sm font-medium text-foreground mb-1.5">Title *</label>

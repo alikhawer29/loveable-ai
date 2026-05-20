@@ -111,7 +111,7 @@ const BlogDetail = () => {
         </button>
 
         {/* Blog detail */}
-        <article className="mx-auto w-full max-w-4xl">
+        <article className="mx-auto w-full max-w-4xl mb-10">
           <header className="mb-8 text-center">
             <h1 className="font-display text-3xl md:text-[46px] text-foreground mb-3 leading-tight">
               {article.title}
@@ -130,7 +130,7 @@ const BlogDetail = () => {
           </div>
 
           <div
-            className="prose prose-sm md:prose-base max-w-none text-foreground/90 prose-headings:font-display prose-headings:text-foreground prose-p:leading-relaxed prose-a:text-primary prose-img:rounded-lg prose-img:w-full"
+            className="blog-content"
             dangerouslySetInnerHTML={{ __html: article.content || "" }}
           />
         </article>
@@ -138,7 +138,7 @@ const BlogDetail = () => {
         {relatedArticles.length > 0 && (
           <section className="container mx-auto pb-14 md:pb-20 max-w-6xl">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between mb-8">
-              <h2 className="font-display text-2xl md:text-[46px] text-foreground leading-tight">
+              <h2 className="font-display text-2xl md:text-[40px] text-foreground leading-tight">
                 More News And Events
               </h2>
               <Link to="/blogs" className="btn-plum rounded-sm text-xs uppercase tracking-wider px-6 shrink-0">
