@@ -125,7 +125,7 @@ const BlogDetail = () => {
             <img
               src={getBlogImage(article)}
               alt={article.title}
-              className="w-full aspect-[16/9] object-cover"
+              className="w-full aspect-[16/9] object-contain bg-muted"
             />
           </div>
 
