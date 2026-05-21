@@ -7,6 +7,17 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ProductColorVariationsSection } from "@/components/admin/ProductColorVariationsSection";
+import {
+  createEmptyVariantStates,
+  variantStatesFromRows,
+  validateColorVariants,
+  saveProductColorVariants,
+  uploadProductImages,
+  insertProductImageRows,
+  type ColorVariantFormState,
+  type ProductColorVariantRow,
+} from "@/lib/product-color-variants";
 
 interface Category { id: string; category_name: string; }
 interface SubCategory { id: string; sub_category_name: string; category_id: string; }
@@ -32,17 +43,20 @@ export default function AdminEditProduct() {
   const [existingImages, setExistingImages] = useState<{ id: string; image_url: string }[]>([]);
   const [newFiles, setNewFiles] = useState<File[]>([]);
   const [newPreviews, setNewPreviews] = useState<string[]>([]);
+  const [hasColorVariations, setHasColorVariations] = useState(false);
+  const [colorVariants, setColorVariants] = useState<ColorVariantFormState[]>(createEmptyVariantStates);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [successOpen, setSuccessOpen] = useState(false);
   const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     const load = async () => {
-      const [catRes, prodRes, productRes, imgRes] = await Promise.all([
+      const [catRes, prodRes, productRes, imgRes, variantRes] = await Promise.all([
         supabase.from("categories").select("id, category_name"),
         supabase.from("products").select("id, product_name").order("product_name"),
         supabase.from("products").select("*, categories(category_name), subcategories(sub_category_name)").eq("id", id!).maybeSingle(),
         supabase.from("product_images").select("id, image_url").eq("product_id", id!),
+        supabase.from("product_color_variants").select("*").eq("product_id", id!),
       ]);
       if (catRes.data) setCategories(catRes.data);
       if (prodRes.data) setAllProducts(prodRes.data.filter(p => p.id !== id));
@@ -56,6 +70,10 @@ export default function AdminEditProduct() {
         setStockAvailability(p.stock_status);
         setStatus(p.status as "active" | "inactive");
         setSelectedComparisons(p.comparison_products || []);
+        setHasColorVariations(!!p.has_color_variations);
+        if (variantRes.data?.length) {
+          setColorVariants(variantStatesFromRows(variantRes.data as ProductColorVariantRow[]));
+        }
       }
       setLoading(false);
     };
@@ -71,6 +89,8 @@ export default function AdminEditProduct() {
     const errs: Record<string, string> = {};
     if (!name.trim()) errs.name = "Product name is required";
     if (!description.trim()) errs.description = "Product description is required";
+    const colorErr = validateColorVariants(hasColorVariations, colorVariants);
+    if (colorErr) errs.colorVariations = colorErr;
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -81,18 +101,16 @@ export default function AdminEditProduct() {
     const { error } = await supabase.from("products").update({
       product_name: name, description, category_id: categoryId || null, sub_category_id: subCategoryId || null,
       stock_status: stockAvailability, status, comparison_products: selectedComparisons,
+      has_color_variations: hasColorVariations,
     }).eq("id", id!);
 
     if (error) { toast.error("Failed to update product"); setSaving(false); return; }
 
-    for (const file of newFiles) {
-      const filePath = `${id}/${Date.now()}-${file.name}`;
-      const { error: upErr } = await supabase.storage.from("product-images").upload(filePath, file);
-      if (!upErr) {
-        const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(filePath);
-        await supabase.from("product_images").insert({ product_id: id!, image_url: urlData.publicUrl });
-      }
+    if (newFiles.length > 0) {
+      const urls = await uploadProductImages(id!, newFiles);
+      await insertProductImageRows(id!, urls);
     }
+    await saveProductColorVariants(id!, hasColorVariations, colorVariants);
     setSaving(false);
     setSuccessOpen(true);
   };
@@ -187,8 +205,23 @@ export default function AdminEditProduct() {
             </div>
           </div>
 
+          <ProductColorVariationsSection
+            hasColorVariations={hasColorVariations}
+            onHasColorVariationsChange={setHasColorVariations}
+            variants={colorVariants}
+            onVariantsChange={setColorVariants}
+            error={errors.colorVariations}
+          />
+
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Images</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">
+              {hasColorVariations ? "Default product images (fallback)" : "Images"}
+            </label>
+            {hasColorVariations && (
+              <p className="text-xs text-muted-foreground mb-2">
+                Shown when a color has no images uploaded.
+              </p>
+            )}
             <div className="flex gap-3 mb-3 flex-wrap">
               {existingImages.map((img) => (
                 <div key={img.id} className="relative h-28 w-28 rounded-lg overflow-hidden border border-border">

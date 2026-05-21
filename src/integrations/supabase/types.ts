@@ -181,12 +181,57 @@ export type Database = {
           },
         ]
       }
+      product_color_variants: {
+        Row: {
+          color_hex: string
+          color_label: string | null
+          created_at: string
+          id: string
+          images: string[]
+          is_default: boolean
+          product_id: string
+          stock: number | null
+          updated_at: string
+        }
+        Insert: {
+          color_hex: string
+          color_label?: string | null
+          created_at?: string
+          id?: string
+          images?: string[]
+          is_default?: boolean
+          product_id: string
+          stock?: number | null
+          updated_at?: string
+        }
+        Update: {
+          color_hex?: string
+          color_label?: string | null
+          created_at?: string
+          id?: string
+          images?: string[]
+          is_default?: boolean
+          product_id?: string
+          stock?: number | null
+          updated_at?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "product_color_variants_product_id_fkey"
+            columns: ["product_id"]
+            isOneToOne: false
+            referencedRelation: "products"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       products: {
         Row: {
           category_id: string | null
           comparison_products: string[] | null
           created_at: string
           description: string | null
+          has_color_variations: boolean
           id: string
           product_name: string
           status: string
@@ -199,6 +244,7 @@ export type Database = {
           comparison_products?: string[] | null
           created_at?: string
           description?: string | null
+          has_color_variations?: boolean
           id?: string
           product_name: string
           status?: string
@@ -211,6 +257,7 @@ export type Database = {
           comparison_products?: string[] | null
           created_at?: string
           description?: string | null
+          has_color_variations?: boolean
           id?: string
           product_name?: string
           status?: string

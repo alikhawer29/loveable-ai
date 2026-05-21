@@ -7,6 +7,15 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
+import { ProductColorVariationsSection } from "@/components/admin/ProductColorVariationsSection";
+import {
+  createEmptyVariantStates,
+  validateColorVariants,
+  saveProductColorVariants,
+  uploadProductImages,
+  insertProductImageRows,
+  type ColorVariantFormState,
+} from "@/lib/product-color-variants";
 
 interface Category { id: string; category_name: string; }
 interface SubCategory { id: string; sub_category_name: string; category_id: string; }
@@ -30,6 +39,8 @@ export default function AdminAddProduct() {
   const [comparisonOpen, setComparisonOpen] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
+  const [hasColorVariations, setHasColorVariations] = useState(false);
+  const [colorVariants, setColorVariants] = useState<ColorVariantFormState[]>(createEmptyVariantStates);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
@@ -59,6 +70,8 @@ export default function AdminAddProduct() {
     if (!name.trim()) errs.name = "Product name is required";
     if (!description.trim()) errs.description = "Product description is required";
     if (!categoryId) errs.category = "Please select a category";
+    const colorErr = validateColorVariants(hasColorVariations, colorVariants);
+    if (colorErr) errs.colorVariations = colorErr;
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -76,6 +89,7 @@ export default function AdminAddProduct() {
       stock_status: stockAvailability,
       status,
       comparison_products: selectedComparisons,
+      has_color_variations: hasColorVariations,
     }).select().single();
 
     if (error || !prod) {
@@ -84,14 +98,16 @@ export default function AdminAddProduct() {
       return;
     }
 
-    // Upload images
-    for (const file of imageFiles) {
-      const filePath = `${prod.id}/${Date.now()}-${file.name}`;
-      const { error: upErr } = await supabase.storage.from("product-images").upload(filePath, file);
-      if (!upErr) {
-        const { data: urlData } = supabase.storage.from("product-images").getPublicUrl(filePath);
-        await supabase.from("product_images").insert({ product_id: prod.id, image_url: urlData.publicUrl });
+    if (!hasColorVariations && imageFiles.length > 0) {
+      const urls = await uploadProductImages(prod.id, imageFiles);
+      await insertProductImageRows(prod.id, urls);
+    }
+    if (hasColorVariations) {
+      if (imageFiles.length > 0) {
+        const urls = await uploadProductImages(prod.id, imageFiles);
+        await insertProductImageRows(prod.id, urls);
       }
+      await saveProductColorVariants(prod.id, true, colorVariants);
     }
 
     setSaving(false);
@@ -199,14 +215,29 @@ export default function AdminAddProduct() {
             </div>
           </div>
 
+          <ProductColorVariationsSection
+            hasColorVariations={hasColorVariations}
+            onHasColorVariationsChange={setHasColorVariations}
+            variants={colorVariants}
+            onVariantsChange={setColorVariants}
+            error={errors.colorVariations}
+          />
+
           <div>
-            <label className="block text-sm font-medium text-foreground mb-1.5">Upload Images*</label>
+            <label className="block text-sm font-medium text-foreground mb-1.5">
+              {hasColorVariations ? "Default product images (fallback)" : "Upload Images*"}
+            </label>
+            {hasColorVariations && (
+              <p className="text-xs text-muted-foreground mb-2">
+                Shown when a color has no images uploaded. Optional if every color has images.
+              </p>
+            )}
             {imagePreviews.length > 0 && (
               <div className="flex gap-3 mb-3 flex-wrap">
                 {imagePreviews.map((img, idx) => (
                   <div key={idx} className="relative h-24 w-24 rounded-lg overflow-hidden border border-border">
                     <img src={img} alt="" className="h-full w-full object-cover" />
-                    <button onClick={() => removeImage(idx)} className="absolute top-1 right-1 h-5 w-5 bg-destructive rounded-sm flex items-center justify-center text-destructive-foreground"><X className="h-3 w-3" /></button>
+                    <button type="button" onClick={() => removeImage(idx)} className="absolute top-1 right-1 h-5 w-5 bg-destructive rounded-sm flex items-center justify-center text-destructive-foreground"><X className="h-3 w-3" /></button>
                   </div>
                 ))}
               </div>

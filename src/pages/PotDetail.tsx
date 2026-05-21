@@ -133,7 +133,6 @@ const PotDetail = () => {
       description={product.description}
       additionalDescription=""
       stock={product.stock === "in_stock" ? 500 : 0}
-      color="Natural"
       images={product.images}
       relatedTitle="Recommended Flowers"
       relatedItems={relatedItems}
