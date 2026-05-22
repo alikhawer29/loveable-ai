@@ -55,6 +55,7 @@ import AdminNewsletter from "./pages/admin/AdminNewsletter";
 import AdminNotifications from "./pages/admin/AdminNotifications";
 import AdminCreateNotification from "./pages/admin/AdminCreateNotification";
 import NotFound from "./pages/NotFound";
+import { ScrollToTop } from "@/components/ScrollToTop";
 import { type ReactNode } from "react";
 
 const queryClient = new QueryClient();
@@ -104,6 +105,7 @@ const App = () => (
             v7_relativeSplatPath: true,
           }}
         >
+          <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
             <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
