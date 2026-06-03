@@ -6,14 +6,13 @@ import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { getColorDisplayLabel } from "@/lib/product-color-variants";
 
 export default function AdminViewProduct() {
   const navigate = useNavigate();
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<any>(null);
   const [images, setImages] = useState<string[]>([]);
-  const [colorVariants, setColorVariants] = useState<{ color_hex: string; color_label: string | null; images: string[]; is_default: boolean }[]>([]);
+  const [designVariants, setDesignVariants] = useState<{ id: string; design_name: string; images: string[]; is_default: boolean }[]>([]);
   const [compNames, setCompNames] = useState<string[]>([]);
   const [status, setStatus] = useState<"active" | "inactive">("active");
   const [loading, setLoading] = useState(true);
@@ -33,12 +32,12 @@ export default function AdminViewProduct() {
 
       const [{ data: imgs }, { data: variants }] = await Promise.all([
         supabase.from("product_images").select("image_url").eq("product_id", id),
-        data.has_color_variations
-          ? supabase.from("product_color_variants").select("color_hex, color_label, images, is_default").eq("product_id", id)
+        data.has_design_variations
+          ? supabase.from("product_design_variants").select("id, design_name, images, is_default, sort_order").eq("product_id", id).order("sort_order")
           : Promise.resolve({ data: [] }),
       ]);
       setImages((imgs || []).map((i: any) => i.image_url));
-      setColorVariants((variants || []) as typeof colorVariants);
+      setDesignVariants((variants || []) as typeof designVariants);
 
       if (data.comparison_products?.length) {
         const { data: comps } = await supabase.from("products").select("product_name").in("id", data.comparison_products);
@@ -113,19 +112,15 @@ export default function AdminViewProduct() {
           </div>
         )}
 
-        {product.has_color_variations && colorVariants.length > 0 && (
+        {product.has_design_variations && designVariants.length > 0 && (
           <div className="mb-8">
-            <p className="text-sm text-muted-foreground mb-3">Color Variations:</p>
+            <p className="text-sm text-muted-foreground mb-3">Pod Design Variations:</p>
             <div className="space-y-4">
-              {colorVariants.map((v) => (
-                <div key={v.color_hex} className="border border-border rounded-lg p-4">
+              {designVariants.map((v) => (
+                <div key={v.id} className="border border-border rounded-lg p-4">
                   <div className="flex items-center gap-2 mb-2">
-                    <span
-                      className="h-6 w-6 rounded-full border border-border"
-                      style={{ backgroundColor: v.color_hex }}
-                    />
                     <span className="text-sm font-semibold text-foreground">
-                      {getColorDisplayLabel(v.color_hex, v.color_label)}
+                      {v.design_name}
                       {v.is_default && (
                         <span className="ml-2 text-xs text-muted-foreground font-normal">(Default)</span>
                       )}

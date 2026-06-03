@@ -348,7 +348,7 @@ const Index = () => {
         <div className="container">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-display text-2xl text-primary md:text-3xl">Your Guide to Plant Care</h2>
-            <Link to="/blogs" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
+            <Link to="/guidelines" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
               View All →
             </Link>
           </div>
@@ -367,7 +367,7 @@ const Index = () => {
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {careArticles.map((article) => (
-                <Link key={article.id} to={`/blog/${article.id}`} className="group">
+                <Link key={article.id} to={`/guideline/${article.id}`} className="group">
                   <div className="aspect-[4/3] overflow-hidden rounded-lg mb-4">
                     <img
                       src={article.image}

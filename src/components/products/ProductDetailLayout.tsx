@@ -3,7 +3,7 @@ import { ArrowLeft, Phone } from "lucide-react";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { useState, useEffect, useMemo } from "react";
-import { resolveGalleryImages } from "@/lib/product-color-variants";
+import { resolveGalleryImages } from "@/lib/product-design-variants";
 
 interface RelatedItem {
   id: string;
@@ -13,10 +13,12 @@ interface RelatedItem {
   detailPath: string;
 }
 
-export interface ProductColorOption {
-  hex: string;
-  label: string;
+export interface ProductDesignOption {
+  id: string;
+  name: string;
+  thumbnail: string;
   images: string[];
+  isDefault?: boolean;
 }
 
 interface ProductDetailLayoutProps {
@@ -26,8 +28,8 @@ interface ProductDetailLayoutProps {
   stock: number;
   images: string[];
   fallbackImages?: string[];
-  colorVariations?: ProductColorOption[];
-  showColorSwatches?: boolean;
+  designVariations?: ProductDesignOption[];
+  showDesignPicker?: boolean;
   relatedTitle: string;
   relatedItems: RelatedItem[];
   backPath: string;
@@ -40,8 +42,8 @@ export function ProductDetailLayout({
   stock,
   images,
   fallbackImages = [],
-  colorVariations = [],
-  showColorSwatches = false,
+  designVariations = [],
+  showDesignPicker = false,
   relatedTitle,
   relatedItems,
   backPath,
@@ -49,35 +51,33 @@ export function ProductDetailLayout({
   const navigate = useNavigate();
   const fallback = fallbackImages.length > 0 ? fallbackImages : images;
 
-  const defaultHex = useMemo(
-    () => colorVariations[0]?.hex ?? "",
-    [colorVariations]
+  const defaultDesignId = useMemo(
+    () => designVariations.find((v) => v.isDefault)?.id ?? designVariations[0]?.id ?? "",
+    [designVariations]
   );
 
-  const [selectedColorHex, setSelectedColorHex] = useState(defaultHex);
+  const [selectedDesignId, setSelectedDesignId] = useState(defaultDesignId);
   const [selectedImage, setSelectedImage] = useState(0);
 
   useEffect(() => {
-    setSelectedColorHex(defaultHex);
+    setSelectedDesignId(defaultDesignId);
     setSelectedImage(0);
-  }, [defaultHex, name]);
+  }, [defaultDesignId, name]);
 
-  const activeVariant = colorVariations.find((v) => v.hex === selectedColorHex);
+  const activeVariant = designVariations.find((v) => v.id === selectedDesignId);
   const displayImages = useMemo(() => {
-    if (showColorSwatches && activeVariant) {
+    if (showDesignPicker && activeVariant) {
       return resolveGalleryImages(activeVariant.images, fallback);
     }
     return resolveGalleryImages(images, fallback);
-  }, [showColorSwatches, activeVariant, images, fallback]);
+  }, [showDesignPicker, activeVariant, images, fallback]);
 
-  const colorLabel = activeVariant?.label ?? "";
+  const designLabel = activeVariant?.name ?? "";
 
-  const handleColorSelect = (hex: string) => {
-    setSelectedColorHex(hex);
+  const handleDesignSelect = (id: string) => {
+    setSelectedDesignId(id);
     setSelectedImage(0);
   };
-
-  const isLightSwatch = (hex: string) => hex === "#ffffff" || hex === "#ede8d0";
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
@@ -96,7 +96,7 @@ export function ProductDetailLayout({
               <div className="flex flex-col gap-2 flex-shrink-0">
                 {displayImages.map((img, i) => (
                   <button
-                    key={`${selectedColorHex}-${i}`}
+                    key={`${selectedDesignId}-${i}`}
                     type="button"
                     onClick={() => setSelectedImage(i)}
                     className={`w-16 h-16 rounded-md overflow-hidden border-2 transition-colors ${selectedImage === i ? "border-primary" : "border-transparent"
@@ -114,8 +114,6 @@ export function ProductDetailLayout({
                 />
               </div>
             </div>
-
-
           </div>
 
           <div className="space-y-5">
@@ -131,32 +129,41 @@ export function ProductDetailLayout({
                   In Stock: <strong>{stock} Units</strong>
                 </span>
               </div>
-              {showColorSwatches && colorVariations.length > 1 && (
+              {showDesignPicker && designVariations.length > 0 && (
                 <div className="space-y-2.5 pt-1">
                   <p className="text-sm text-foreground">
-                    Color: <strong>{colorLabel}</strong>
+                    Pod Design: <strong>{designLabel}</strong>
                   </p>
                   <div className="flex items-center gap-3 flex-wrap">
-                    {colorVariations.map((variant) => {
-                      const active = selectedColorHex === variant.hex;
-                      const light = isLightSwatch(variant.hex);
+                    {designVariations.map((variant) => {
+                      const active = selectedDesignId === variant.id;
                       return (
                         <button
-                          key={variant.hex}
+                          key={variant.id}
                           type="button"
-                          title={variant.label}
-                          onClick={() => handleColorSelect(variant.hex)}
-                          className={`h-9 w-9 rounded-full border-2 transition-all shrink-0 ${active
-                              ? "ring-2 ring-offset-2 ring-foreground border-foreground"
-                              : "border-border hover:border-foreground/50"
+                          title={variant.name}
+                          onClick={() => handleDesignSelect(variant.id)}
+                          className={`flex flex-col items-center gap-1.5 shrink-0 transition-opacity ${active ? "opacity-100" : "opacity-70 hover:opacity-100"
                             }`}
-                          style={{
-                            backgroundColor: variant.hex,
-                            boxShadow: light ? "inset 0 0 0 1px rgba(0,0,0,0.15)" : undefined,
-                          }}
-                          aria-label={`Color ${variant.label}`}
+                          aria-label={`Design ${variant.name}`}
                           aria-pressed={active}
-                        />
+                        >
+                          <span
+                            className={`h-14 w-14 rounded-md overflow-hidden border-2 transition-all ${active
+                                ? "ring-2 ring-offset-2 ring-foreground border-foreground"
+                                : "border-border hover:border-foreground/50"
+                              }`}
+                          >
+                            <img
+                              src={variant.thumbnail}
+                              alt={variant.name}
+                              className="h-full w-full object-cover"
+                            />
+                          </span>
+                          <span className="text-[10px] text-muted-foreground max-w-[72px] truncate text-center">
+                            {variant.name}
+                          </span>
+                        </button>
                       );
                     })}
                   </div>

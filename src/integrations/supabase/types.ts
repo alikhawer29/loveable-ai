@@ -181,43 +181,43 @@ export type Database = {
           },
         ]
       }
-      product_color_variants: {
+      product_design_variants: {
         Row: {
-          color_hex: string
-          color_label: string | null
           created_at: string
+          design_name: string
           id: string
           images: string[]
           is_default: boolean
           product_id: string
+          sort_order: number
           stock: number | null
           updated_at: string
         }
         Insert: {
-          color_hex: string
-          color_label?: string | null
           created_at?: string
+          design_name: string
           id?: string
           images?: string[]
           is_default?: boolean
           product_id: string
+          sort_order?: number
           stock?: number | null
           updated_at?: string
         }
         Update: {
-          color_hex?: string
-          color_label?: string | null
           created_at?: string
+          design_name?: string
           id?: string
           images?: string[]
           is_default?: boolean
           product_id?: string
+          sort_order?: number
           stock?: number | null
           updated_at?: string
         }
         Relationships: [
           {
-            foreignKeyName: "product_color_variants_product_id_fkey"
+            foreignKeyName: "product_design_variants_product_id_fkey"
             columns: ["product_id"]
             isOneToOne: false
             referencedRelation: "products"
@@ -231,7 +231,7 @@ export type Database = {
           comparison_products: string[] | null
           created_at: string
           description: string | null
-          has_color_variations: boolean
+          has_design_variations: boolean
           id: string
           product_name: string
           status: string
@@ -244,7 +244,7 @@ export type Database = {
           comparison_products?: string[] | null
           created_at?: string
           description?: string | null
-          has_color_variations?: boolean
+          has_design_variations?: boolean
           id?: string
           product_name: string
           status?: string
@@ -257,7 +257,7 @@ export type Database = {
           comparison_products?: string[] | null
           created_at?: string
           description?: string | null
-          has_color_variations?: boolean
+          has_design_variations?: boolean
           id?: string
           product_name?: string
           status?: string

@@ -5,13 +5,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
+import { fetchActiveProductDetail, type ProductDetailData } from "@/lib/product-detail-fetch";
 
 const PLACEHOLDER = "/placeholder.svg";
 
 const PotDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState<{ name: string; description: string; stock: string; images: string[] } | null>(null);
+  const [product, setProduct] = useState<ProductDetailData | null>(null);
   const [relatedItems, setRelatedItems] = useState<{ id: string; name: string; image: string; isNew?: boolean; detailPath: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -20,31 +21,15 @@ const PotDetail = () => {
       if (!slug) return;
       setLoading(true);
       try {
-        const titleSearch = slug.replace(/-/g, " ");
-        const { data: prod } = await supabase
-          .from("products")
-          .select("id, product_name, description, stock_status, category_id, created_at")
-          .ilike("product_name", `%${titleSearch}%`)
-          .eq("status", "active")
-          .limit(1)
-          .maybeSingle();
+        const result = await fetchActiveProductDetail(slug);
+        if (!result) {
+          setProduct(null);
+          setLoading(false);
+          return;
+        }
 
-        if (!prod) { setProduct(null); setLoading(false); return; }
+        setProduct(result.product);
 
-        const { data: images } = await supabase
-          .from("product_images")
-          .select("image_url")
-          .eq("product_id", prod.id);
-        const imgUrls = (images || []).map((i) => i.image_url);
-
-        setProduct({
-          name: prod.product_name,
-          description: prod.description || "Premium quality product from Han Cloud Co. Ltd.",
-          stock: prod.stock_status,
-          images: imgUrls.length > 0 ? imgUrls : [PLACEHOLDER],
-        });
-
-        // Fetch related flowers
         const { data: flowerCat } = await supabase
           .from("categories")
           .select("id")
@@ -134,6 +119,9 @@ const PotDetail = () => {
       additionalDescription=""
       stock={product.stock === "in_stock" ? 500 : 0}
       images={product.images}
+      fallbackImages={product.fallbackImages}
+      designVariations={product.designVariations}
+      showDesignPicker={product.showDesignPicker}
       relatedTitle="Recommended Flowers"
       relatedItems={relatedItems}
       backPath="/pots"

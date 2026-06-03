@@ -7,15 +7,14 @@ import { Input } from "@/components/ui/input";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { supabase } from "@/integrations/supabase/client";
 import { toast } from "sonner";
-import { ProductColorVariationsSection } from "@/components/admin/ProductColorVariationsSection";
+import { ProductDesignVariationsSection } from "@/components/admin/ProductDesignVariationsSection";
 import {
-  createEmptyVariantStates,
-  validateColorVariants,
-  saveProductColorVariants,
+  validateDesignVariants,
+  saveProductDesignVariants,
   uploadProductImages,
   insertProductImageRows,
-  type ColorVariantFormState,
-} from "@/lib/product-color-variants";
+  type DesignVariantFormState,
+} from "@/lib/product-design-variants";
 
 interface Category { id: string; category_name: string; }
 interface SubCategory { id: string; sub_category_name: string; category_id: string; }
@@ -39,8 +38,8 @@ export default function AdminAddProduct() {
   const [comparisonOpen, setComparisonOpen] = useState(false);
   const [imageFiles, setImageFiles] = useState<File[]>([]);
   const [imagePreviews, setImagePreviews] = useState<string[]>([]);
-  const [hasColorVariations, setHasColorVariations] = useState(false);
-  const [colorVariants, setColorVariants] = useState<ColorVariantFormState[]>(createEmptyVariantStates);
+  const [hasDesignVariations, setHasDesignVariations] = useState(false);
+  const [designVariants, setDesignVariants] = useState<DesignVariantFormState[]>([]);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [successOpen, setSuccessOpen] = useState(false);
@@ -70,8 +69,8 @@ export default function AdminAddProduct() {
     if (!name.trim()) errs.name = "Product name is required";
     if (!description.trim()) errs.description = "Product description is required";
     if (!categoryId) errs.category = "Please select a category";
-    const colorErr = validateColorVariants(hasColorVariations, colorVariants);
-    if (colorErr) errs.colorVariations = colorErr;
+    const designErr = validateDesignVariants(hasDesignVariations, designVariants);
+    if (designErr) errs.designVariations = designErr;
     setErrors(errs);
     return Object.keys(errs).length === 0;
   };
@@ -89,7 +88,7 @@ export default function AdminAddProduct() {
       stock_status: stockAvailability,
       status,
       comparison_products: selectedComparisons,
-      has_color_variations: hasColorVariations,
+      has_design_variations: hasDesignVariations,
     }).select().single();
 
     if (error || !prod) {
@@ -98,16 +97,16 @@ export default function AdminAddProduct() {
       return;
     }
 
-    if (!hasColorVariations && imageFiles.length > 0) {
+    if (!hasDesignVariations && imageFiles.length > 0) {
       const urls = await uploadProductImages(prod.id, imageFiles);
       await insertProductImageRows(prod.id, urls);
     }
-    if (hasColorVariations) {
+    if (hasDesignVariations) {
       if (imageFiles.length > 0) {
         const urls = await uploadProductImages(prod.id, imageFiles);
         await insertProductImageRows(prod.id, urls);
       }
-      await saveProductColorVariants(prod.id, true, colorVariants);
+      await saveProductDesignVariants(prod.id, true, designVariants);
     }
 
     setSaving(false);
@@ -215,21 +214,21 @@ export default function AdminAddProduct() {
             </div>
           </div>
 
-          <ProductColorVariationsSection
-            hasColorVariations={hasColorVariations}
-            onHasColorVariationsChange={setHasColorVariations}
-            variants={colorVariants}
-            onVariantsChange={setColorVariants}
-            error={errors.colorVariations}
+          <ProductDesignVariationsSection
+            hasDesignVariations={hasDesignVariations}
+            onHasDesignVariationsChange={setHasDesignVariations}
+            variants={designVariants}
+            onVariantsChange={setDesignVariants}
+            error={errors.designVariations}
           />
 
           <div>
             <label className="block text-sm font-medium text-foreground mb-1.5">
-              {hasColorVariations ? "Default product images (fallback)" : "Upload Images*"}
+              {hasDesignVariations ? "Default product images (fallback)" : "Upload Images*"}
             </label>
-            {hasColorVariations && (
+            {hasDesignVariations && (
               <p className="text-xs text-muted-foreground mb-2">
-                Shown when a color has no images uploaded. Optional if every color has images.
+                Shown when a design has no images uploaded. Optional if every design has images.
               </p>
             )}
             {imagePreviews.length > 0 && (

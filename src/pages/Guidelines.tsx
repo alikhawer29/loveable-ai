@@ -82,7 +82,7 @@ const Guidelines = () => {
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             {articles.map((article) => (
-              <Link to={`/blog/${article.id}`} key={article.id} className="group">
+              <Link to={`/guideline/${article.id}`} key={article.id} className="group">
                 <div className="aspect-[4/3] overflow-hidden rounded-lg mb-3 relative bg-muted">
                   {article.video_url ? (
                     <video

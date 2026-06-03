@@ -5,26 +5,14 @@ import { supabase } from "@/integrations/supabase/client";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
-import {
-  getColorDisplayLabel,
-  resolveGalleryImages,
-} from "@/lib/product-color-variants";
-import type { ProductColorOption } from "@/components/products/ProductDetailLayout";
+import { fetchActiveProductDetail, type ProductDetailData } from "@/lib/product-detail-fetch";
 
 const PLACEHOLDER = "/placeholder.svg";
 
 const ProductDetail = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
-  const [product, setProduct] = useState<{
-    name: string;
-    description: string;
-    stock: string;
-    images: string[];
-    fallbackImages: string[];
-    colorVariations: ProductColorOption[];
-    showColorSwatches: boolean;
-  } | null>(null);
+  const [product, setProduct] = useState<ProductDetailData | null>(null);
   const [relatedItems, setRelatedItems] = useState<{ id: string; name: string; image: string; isNew?: boolean; detailPath: string }[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -33,69 +21,19 @@ const ProductDetail = () => {
       if (!slug) return;
       setLoading(true);
       try {
-        const titleSearch = slug.replace(/-/g, " ");
-        const { data: prod } = await supabase
-          .from("products")
-          .select("id, product_name, description, stock_status, category_id, created_at, has_color_variations")
-          .ilike("product_name", `%${titleSearch}%`)
-          .eq("status", "active")
-          .limit(1)
-          .maybeSingle();
-
-        if (!prod) {
+        const result = await fetchActiveProductDetail(slug);
+        if (!result) {
           setProduct(null);
           setLoading(false);
           return;
         }
 
-        const [{ data: images }, { data: variants }] = await Promise.all([
-          supabase.from("product_images").select("image_url").eq("product_id", prod.id),
-          prod.has_color_variations
-            ? supabase
-                .from("product_color_variants")
-                .select("color_hex, color_label, images, is_default")
-                .eq("product_id", prod.id)
-                .order("is_default", { ascending: false })
-            : Promise.resolve({ data: [] }),
-        ]);
-
-        const fallbackImages = (images || []).map((i) => i.image_url);
-        const variantRows = (variants || []) as {
-          color_hex: string;
-          color_label: string | null;
-          images: string[];
-          is_default: boolean;
-        }[];
-
-        const colorVariations: ProductColorOption[] = variantRows.map((v) => ({
-          hex: v.color_hex,
-          label: getColorDisplayLabel(v.color_hex, v.color_label),
-          images: v.images || [],
-        }));
-
-        const showColorSwatches =
-          !!prod.has_color_variations && colorVariations.length > 1;
-
-        const defaultVariant =
-          variantRows.find((v) => v.is_default) ?? variantRows[0];
-        const initialImages = showColorSwatches && defaultVariant
-          ? resolveGalleryImages(defaultVariant.images || [], fallbackImages, PLACEHOLDER)
-          : resolveGalleryImages(fallbackImages, [], PLACEHOLDER);
-
-        setProduct({
-          name: prod.product_name,
-          description: prod.description || "Premium quality product from Han Cloud Co. Ltd.",
-          stock: prod.stock_status,
-          images: initialImages,
-          fallbackImages,
-          colorVariations,
-          showColorSwatches,
-        });
+        setProduct(result.product);
 
         const { data: related } = await supabase
           .from("products")
           .select("id, product_name, created_at")
-          .neq("id", prod.id)
+          .neq("id", result.productId)
           .eq("status", "active")
           .order("created_at", { ascending: false })
           .limit(4);
@@ -174,8 +112,8 @@ const ProductDetail = () => {
       stock={product.stock === "in_stock" ? 500 : 0}
       images={product.images}
       fallbackImages={product.fallbackImages}
-      colorVariations={product.colorVariations}
-      showColorSwatches={product.showColorSwatches}
+      designVariations={product.designVariations}
+      showDesignPicker={product.showDesignPicker}
       relatedTitle="You May Also Like"
       relatedItems={relatedItems}
       backPath="/products"
