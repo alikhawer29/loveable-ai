@@ -3,15 +3,9 @@ import { BrowserRouter, Route, Routes, Navigate, useParams } from "react-router-
 import { Toaster as Sonner } from "@/components/ui/sonner";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import { AuthProvider, useAuth } from "@/contexts/AuthContext";
+import { AuthProvider } from "@/contexts/AuthContext";
 import { AdminAuthProvider, useAdminAuth } from "@/contexts/AdminAuthContext";
 import Index from "./pages/Index";
-import Login from "./pages/Login";
-import Register from "./pages/Register";
-import Dashboard from "./pages/Dashboard";
-import Settings from "./pages/Settings";
-import ForgotPassword from "./pages/ForgotPassword";
-import Profile from "./pages/Profile";
 import Contact from "./pages/Contact";
 import Policy from "./pages/Policy";
 import Terms from "./pages/Terms";
@@ -60,20 +54,6 @@ import { type ReactNode } from "react";
 
 const queryClient = new QueryClient();
 
-function ProtectedRoute({ children }: { children: ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center"><p>Loading...</p></div>;
-  if (!isAuthenticated) return <Navigate to="/login" replace />;
-  return <>{children}</>;
-}
-
-function GuestRoute({ children }: { children: ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth();
-  if (isLoading) return <div className="min-h-screen flex items-center justify-center"><p>Loading...</p></div>;
-  if (isAuthenticated) return <Navigate to="/" replace />;
-  return <>{children}</>;
-}
-
 function AdminProtectedRoute({ children }: { children: ReactNode }) {
   const { isAdminAuthenticated, isLoading } = useAdminAuth();
   if (isLoading) return <div className="min-h-screen flex items-center justify-center"><p>Loading...</p></div>;
@@ -108,15 +88,15 @@ const App = () => (
           <ScrollToTop />
           <Routes>
             <Route path="/" element={<Index />} />
-            <Route path="/login" element={<GuestRoute><Login /></GuestRoute>} />
-            <Route path="/register" element={<GuestRoute><Register /></GuestRoute>} />
-            <Route path="/forgot-password" element={<GuestRoute><ForgotPassword /></GuestRoute>} />
-            <Route path="/profile" element={<ProtectedRoute><Profile /></ProtectedRoute>} />
-            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/settings" element={<ProtectedRoute><Settings /></ProtectedRoute>} />
+            <Route path="/login" element={<Navigate to="/" replace />} />
+            <Route path="/register" element={<Navigate to="/" replace />} />
+            <Route path="/forgot-password" element={<Navigate to="/" replace />} />
+            <Route path="/profile" element={<Navigate to="/" replace />} />
+            <Route path="/dashboard" element={<Navigate to="/" replace />} />
+            <Route path="/settings" element={<Navigate to="/" replace />} />
             <Route path="/about" element={<About />} />
-            <Route path="/products" element={<ProtectedRoute><Products /></ProtectedRoute>} />
-            <Route path="/products/:slug" element={<ProtectedRoute><ProductDetail /></ProtectedRoute>} />
+            <Route path="/products" element={<Products />} />
+            <Route path="/products/:slug" element={<ProductDetail />} />
             <Route path="/flowers" element={<Navigate to="/products" replace />} />
             <Route path="/collections" element={<Navigate to="/products" replace />} />
             <Route path="/flowers/:slug" element={<RedirectProductSlug />} />
@@ -127,7 +107,7 @@ const App = () => (
             <Route path="/blog/:slug" element={<BlogDetail />} />
             <Route path="/guideline" element={<Navigate to="/blogs" replace />} />
             <Route path="/guidelines" element={<Navigate to="/blogs" replace />} />
-            <Route path="/guideline/:slug" element={<ProtectedRoute><GuidelineDetail /></ProtectedRoute>} />
+            <Route path="/guideline/:slug" element={<GuidelineDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<Policy />} />
             <Route path="/terms" element={<Terms />} />

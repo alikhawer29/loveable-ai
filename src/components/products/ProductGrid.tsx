@@ -1,6 +1,5 @@
 import { Link } from "react-router-dom";
 import { useState, useEffect, useMemo } from "react";
-import { useAuth } from "@/contexts/AuthContext";
 import {
   Select,
   SelectContent,
@@ -45,7 +44,6 @@ export function ProductGrid({
   categoryFilter,
   subCategoryFilter,
 }: ProductGridProps) {
-  const { isLoading: authLoading, session } = useAuth();
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState("popular");
   const [selectedSubCategory, setSelectedSubCategory] = useState<string>("all");
@@ -58,30 +56,12 @@ export function ProductGrid({
   // Fetch products from DB when no static items
   useEffect(() => {
     if (staticItems) return;
-    if (authLoading) return;
-
-    if (!session) {
-      setLoading(false);
-      setDbProducts([]);
-      return;
-    }
 
     let cancelled = false;
 
     const fetchProducts = async () => {
       setLoading(true);
       try {
-        // Wait for Supabase client to fully initialize its session from storage before RLS queries.
-        try {
-          const sessionCheckPromise = supabase.auth.getSession();
-          const timeoutPromise = new Promise<never>((_, reject) =>
-            setTimeout(() => reject(new Error("getSession timeout")), 3000)
-          );
-          await Promise.race([sessionCheckPromise, timeoutPromise]);
-        } catch (err: any) {
-          console.warn("ProductGrid: Client session check timeout — RLS queries may fail");
-        }
-
         // Resolve category filter(s)
         let categoryId: string | null = null;
         const { data: allCats } = await supabase
@@ -184,7 +164,7 @@ export function ProductGrid({
     return () => {
       cancelled = true;
     };
-  }, [staticItems, categoryFilter, subCategoryFilter, authLoading, session]);
+  }, [staticItems, categoryFilter, subCategoryFilter]);
 
   // Fetch subcategories when category selection changes
   useEffect(() => {

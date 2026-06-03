@@ -57,7 +57,7 @@ export function Footer() {
             <span className="block">Everything You Need to Know About Plants and More.</span>
             <span className="mt-2 block md:mt-2.5">No Spam, We Promise.</span>
           </h2>
-          <p className="mt-3 text-sm text-white/70 md:mt-4">Subscribe now and get 15% off your first purchase</p>
+          {/* <p className="mt-3 text-sm text-white/70 md:mt-4">Subscribe now and get 15% off your first purchase</p> */}
           <form onSubmit={handleNewsletter} className="mx-auto mt-8 max-w-2xl text-left">
             <label htmlFor="footer-newsletter-email" className="mb-1.5 block text-left text-xs text-white/80">
               Enter your email here *
@@ -114,7 +114,7 @@ export function Footer() {
             <div>
               <h4 className="font-display mb-4 text-sm font-semibold text-primary">Contact Details</h4>
               <ul className="space-y-2 text-foreground/80">
-                <li>854.692.7227</li>
+                <li>854-692-7227</li>
                 <li>
                   <a href="mailto:infinityfloralgrower@gmail.com" className="hover:text-primary transition-colors">
                     infinityfloralgrower@gmail.com

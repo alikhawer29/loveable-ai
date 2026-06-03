@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
-import { useAuth } from "@/contexts/AuthContext";
 import { Leaf, Award, Truck, HeartHandshake } from "lucide-react";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -40,11 +39,6 @@ const values = [
 
 const instagramImages = [orchidPurple, orchidPink, sproutLiving, orchidYellow, sproutRepotting, orchidWhite];
 
-function useAuthLink() {
-  const { isAuthenticated } = useAuth();
-  return (authPath: string) => (isAuthenticated ? authPath : "/login");
-}
-
 interface HomeProduct {
   name: string;
   image: string;
@@ -59,8 +53,6 @@ interface HomeArticle {
 }
 
 const Index = () => {
-  const { isAuthenticated } = useAuth();
-  const authLink = useAuthLink();
   const [products, setProducts] = useState<HomeProduct[]>([]);
   const [careArticles, setCareArticles] = useState<HomeArticle[]>([]);
   const [blogPosts, setBlogPosts] = useState<BlogPost[]>([]);
@@ -174,7 +166,7 @@ const Index = () => {
               We meticulously cultivate premium-quality orchids for growers, retailers, and event designers.
             </p>
             <div className="flex flex-wrap justify-center gap-3">
-              <Link to={authLink("/products")} className="btn-outline-light rounded-sm">
+              <Link to="/products" className="btn-outline-light rounded-sm">
                 View Our Products
               </Link>
               <Link to="/blogs" className="btn-plum rounded-sm">
@@ -203,8 +195,8 @@ const Index = () => {
                 desirable orchid varieties for every occasion.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Our 60-acre facility in south Florida is home to more than 2 million orchids, and we ship over 8 million
-                stems annually to customers around the globe. Let flowers speak for you — order a complimentary product
+                Our 6-acre facility in south Florida is home to more than 2 million orchids, and we ship over 8 million
+                plants annually to customers around the globe. Let flowers speak for you — order a complimentary product
                 quote in just minutes!
               </p>
               <Link to="/about" className="btn-plum rounded-sm text-sm mt-2 inline-block">
@@ -248,7 +240,7 @@ const Index = () => {
                 the wholesale market. We focus on quality and consistency.
               </p>
             </div>
-            <Link to={authLink("/products")} className="hidden md:inline-flex btn-plum rounded-sm text-xs">
+            <Link to="/products" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
               View All Products →
             </Link>
           </div>
@@ -284,7 +276,7 @@ const Index = () => {
                       {product.name}
                     </h3>
                     <Link
-                      to={authLink(`/products/${product.slug}`)}
+                      to={`/products/${product.slug}`}
                       className="btn-dark rounded-sm text-xs w-full py-2 mt-1 inline-block text-center"
                     >
                       View Detail
@@ -295,7 +287,7 @@ const Index = () => {
             </div>
           )}
           <div className="md:hidden mt-6 text-center">
-            <Link to={authLink("/products")} className="btn-plum rounded-sm text-xs">
+            <Link to="/products" className="btn-plum rounded-sm text-xs">
               View All Products →
             </Link>
           </div>

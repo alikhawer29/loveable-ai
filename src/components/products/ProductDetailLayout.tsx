@@ -146,11 +146,10 @@ export function ProductDetailLayout({
                           type="button"
                           title={variant.label}
                           onClick={() => handleColorSelect(variant.hex)}
-                          className={`h-9 w-9 rounded-full border-2 transition-all shrink-0 ${
-                            active
+                          className={`h-9 w-9 rounded-full border-2 transition-all shrink-0 ${active
                               ? "ring-2 ring-offset-2 ring-foreground border-foreground"
                               : "border-border hover:border-foreground/50"
-                          }`}
+                            }`}
                           style={{
                             backgroundColor: variant.hex,
                             boxShadow: light ? "inset 0 0 0 1px rgba(0,0,0,0.15)" : undefined,
@@ -167,7 +166,7 @@ export function ProductDetailLayout({
             <div className="flex items-center gap-4 pt-2">
               <div className="flex items-center gap-2 text-sm text-foreground">
                 <Phone className="h-4 w-4 text-primary" />
-                (+1) 234 567 890
+                854-692-7227
               </div>
               <Link
                 to="/contact"
