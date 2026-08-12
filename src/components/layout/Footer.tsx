@@ -98,10 +98,10 @@ export function Footer() {
         <div className="container py-12 md:pt-10 md:pb-6">
           {/* Logo — height 100px, width auto */}
           <div className="mb-10 flex justify-center">
-            <Link to="/" className="inline-block" aria-label="Han Cloud Co. Ltd home">
+            <Link to="/" className="inline-block" aria-label="Infinity Floral Grower home">
               <img
                 src={logoImage}
-                alt="Han Cloud Co. Ltd"
+                alt="Infinity Floral Grower"
                 className="h-[100px] w-auto max-w-full object-contain"
               />
             </Link>
@@ -208,7 +208,7 @@ export function Footer() {
           </div>
 
           <div className="mt-10 border-t border-border pt-6 text-center text-xs text-foreground/60">
-            © Copyright 2026 - Han Cloud Co. Ltd. All rights reserved.
+            © Copyright 2026 - Infinity Floral Grower. All rights reserved.
           </div>
         </div>
       </div>

@@ -1,7 +1,7 @@
 import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 
-const loremParagraph = "At Han Cloud Co. Ltd, we respect your privacy. Our website showcases orchid flowers, clay, and ceramic pots, and allows users to contact us via phone.We may collect basic information such as your name and phone number only when you contact us. This information is used solely to respond to your inquiries and provide assistance. We do not offer online ordering or takeaway services, and we do not collect any payment information. We do not sell, trade, or share your personal information with third parties. We take reasonable measures to keep your information secure. By using our website, you agree to this privacy policy. For any questions, please contact us directly.";
+const loremParagraph = "At Infinity Floral Grower, we respect your privacy. Our website showcases orchid flowers, clay, and ceramic pots, and allows users to contact us via phone.We may collect basic information such as your name and phone number only when you contact us. This information is used solely to respond to your inquiries and provide assistance. We do not offer online ordering or takeaway services, and we do not collect any payment information. We do not sell, trade, or share your personal information with third parties. We take reasonable measures to keep your information secure. By using our website, you agree to this privacy policy. For any questions, please contact us directly.";
 
 const sections = [
   { title: "1. Introduction", content: loremParagraph },

@@ -14,7 +14,7 @@ export function AdminAuthLayout({ children }: AdminAuthLayoutProps) {
         <div className="w-full max-w-md space-y-8">
           {/* Logo */}
           <div className="flex justify-center">
-            <img src={logoImg} alt="Han Cloud Co. Ltd" className="h-14 my-3 object-contain" />
+            <img src={logoImg} alt="Infinity Floral Grower" className="h-14 my-3 object-contain" />
           </div>
           {children}
         </div>
