@@ -98,8 +98,8 @@ const GuidelineDetail = () => {
         <main className="flex-1 container py-16 text-center">
           <h1 className="font-display text-[46px] text-foreground mb-4">Article Not Found</h1>
           <p className="text-muted-foreground mb-6">The guideline you're looking for doesn't exist.</p>
-          <button onClick={() => navigate("/guidelines")} className="btn-plum rounded-sm text-sm">
-            Back to Guidelines
+          <button onClick={() => navigate("/care")} className="btn-plum rounded-sm text-sm">
+            Back to Care
           </button>
         </main>
         <Footer />
@@ -112,7 +112,7 @@ const GuidelineDetail = () => {
       <Navbar />
       <main className="flex-1 container py-6 md:py-10 max-w-4xl">
         {/* Back */}
-        <button onClick={() => navigate("/guidelines")} className="flex items-center gap-2 text-sm text-foreground mb-6 hover:text-primary transition-colors">
+        <button onClick={() => navigate("/care")} className="flex items-center gap-2 text-sm text-foreground mb-6 hover:text-primary transition-colors">
           <ArrowLeft className="h-4 w-4" /> Back
         </button>
 
@@ -149,7 +149,7 @@ const GuidelineDetail = () => {
           <section className="mt-16 mb-10">
             <div className="flex items-end justify-between mb-8">
               <h2 className="font-display text-[46px] text-foreground leading-tight">More Guide to Plant Care</h2>
-              <Link to="/guidelines" className="btn-plum rounded-sm text-xs uppercase tracking-wider px-6">Read More</Link>
+              <Link to="/care" className="btn-plum rounded-sm text-xs uppercase tracking-wider px-6">Read More</Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               {relatedArticles.map((g) => (

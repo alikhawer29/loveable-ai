@@ -17,6 +17,7 @@ const headerNavLinks = [
   { label: "About", path: "/about" },
   { label: "Products", path: "/products" },
   { label: "Blogs", path: "/blogs" },
+  { label: "Care", path: "/care" },
   { label: "Contact Us", path: "/contact" },
 ];
 
@@ -75,6 +76,12 @@ export function Navbar({ overlay = false }: NavbarProps) {
         location.pathname.startsWith("/blog/")
       );
     }
+    if (path === "/care") {
+      return (
+        location.pathname === "/care" ||
+        location.pathname.startsWith("/guideline")
+      );
+    }
     if (path === "/products") {
       return (
         location.pathname === "/products" ||
@@ -111,11 +118,11 @@ export function Navbar({ overlay = false }: NavbarProps) {
           <Link
             to="/"
             className="flex shrink-0 items-center overflow-visible"
-            aria-label="Han Cloud Co. Ltd home"
+            aria-label="Infinity Floral Grower home"
           >
             <img
               src={logoImage}
-              alt="Han Cloud Co. Ltd"
+              alt="Infinity Floral Grower"
               className="h-[4.25rem] w-auto origin-left scale-[1.35] object-contain object-left sm:scale-[1.45]"
             />
           </Link>

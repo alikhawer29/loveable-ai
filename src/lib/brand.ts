@@ -1,1 +1,1 @@
-export const COMPANY_NAME = "Han Cloud Co. Ltd";
+export const COMPANY_NAME = "Infinity Floral Grower";

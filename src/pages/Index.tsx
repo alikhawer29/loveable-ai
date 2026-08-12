@@ -160,7 +160,7 @@ const Index = () => {
         <div className="relative z-10 flex min-h-screen items-center justify-center px-4 text-center">
           <div className="max-w-2xl animate-fade-in">
             <h1 className="font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-[hsl(0_0%_100%)] leading-tight mb-4">
-              Han Cloud Co. Ltd
+              Infinity Floral Grower
             </h1>
             <p className="text-sm md:text-base text-[hsl(0_0%_100%_/_0.8)] max-w-lg mx-auto mb-6">
               We meticulously cultivate premium-quality orchids for growers, retailers, and event designers.
@@ -186,12 +186,12 @@ const Index = () => {
             </div>
             <div className="space-y-5">
               <h2 className="font-display text-3xl md:text-4xl font-bold text-foreground leading-tight">
-                Welcome to <em className="italic">Han Cloud</em>
+                Welcome to <em className="italic">Infinity Floral Grower</em>
                 <br />
                 Co. Ltd
               </h2>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
-                Han Cloud Co. Ltd is the nation's premier grower of orchids, developing and cultivating the most
+                Infinity Floral Grower is the nation's premier grower of orchids, developing and cultivating the most
                 desirable orchid varieties for every occasion.
               </p>
               <p className="text-sm text-muted-foreground leading-relaxed max-w-md">
@@ -214,7 +214,7 @@ const Index = () => {
             Care, Quality, and Consistency
           </h2>
           <p className="text-sm text-muted-foreground mb-10 max-w-xl mx-auto">
-            Han Cloud Co. Ltd is a professional orchid grower based in the United States, specializing in premium-quality orchids for the wholesale market. We focus on consistency, care.
+            Infinity Floral Grower is a professional orchid grower based in the United States, specializing in premium-quality orchids for the wholesale market. We focus on consistency, care.
           </p>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
             {values.map((v) => (
@@ -236,7 +236,7 @@ const Index = () => {
             <div>
               <h2 className="font-display text-[46px] text-foreground">Most Popular Products</h2>
               <p className="text-sm text-muted-foreground mt-1 max-w-lg">
-                Han Cloud Co. Ltd grows a wide selection of premium orchids to bring you the most incredible quality on
+                Infinity Floral Grower grows a wide selection of premium orchids to bring you the most incredible quality on
                 the wholesale market. We focus on quality and consistency.
               </p>
             </div>
@@ -348,7 +348,7 @@ const Index = () => {
         <div className="container">
           <div className="flex items-end justify-between mb-8">
             <h2 className="font-display text-2xl text-primary md:text-3xl">Your Guide to Plant Care</h2>
-            <Link to="/guidelines" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
+            <Link to="/care" className="hidden md:inline-flex btn-plum rounded-sm text-xs">
               View All →
             </Link>
           </div>
@@ -391,7 +391,7 @@ const Index = () => {
       <section className="bg-white py-12">
         <div className="container">
           <h2 className="mb-6 text-center font-forum text-2xl font-normal leading-tight text-primary sm:text-3xl md:text-4xl lg:whitespace-nowrap lg:text-[46px]">
-            Sprout on the #Han Cloud Co. Ltd
+            Sprout on the #Infinity Floral Grower
           </h2>
           <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
             {instagramImages.map((img, i) => (

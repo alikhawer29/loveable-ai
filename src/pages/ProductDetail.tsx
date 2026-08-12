@@ -6,10 +6,11 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchActiveProductDetail, type ProductDetailData } from "@/lib/product-detail-fetch";
+import { ProductsPasswordGate } from "@/components/products/ProductsPasswordGate";
 
 const PLACEHOLDER = "/placeholder.svg";
 
-const ProductDetail = () => {
+const ProductDetailContent = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
   const [product, setProduct] = useState<ProductDetailData | null>(null);
@@ -41,11 +42,11 @@ const ProductDetail = () => {
         const relatedIds = (related || []).map((p) => p.id);
         let imageMap: Record<string, string> = {};
         if (relatedIds.length > 0) {
-          const { data: relatedImgs } = await supabase
+          const { data: imgs } = await supabase
             .from("product_images")
             .select("product_id, image_url")
             .in("product_id", relatedIds);
-          (relatedImgs || []).forEach((img) => {
+          (imgs || []).forEach((img) => {
             if (!imageMap[img.product_id]) imageMap[img.product_id] = img.image_url;
           });
         }
@@ -94,7 +95,7 @@ const ProductDetail = () => {
         <Navbar />
         <main className="flex-1 container py-16 text-center">
           <h1 className="font-display text-[46px] text-foreground mb-4">Product Not Found</h1>
-          <p className="text-muted-foreground mb-6">The product you're looking for doesn't exist.</p>
+          <p className="text-muted-foreground mb-6">The product you&apos;re looking for doesn&apos;t exist.</p>
           <button onClick={() => navigate("/products")} className="btn-plum rounded-sm text-sm">
             Back to Products
           </button>
@@ -120,6 +121,12 @@ const ProductDetail = () => {
     />
   );
 };
+
+const ProductDetail = () => (
+  <ProductsPasswordGate withChrome>
+    <ProductDetailContent />
+  </ProductsPasswordGate>
+);
 
 function isNew(createdAt: string): boolean {
   const created = new Date(createdAt);

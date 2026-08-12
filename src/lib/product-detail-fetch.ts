@@ -72,7 +72,7 @@ export async function fetchActiveProductDetail(
     productId: prod.id,
     product: {
       name: prod.product_name,
-      description: prod.description || "Premium quality product from Han Cloud Co. Ltd.",
+      description: prod.description || "Premium quality product from Infinity Floral Grower.",
       stock: prod.stock_status,
       images: initialImages,
       fallbackImages,

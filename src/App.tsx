@@ -13,7 +13,7 @@ import Faqs from "./pages/Faqs";
 import About from "./pages/About";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
-import Guidelines from "./pages/Guidelines";
+import Care from "./pages/Care";
 import GuidelineDetail from "./pages/GuidelineDetail";
 import Blogs from "./pages/Blogs";
 import BlogDetail from "./pages/BlogDetail";
@@ -105,8 +105,9 @@ const App = () => (
             <Route path="/pots/:slug" element={<RedirectProductSlug />} />
             <Route path="/blogs" element={<Blogs />} />
             <Route path="/blog/:slug" element={<BlogDetail />} />
-            <Route path="/guideline" element={<Navigate to="/guidelines" replace />} />
-            <Route path="/guidelines" element={<Guidelines />} />
+            <Route path="/care" element={<Care />} />
+            <Route path="/guideline" element={<Navigate to="/care" replace />} />
+            <Route path="/guidelines" element={<Navigate to="/care" replace />} />
             <Route path="/guideline/:slug" element={<GuidelineDetail />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/privacy-policy" element={<Policy />} />

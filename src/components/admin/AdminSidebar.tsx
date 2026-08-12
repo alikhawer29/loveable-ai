@@ -32,7 +32,7 @@ export function AdminSidebar() {
         <Link to="/admin/dashboard" className="flex items-center gap-2">
           <img
             src={logoImg}
-            alt="Han Cloud Co. Ltd"
+            alt="Infinity Floral Grower"
             className="h-14 w-auto my-2 object-contain brightness-0 invert"
           />
         </Link>

@@ -8,9 +8,9 @@ import {
 } from "@/components/ui/accordion";
 
 const faqs = [
-  { q: "What is Han Cloud Co. Ltd?", a: "Han Cloud Co. Ltd is a website that showcases beautiful orchid flowers along with clay and ceramic pots. It allows users to explore unique floral arrangements and decorative pot designs." },
-  { q: "How can I contact Han Cloud Co. Ltd?", a: "You can contact Han Cloud Co. Ltd through the provided contact details, including email at infinityfloralgrower@gmail.com or by phone at 854-692-7227. Our support team is available Monday to Friday from 9:00 AM to 6:00 PM and will be happy to assist you with any inquiries or information you need." },
-  // { q: "Who can register on Han Cloud Co. Ltd?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
+  { q: "What is Infinity Floral Grower?", a: "Infinity Floral Grower is a website that showcases beautiful orchid flowers along with clay and ceramic pots. It allows users to explore unique floral arrangements and decorative pot designs." },
+  { q: "How can I contact Infinity Floral Grower?", a: "You can contact Infinity Floral Grower through the provided contact details, including email at infinityfloralgrower@gmail.com or by phone at 854-692-7227. Our support team is available Monday to Friday from 9:00 AM to 6:00 PM and will be happy to assist you with any inquiries or information you need." },
+  // { q: "Who can register on Infinity Floral Grower?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
   // { q: "Can I see product availability and quantity details?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
   // { q: "What is the Gardening Guidelines section?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
   // { q: "How do I receive updates or announcements?", a: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." },
