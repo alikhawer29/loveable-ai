@@ -12,6 +12,7 @@ const quickLinksLeft = [
   { label: "Wholesale", path: "/about" },
   { label: "Blogs", path: "/blogs" },
   { label: "Products", path: "/products" },
+  { label: "Catalog", path: "/catalog" },
 ];
 
 export function Footer() {

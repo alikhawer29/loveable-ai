@@ -1,3 +1,11 @@
+import blog1 from "@/assets/blog-1.png";
+import blog2 from "@/assets/blog-2.png";
+import blog3 from "@/assets/blog-3.png";
+import blog4 from "@/assets/blog-4.png";
+import blog5 from "@/assets/blog-5.png";
+import blog6 from "@/assets/blog-6.png";
+import blog7 from "@/assets/blog-7.png";
+
 export interface BlogPost {
   id: string;
   title: string;
@@ -16,10 +24,20 @@ export type BlogArticle = BlogPost & {
   video_url?: string | null;
 };
 
-const PLACEHOLDER = "/placeholder.svg";
+const BLOG_CARD_IMAGES = [blog1, blog2, blog3, blog4, blog5, blog6, blog7];
 
-export function getBlogImage(article: Pick<BlogPost, "featured_image_url">): string {
-  return article.featured_image_url || PLACEHOLDER;
+/** Blog 1.png → index 0, Blog 2.png → index 1, … */
+export function getBlogCardImage(index: number): string {
+  const i = ((index % BLOG_CARD_IMAGES.length) + BLOG_CARD_IMAGES.length) % BLOG_CARD_IMAGES.length;
+  return BLOG_CARD_IMAGES[i];
+}
+
+export function getBlogImage(article: Pick<BlogPost, "id" | "featured_image_url">): string {
+  if (article.featured_image_url) return article.featured_image_url;
+  const seed = article.id || "0";
+  let hash = 0;
+  for (let i = 0; i < seed.length; i++) hash += seed.charCodeAt(i);
+  return getBlogCardImage(hash);
 }
 
 export function getBlogUrl(article: Pick<BlogPost, "slug">): string {

@@ -146,8 +146,8 @@ const BlogDetail = () => {
               </Link>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-10">
-              {relatedArticles.map((post) => (
-                <BlogCard key={post.id} article={post} showReadMore={false} />
+              {relatedArticles.map((post, i) => (
+                <BlogCard key={post.id} article={post} imageIndex={i} showReadMore={false} />
               ))}
             </div>
           </section>

@@ -13,6 +13,8 @@ import Faqs from "./pages/Faqs";
 import About from "./pages/About";
 import Products from "./pages/Products";
 import ProductDetail from "./pages/ProductDetail";
+import Catalog from "./pages/Catalog";
+import { CatalogPasswordGate } from "./components/products/CatalogPasswordGate";
 import Care from "./pages/Care";
 import GuidelineDetail from "./pages/GuidelineDetail";
 import Blogs from "./pages/Blogs";
@@ -97,6 +99,8 @@ const App = () => (
             <Route path="/about" element={<About />} />
             <Route path="/products" element={<Products />} />
             <Route path="/products/:slug" element={<ProductDetail />} />
+            <Route path="/catalog" element={<Catalog />} />
+            <Route path="/catalog/:slug" element={<CatalogPasswordGate withChrome><ProductDetail /></CatalogPasswordGate>} />
             <Route path="/flowers" element={<Navigate to="/products" replace />} />
             <Route path="/collections" element={<Navigate to="/products" replace />} />
             <Route path="/flowers/:slug" element={<RedirectProductSlug />} />

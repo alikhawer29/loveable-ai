@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { AdminLayout } from "@/components/admin/AdminLayout";
 import { ArrowLeft, Play } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
-import guideRepot from "@/assets/guide-repot.jpg";
+import guideRepot from "@/assets/guide-repot.png";
 
 const AdminViewGuideline = () => {
   const navigate = useNavigate();

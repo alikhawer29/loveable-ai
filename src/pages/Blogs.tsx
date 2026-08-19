@@ -9,11 +9,9 @@ import {
   formatBlogDate,
   estimateReadTime,
   getExcerpt,
-  getBlogImage,
   getBlogUrl,
 } from "@/lib/blog-utils";
 import blogsHero from "@/assets/blogs_banner.jpg";
-import guideRepot from "@/assets/guide-repot.jpg";
 
 const ITEMS_PER_PAGE = 6;
 
@@ -83,10 +81,7 @@ const Blogs = () => {
     return pages;
   };
 
-  const featuredImage =
-    featuredPost && getBlogImage(featuredPost) !== "/placeholder.svg"
-      ? getBlogImage(featuredPost)
-      : guideRepot;
+  const featuredImage = featuredPost?.featured_image_url || blogsHero;
 
   return (
     <PageLayout
@@ -160,8 +155,12 @@ const Blogs = () => {
                   Weekly Most Read <span aria-hidden="true">🔥</span>
                 </h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 md:gap-10">
-                  {articles.map((article) => (
-                    <BlogCard key={article.id} article={article} />
+                  {articles.map((article, i) => (
+                    <BlogCard
+                      key={article.id}
+                      article={article}
+                      imageIndex={(currentPage - 1) * ITEMS_PER_PAGE + i}
+                    />
                   ))}
                 </div>
               </>
