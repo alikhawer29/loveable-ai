@@ -4,16 +4,17 @@ import {
   formatBlogDate,
   estimateReadTime,
   getExcerpt,
-  getBlogImage,
+  getBlogCardImage,
   getBlogUrl,
 } from "@/lib/blog-utils";
 
 interface BlogCardProps {
   article: BlogPost;
+  imageIndex?: number;
   showReadMore?: boolean;
 }
 
-export function BlogCard({ article, showReadMore = true }: BlogCardProps) {
+export function BlogCard({ article, imageIndex = 0, showReadMore = true }: BlogCardProps) {
   const readMins = estimateReadTime(article.content);
 
   return (
@@ -21,7 +22,7 @@ export function BlogCard({ article, showReadMore = true }: BlogCardProps) {
       <Link to={getBlogUrl(article)} className="group block">
         <div className="aspect-[4/3] overflow-hidden rounded-lg bg-muted mb-4">
           <img
-            src={getBlogImage(article)}
+            src={getBlogCardImage(imageIndex)}
             alt={article.title}
             className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
             loading="lazy"

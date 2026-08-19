@@ -1,4 +1,4 @@
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { ProductDetailLayout } from "@/components/products/ProductDetailLayout";
 import { useState, useEffect } from "react";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,13 +6,16 @@ import { Navbar } from "@/components/layout/Navbar";
 import { Footer } from "@/components/layout/Footer";
 import { Skeleton } from "@/components/ui/skeleton";
 import { fetchActiveProductDetail, type ProductDetailData } from "@/lib/product-detail-fetch";
-import { ProductsPasswordGate } from "@/components/products/ProductsPasswordGate";
 
 const PLACEHOLDER = "/placeholder.svg";
 
 const ProductDetailContent = () => {
   const { slug } = useParams();
   const navigate = useNavigate();
+  const location = useLocation();
+  const isCatalog = location.pathname.startsWith("/catalog");
+  const basePath = isCatalog ? "/catalog" : "/products";
+  const backLabel = isCatalog ? "Back to Catalog" : "Back to Products";
   const [product, setProduct] = useState<ProductDetailData | null>(null);
   const [relatedItems, setRelatedItems] = useState<{ id: string; name: string; image: string; isNew?: boolean; detailPath: string }[]>([]);
   const [loading, setLoading] = useState(true);
@@ -57,7 +60,7 @@ const ProductDetailContent = () => {
             name: p.product_name,
             image: imageMap[p.id] || PLACEHOLDER,
             isNew: isNew(p.created_at),
-            detailPath: `/products/${p.product_name.toLowerCase().replace(/\s+/g, "-")}`,
+            detailPath: `${basePath}/${p.product_name.toLowerCase().replace(/\s+/g, "-")}`,
           }))
         );
       } catch (err) {
@@ -96,8 +99,8 @@ const ProductDetailContent = () => {
         <main className="flex-1 container py-16 text-center">
           <h1 className="font-display text-[46px] text-foreground mb-4">Product Not Found</h1>
           <p className="text-muted-foreground mb-6">The product you&apos;re looking for doesn&apos;t exist.</p>
-          <button onClick={() => navigate("/products")} className="btn-plum rounded-sm text-sm">
-            Back to Products
+          <button onClick={() => navigate(basePath)} className="btn-plum rounded-sm text-sm">
+            {backLabel}
           </button>
         </main>
         <Footer />
@@ -117,16 +120,12 @@ const ProductDetailContent = () => {
       showDesignPicker={product.showDesignPicker}
       relatedTitle="You May Also Like"
       relatedItems={relatedItems}
-      backPath="/products"
+      backPath={basePath}
     />
   );
 };
 
-const ProductDetail = () => (
-  <ProductsPasswordGate withChrome>
-    <ProductDetailContent />
-  </ProductsPasswordGate>
-);
+const ProductDetail = () => <ProductDetailContent />;
 
 function isNew(createdAt: string): boolean {
   const created = new Date(createdAt);

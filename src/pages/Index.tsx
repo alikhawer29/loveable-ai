@@ -10,22 +10,24 @@ import {
   formatBlogDateShort,
   estimateReadTime,
   getExcerpt,
-  getBlogImage,
+  getBlogCardImage,
   getBlogUrl,
 } from "@/lib/blog-utils";
 
 import heroImage from "@/assets/hero-greenhouse.jpg";
 import welcomeImage from "@/assets/welcome-florist.png";
-import sproutLiving from "@/assets/sprout-living.jpg";
-import sproutShelf from "@/assets/sprout-shelf.jpg";
-import sproutRepotting from "@/assets/sprout-repotting.jpg";
-import sproutCollection from "@/assets/sprout-collection.jpg";
-import seedToSprout from "@/assets/seed-to-sprout.jpg";
-import careArrangement from "@/assets/care-arrangement.jpg";
-import orchidPurple from "@/assets/orchid-purple.jpg";
-import orchidPink from "@/assets/orchid-pink.jpg";
-import orchidYellow from "@/assets/orchid-yellow.jpg";
-import orchidWhite from "@/assets/orchid-white.jpg";
+import sproutLiving from "@/assets/sprout-living.png";
+import sproutShelf from "@/assets/sprout-shelf.png";
+import sproutRepotting from "@/assets/sprout-repotting.png";
+import sproutCollection from "@/assets/sprout-collection.png";
+import seedToSprout from "@/assets/seed-to-sprout.png";
+import careArrangement from "@/assets/care-arrangement.png";
+import social1 from "@/assets/social-1.png";
+import social2 from "@/assets/social-2.png";
+import social3 from "@/assets/social-3.png";
+import social4 from "@/assets/social-4.png";
+import social5 from "@/assets/social-5.png";
+import social6 from "@/assets/social-6.png";
 import bannerVideo from "@/assets/banner_video.mp4";
 
 const PLACEHOLDER = "/placeholder.svg";
@@ -37,7 +39,7 @@ const values = [
   { icon: HeartHandshake, title: "Dedicated Customer Service Care" },
 ];
 
-const instagramImages = [orchidPurple, orchidPink, sproutLiving, orchidYellow, sproutRepotting, orchidWhite];
+const instagramImages = [social1, social2, social3, social4, social5, social6];
 
 interface HomeProduct {
   name: string;
@@ -303,19 +305,19 @@ const Index = () => {
           </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 auto-rows-[180px] md:auto-rows-[220px]">
             <div className="col-span-2 row-span-2 overflow-hidden rounded-lg">
-              <img src={sproutLiving} alt="Plants in living room" className="h-full w-full object-cover" loading="lazy" />
+              <img src={sproutLiving} alt="Orchid collection" className="h-full w-full object-cover" loading="lazy" />
             </div>
             <div className="overflow-hidden rounded-lg">
-              <img src={sproutShelf} alt="Plants on shelf" className="h-full w-full object-cover" loading="lazy" />
+              <img src={sproutShelf} alt="White orchids" className="h-full w-full object-cover" loading="lazy" />
             </div>
             <div className="overflow-hidden rounded-lg">
-              <img src={sproutRepotting} alt="Repotting plants" className="h-full w-full object-cover" loading="lazy" />
+              <img src={sproutRepotting} alt="Blooming orchid varieties" className="h-full w-full object-cover" loading="lazy" />
             </div>
             <div className="overflow-hidden rounded-lg">
-              <img src={sproutCollection} alt="Plant collection" className="h-full w-full object-cover" loading="lazy" />
+              <img src={sproutCollection} alt="Potted orchids" className="h-full w-full object-cover" loading="lazy" />
             </div>
             <div className="overflow-hidden rounded-lg">
-              <img src={careArrangement} alt="Plant arrangement" className="h-full w-full object-cover" loading="lazy" />
+              <img src={careArrangement} alt="Orchid in a home setting" className="h-full w-full object-cover" loading="lazy" />
             </div>
           </div>
         </div>
@@ -324,7 +326,7 @@ const Index = () => {
       {/* ========== FROM SEED TO SPROUT ========== */}
       <section className="relative">
         <div className="aspect-[16/5] md:aspect-[16/4] w-full overflow-hidden">
-          <img src={seedToSprout} alt="Young plant sprout" className="h-full w-full object-cover" />
+          <img src={seedToSprout} alt="Blooming orchids" className="h-full w-full object-cover" />
           <div className="absolute inset-0 bg-[hsl(0_0%_0%_/_0.6)]" />
         </div>
         <div className="absolute inset-0 flex items-center justify-center text-center px-4">
@@ -431,11 +433,11 @@ const Index = () => {
             <p className="text-center text-muted-foreground py-8 mb-10">No blog posts published yet.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-12 mb-10">
-              {blogPosts.map((post) => (
+              {blogPosts.map((post, i) => (
                 <Link key={post.id} to={getBlogUrl(post)} className="group block">
                   <div className="aspect-[16/10] overflow-hidden rounded-lg mb-5 bg-muted">
                     <img
-                      src={getBlogImage(post)}
+                      src={getBlogCardImage(i)}
                       alt={post.title}
                       className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
                       loading="lazy"

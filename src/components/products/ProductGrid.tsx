@@ -32,6 +32,8 @@ interface ProductGridProps {
   categoryFilter?: string;
   /** Filter by subcategory id */
   subCategoryFilter?: string;
+  /** Base path for product detail links */
+  detailBasePath?: string;
 }
 
 const PLACEHOLDER = "/placeholder.svg";
@@ -43,6 +45,7 @@ export function ProductGrid({
   itemsPerPage = 12,
   categoryFilter,
   subCategoryFilter,
+  detailBasePath = "/products",
 }: ProductGridProps) {
   const [currentPage, setCurrentPage] = useState(1);
   const [sort, setSort] = useState("popular");
@@ -136,7 +139,7 @@ export function ProductGrid({
         const mapped: ProductItem[] = (products || []).map((p) => {
           const subName = p.sub_category_id ? subMap[p.sub_category_id] || "" : "";
           const slug = p.product_name.toLowerCase().replace(/\s+/g, "-");
-          const detailPath = `/products/${slug}`;
+          const detailPath = `${detailBasePath}/${slug}`;
           return {
             id: p.id,
             name: p.product_name,
@@ -164,7 +167,7 @@ export function ProductGrid({
     return () => {
       cancelled = true;
     };
-  }, [staticItems, categoryFilter, subCategoryFilter]);
+  }, [staticItems, categoryFilter, subCategoryFilter, detailBasePath]);
 
   // Fetch subcategories when category selection changes
   useEffect(() => {
